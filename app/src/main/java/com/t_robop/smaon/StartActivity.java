@@ -22,12 +22,6 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-
-
-
-        //private TextView textView;
-      //  String str1;
-
         getLoaderManager().restartLoader(ADDRESSLOADER_ID, null, this);
 
     }
