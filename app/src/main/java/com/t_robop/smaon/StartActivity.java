@@ -2,7 +2,6 @@ package com.t_robop.smaon;
 
 import android.app.Activity;
 import android.app.LoaderManager;
-import android.content.Intent;
 import android.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,8 +16,6 @@ import org.json.JSONObject;
 public class StartActivity extends Activity implements LoaderManager.LoaderCallbacks<JSONObject> {
 
     private static final int ADDRESSLOADER_ID = 0;
-    String str;
-    String str2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +53,8 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
                     JSONObject object = jsonArray.getJSONObject(0); //一番初めのデータを参照,0はdate,1はセルシウス
                     JSONObject obj1 = jsonArray.getJSONObject(1);
                     //   String str = (String) object.get("name");
-                    str = object.getString("date");   //strにdate or celsius を代入
-                    str2 = obj1.getString("celsius");
+                    String str = object.getString("date");   //strにdate or celsius を代入
+                    String str2 = obj1.getString("celsius");
 
                     Log.d("JSONObject", str);
 
@@ -75,13 +72,6 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
             }
         }
 
-
-    public void jsonClick(View v){
-        Intent intent = new Intent(StartActivity.this, MainActivity.class);
-        intent.putExtra("date", str);
-        intent.putExtra("cels", str2);
-        startActivity(intent);
-    }
         @Override
         public void onLoaderReset (Loader < JSONObject > loader) {
             // TODO 自動生成されたメソッド・スタブ
