@@ -13,6 +13,8 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+//非同期通信ぷろぐらむ
+
 public class AsyncJsonLoader extends AsyncTask<String, Integer, JSONObject> {
     public interface AsyncCallback {
         void preExecute();

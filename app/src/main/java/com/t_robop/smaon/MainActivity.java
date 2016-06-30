@@ -1,5 +1,6 @@
 package com.t_robop.smaon;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,11 +22,19 @@ public class MainActivity extends AppCompatActivity {
 
     static TextView txt3;
     static String ondo;
+    String Str;
+    String Str2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         txt3 = (TextView)findViewById(R.id.textView3);      //温度（現在は名前）
+
+        Intent intent = getIntent();
+        Str = intent.getStringExtra("date");
+        Str2 = intent.getStringExtra("cels");
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
@@ -34,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static class PlaceholderFragment extends Fragment {
-        private final String uri = "http://weather.livedoor.com/forecast/webservice/json/v1?city=400040";       //JSONデータのあるURLを設定
+        private final String uri = "http://192.168.0.31";       //JSONデータのあるURLを設定
 
         public PlaceholderFragment() {
         }
@@ -53,11 +62,11 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     try{
-                        JSONArray eventArray = result.getJSONArray("forecasts");    //配列データを取得
+                        JSONArray eventArray = result.getJSONArray("pidatas");    //配列データを取得
                         for (int i = 0; i < 1; i++) {                     //JSONのデータを追加
                             JSONObject eventObj = eventArray.getJSONObject(1);
-                            JSONObject event = eventObj.getJSONObject("temperature").getJSONObject("min");
-                            ondo = event.getString("celsius");
+                            //JSONObject event = eventObj.getJSONObject("temperature").getJSONObject("min");
+                            ondo = eventObj.getString("celsius");
                             txt3.setText(ondo);
                         }
 
