@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                         showLoadError(); // エラーメッセージを表示
                     }
+                    txt.setText(Str);
+                    txt2.setText(Str2);
                 }
                 // 実行中
                 public void progressUpdate(int progress) {
@@ -87,8 +89,6 @@ public class MainActivity extends AppCompatActivity {
                 public void cancel() {
                 }
             });
-            txt.setText(Str);
-            txt2.setText(Str2);
             // 処理を実行
             asyncJsonLoader.execute(uri);
         }
