@@ -9,8 +9,4 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.t_robop.smaon.StartActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
 </RelativeLayout>
