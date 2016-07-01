@@ -2,8 +2,10 @@ package com.t_robop.smaon;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,9 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
     private static final int ADDRESSLOADER_ID = 0;
     String str=null;
     String str2=null;
+    SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);    //sharedPreference
+
+    int Level = 0;
 
 
     @Override
@@ -26,7 +31,26 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        getLoaderManager().restartLoader(ADDRESSLOADER_ID, null, this);
+        Level = data.getInt("LevelSave",0);
+
+
+        if(Level==0){   //初回起動判定→設定画面に飛ばす。
+            SharedPreferences.Editor editor = data.edit();
+            editor.putInt("LevelSave", 1);
+            editor.apply();
+
+            Intent setIntent =new Intent (this,SettingActivity.class);
+
+            startActivity(setIntent);
+
+        }else {
+
+            getLoaderManager().restartLoader(ADDRESSLOADER_ID, null, this);
+
+
+
+        }
+
 
     }
 
