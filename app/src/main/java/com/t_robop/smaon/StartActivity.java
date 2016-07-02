@@ -35,17 +35,18 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
 
 
         if(Level==0){   //初回起動判定→設定画面に飛ばす。
+
             SharedPreferences.Editor editor = data.edit();
             editor.putInt("LevelSave", 1);
             editor.apply();
 
             Intent setIntent =new Intent (this,SettingActivity.class);
 
-            startActivity(setIntent);
+            startActivity(setIntent); //settingActivity変遷
 
         }else {
 
-            getLoaderManager().restartLoader(ADDRESSLOADER_ID, null, this);
+            getLoaderManager().restartLoader(ADDRESSLOADER_ID, null, this); //スレッド処理開始
 
 
 
