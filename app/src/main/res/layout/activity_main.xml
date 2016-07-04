@@ -15,7 +15,7 @@
         android:layout_height="50dp"
         android:textSize="40sp"
         android:gravity="center"
-        android:text=""
+        android:text="aa"
         android:id="@+id/textView3"
         android:layout_gravity="center_vertical"
         android:layout_alignParentTop="true"
@@ -27,7 +27,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:textSize="40sp"
-        android:text=""
+        android:text="bb"
         android:id="@+id/textView"
         android:layout_alignRight="@+id/textView3"
         android:layout_alignEnd="@+id/textView3"
@@ -37,12 +37,26 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:textSize="40sp"
-        android:text=""
+        android:text="cc"
         android:id="@+id/textView2"
         android:layout_alignTop="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:gravity="center"
         android:textIsSelectable="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="本日は晴天なり笑
+                     ああああああああ"
+        android:id="@+id/textView5"
+        android:layout_below="@+id/textView3"
+        android:layout_alignRight="@+id/textView3"
+        android:layout_alignEnd="@+id/textView3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

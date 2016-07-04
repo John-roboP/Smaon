@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     static TextView txt3;
     static TextView txt;
     static TextView txt2;
+    static TextView txt5;
     static String ondo;
     static String Str;
     static String Str2;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         txt3 = (TextView)findViewById(R.id.textView3);      //温度（ラズパイ）
         txt = (TextView)findViewById(R.id.textView);        //日付
         txt2 = (TextView)findViewById(R.id.textView2);      //温度（ホリエモン）
+        txt5 = (TextView)findViewById(R.id.textView5);      //提案文
 
         Intent intent = getIntent();
         Str = intent.getStringExtra("date");
