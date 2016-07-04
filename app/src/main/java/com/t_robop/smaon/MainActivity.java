@@ -23,10 +23,14 @@ public class MainActivity extends AppCompatActivity {
     static TextView txt3;
     static TextView txt;
     static TextView txt2;
-    static TextView txt5;
-    static String ondo;
-    static String Str;
-    static String Str2;
+    static TextView txt5;                                   //てーあん
+    static String ondo;                                     //ホリエモンの温度
+    static String ondocp;
+    static String Str;                                      //ラズパイパイの日付
+    static String Str2;                                     //ラズパイパイの温度
+    static String Str2cp;
+    static double Txt=0.0;                                       //ホリエモンの温度を数値化
+    static double Txt2=0.0;                                      //ラズパイパイの温度を数値化
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +85,20 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                         showLoadError(); // エラーメッセージを表示
                     }
+
                     txt.setText(Str);
                     txt2.setText(Str2);
+                    ondocp = ondo.substring(0,ondo.length());
+                    Str2cp = Str2.substring(0,Str2.length());
+                    Txt = Double.parseDouble(ondocp);
+                    Txt2 = Double.parseDouble(Str2cp);
+
+                    if(Txt < Txt2){             //堀江<パイ
+                        txt5.setText("現在予想より温度が高いので、着こみすぎないようにしましょう。水分補給を怠らないようにしましょう。");
+                    }
+                    else if(Txt2 < Txt){
+                        txt5.setText("現在予想より温度が低いので、少し着込みましょう。風邪をひかないように体温調整しましょう。");
+                    }
                 }
                 // 実行中
                 public void progressUpdate(int progress) {
