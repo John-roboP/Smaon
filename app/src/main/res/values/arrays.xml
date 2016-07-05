@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="items">
+
+        <item>北海道</item>
+        <item>青森県</item>
+        <item>秋田県</item>
+        <item>てすと</item>
+        <item>テスと</item>
+        <item>テスト</item>
+        <item>ｔｅｓｔ</item>
+        <item>test</item>
+        <item>TEST</item>
+    </string-array>
+
+
+
+</resources>

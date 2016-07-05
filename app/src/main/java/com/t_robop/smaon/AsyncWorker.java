@@ -22,13 +22,13 @@ public class AsyncWorker extends AsyncTaskLoader<JSONObject> {
 
     public AsyncWorker(Context context, String urlText) {
         super(context);
-        // TODO 自動生成されたコンストラクター・スタブ
+
         this.urlText = urlText;
     }
 
     @Override
     public JSONObject loadInBackground() {
-        // TODO 自動生成されたメソッド・スタブ
+
 
         HttpClient httpClient = new DefaultHttpClient();
 
@@ -70,7 +70,7 @@ public class AsyncWorker extends AsyncTaskLoader<JSONObject> {
 
     @Override
     protected void onStartLoading() {
-        // TODO 自動生成されたメソッド・スタブ
+
         forceLoad();
     }
 

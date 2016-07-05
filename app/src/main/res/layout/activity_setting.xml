@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/scrollView"
+    android:layout_gravity="right"
+    android:layout_weight="1">
+
+<LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -9,4 +19,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.t_robop.smaon.SettingActivity">
 
-</RelativeLayout>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="県指定"
+        android:id="@+id/textView01"
+        android:textSize="30dp" />
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_weight="1"
+        android:spinnerMode="dialog"
+        android:entries="@array/items" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="通知"
+        android:layout_weight="1"
+        android:id="@+id/textView00"
+        android:textSize="30dp" />
+
+
+
+</LinearLayout>
+</ScrollView>
