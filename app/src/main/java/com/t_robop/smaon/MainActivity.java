@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     static TextView txt;
     static TextView txt2;
     static TextView txt5;                                   //てーあん
+    static TextView txt6;
     static String ondo;                                     //ホリエモンの温度
     static String ondocp;
     static String Str;                                      //ラズパイパイの日付
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         txt = (TextView)findViewById(R.id.textView);        //日付
         txt2 = (TextView)findViewById(R.id.textView2);      //温度（ホリエモン）
         txt5 = (TextView)findViewById(R.id.textView5);      //提案文
+        txt6 = (TextView)findViewById(R.id.textView6);
 
         Intent intent = getIntent();
         Str = intent.getStringExtra("date");
@@ -86,18 +88,17 @@ public class MainActivity extends AppCompatActivity {
                         showLoadError(); // エラーメッセージを表示
                     }
 
-                    txt.setText(Str);
-                    txt2.setText(Str2);
+                    txt6.setText(Str2);
                     ondocp = ondo.substring(0,ondo.length());
                     Str2cp = Str2.substring(0,Str2.length());
                     Txt = Double.parseDouble(ondocp);
                     Txt2 = Double.parseDouble(Str2cp);
 
                     if(Txt < Txt2){             //堀江<パイ
-                        txt5.setText("現在予想より温度が高いので、着こみすぎないようにしましょう。水分補給を怠らないようにしましょう。");
+                        txt5.setText("現在予想より温度が高いので、着こみすぎないようにしましょう。\n水分補給を怠らないようにしましょう。");
                     }
                     else if(Txt2 < Txt){
-                        txt5.setText("現在予想より温度が低いので、少し着込みましょう。風邪をひかないように体温調整しましょう。");
+                        txt5.setText("現在予想より温度が低いので、少し着込みましょう。\n風邪をひかないように体温調整しましょう。");
                     }
                 }
                 // 実行中
