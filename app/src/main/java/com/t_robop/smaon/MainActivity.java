@@ -95,11 +95,17 @@ public class MainActivity extends AppCompatActivity {
                     Txt2 = Double.parseDouble(Str2cp);
 
                     if(Txt < Txt2){             //堀江<パイ
-                        txt5.setText("現在予想より温度が高いので、着こみすぎないようにしましょう。\n水分補給を怠らないようにしましょう。");
+                        txt5.setText("現在予想より温度が高くなっております。\n");
+                        if(Txt2-Txt > 5){
+                            txt5.append("水分補給をこまめに行いましょう。\n");
+                        }
                     }
                     else if(Txt2 < Txt){
-                        txt5.setText("現在予想より温度が低いので、少し着込みましょう。\n風邪をひかないように体温調整しましょう。");
+                        txt5.setText("現在予想より温度が低くなっております。\n");
                     }
+
+                    txt5.append("体調管理に気を付けましょう。\n");
+
                 }
                 // 実行中
                 public void progressUpdate(int progress) {
