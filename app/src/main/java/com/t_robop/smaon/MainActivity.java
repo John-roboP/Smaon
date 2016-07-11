@@ -102,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(Txt2 < Txt){
                         txt5.setText("現在予想より温度が低くなっております。\n");
+                        if(Txt-Txt2 > 5){
+                            txt5.append("上着を羽織って暖かくするようにしましょう。\n");
+                        }
                     }
 
                     txt5.append("体調管理に気を付けましょう。\n");
