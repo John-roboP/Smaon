@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     static TextView txt6;
     static String ondo;                                     //ホリエモンの温度
     static String ondocp;
+    static String tenki;                                    //その日の天気
     static String Str;                                      //ラズパイパイの日付
     static String Str2;                                     //ラズパイパイの温度
     static String Str2cp;
@@ -77,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
                         JSONArray eventArray = result.getJSONArray("forecasts");    //配列データを取得
                         for (int i = 0; i < 1; i++) {                     //JSONのデータを追加
                             JSONObject eventObj = eventArray.getJSONObject(1);
-                            JSONObject event = eventObj.getJSONObject("temperature").getJSONObject("min");
+                            JSONObject event = eventObj.getJSONObject("temperature").getJSONObject("max");
+                            tenki = eventObj.getString("telop");
                             ondo = event.getString("celsius");
                             txt3.setText(ondo);
                         }
@@ -96,12 +98,30 @@ public class MainActivity extends AppCompatActivity {
 
                     if(Txt < Txt2){             //堀江<パイ
                         txt5.setText("現在予想より温度が高くなっております。\n");
+                        if(tenki.equals("雨")){
+                            txt5.append("また、湿度も高く蒸し暑くなるでしょう。\n");
+                        }
+                        if(tenki.equals("晴れ")){
+                            txt5.append("日差しも強く、熱中症になる恐れがあります。\n");
+                        }
+                        if(tenki.equals("曇り")){
+                            txt5.append("あああああああああああああ\n");
+                        }
                         if(Txt2-Txt > 5){
                             txt5.append("水分補給をこまめに行いましょう。\n");
                         }
                     }
                     else if(Txt2 < Txt){
                         txt5.setText("現在予想より温度が低くなっております。\n");
+                        if(tenki.equals("雨")){
+                            txt5.append("雨も降っており寒い1日になるでしょう。\n");
+                        }
+                        if(tenki.equals("曇時々晴")){
+                            txt5.append("日差しも強く、熱中症になる恐れがあります。\n");
+                        }
+                        if(tenki.equals("曇り")){
+                            txt5.append("あああああああああああああ\n");
+                        }
                         if(Txt-Txt2 > 5){
                             txt5.append("上着を羽織って暖かくするようにしましょう。\n");
                         }
