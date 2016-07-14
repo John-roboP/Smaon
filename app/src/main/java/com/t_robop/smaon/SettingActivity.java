@@ -22,12 +22,12 @@ public class SettingActivity extends AppCompatActivity {
     String selected;//地方判定用
     String City;//県判定用
 
-    int CityID=0;//livedoorの県のURL末尾のID→未定
+ //   int CityID=0;//livedoorの県のURL末尾のID→未定
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_setting);
         mSpinner1 = (Spinner) findViewById(R.id.spinner);
         Sphokkai = (Spinner) findViewById(R.id.spinner2);
         Sptohoku = (Spinner) findViewById(R.id.spinner3);
@@ -55,6 +55,7 @@ public class SettingActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 selected = (String) mSpinner1.getSelectedItem();
+
                 if (selected.equals("北海道")) {
 
                     spHantei=0;
