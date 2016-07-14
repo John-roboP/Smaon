@@ -15,6 +15,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:layout_centerVertical="true"
-        android:src="@drawable/LOGO"
+        android:src="@drawable/logo"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
