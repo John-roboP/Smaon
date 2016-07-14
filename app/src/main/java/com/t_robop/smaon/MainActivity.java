@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static class PlaceholderFragment extends Fragment {
-        private final String uri = "http://weather.livedoor.com/forecast/webservice/json/v1?city=130010";       //JSONデータのあるURLを設定
+        private final String uri = "http://api.openweathermap.org/data/2.5/forecast/city?id=1859171&APPID=d943f13cb21447ca156076c493e2f236";       //JSONデータのあるURLを設定
 
         public PlaceholderFragment() {
         }
@@ -75,12 +75,12 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     try{
-                        JSONArray eventArray = result.getJSONArray("forecasts");    //配列データを取得
+                        JSONArray eventArray = result.getJSONArray("list");    //配列データを取得
                         for (int i = 0; i < 1; i++) {                     //JSONのデータを追加
                             JSONObject eventObj = eventArray.getJSONObject(1);
-                            JSONObject event = eventObj.getJSONObject("temperature").getJSONObject("max");
-                            tenki = eventObj.getString("telop");
-                            ondo = event.getString("celsius");
+                            JSONObject event = eventObj.getJSONObject("main");
+                            //tenki = eventObj.getString("telop");
+                            ondo = event.getString("temp");
                             txt3.setText(ondo);
                         }
 
@@ -93,12 +93,14 @@ public class MainActivity extends AppCompatActivity {
                     txt6.setText(Str2);
                     ondocp = ondo.substring(0,ondo.length());
                     Str2cp = Str2.substring(0,Str2.length());
-                    Txt = Double.parseDouble(ondocp);
+                    Txt = Math.floor(Double.parseDouble(ondocp)-273);
                     Txt2 = Double.parseDouble(Str2cp);
+
+                    txt3.setText(String.valueOf(Txt));
 
                     if(Txt < Txt2){             //堀江<パイ
                         txt5.setText("現在予想より温度が高くなっております。\n");
-                        if(tenki.equals("曇時々雨")){
+                        /*if(tenki.equals("曇時々雨")){
                             txt5.append("また、湿度も高く蒸し暑くなるでしょう。\n");
                         }
                         if(tenki.equals("晴れ")){
@@ -106,14 +108,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if(tenki.equals("曇り")){
                             txt5.append("あああああああああああああ\n");
-                        }
+                        }//*/
                         if(Txt2-Txt > 5){
                             txt5.append("水分補給をこまめに行いましょう。\n");
                         }
                     }
                     else if(Txt2 < Txt){
                         txt5.setText("現在予想より温度が低くなっております。\n");
-                        if(tenki.equals("曇時々雨")){
+                        /*if(tenki.equals("曇時々雨")){
                             txt5.append("雨も降っており寒い1日になるでしょう。\n");
                         }
                         if(tenki.equals("曇時々晴")){
@@ -121,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if(tenki.equals("曇り")){
                             txt5.append("あああああああああああああ\n");
-                        }
+                        }//*/
                         if(Txt-Txt2 > 5){
                             txt5.append("上着を羽織って暖かくするようにしましょう。\n");
                         }
