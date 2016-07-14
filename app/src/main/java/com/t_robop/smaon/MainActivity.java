@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if(Txt < Txt2){             //堀江<パイ
                         txt5.setText("現在予想より温度が高くなっております。\n");
-                        if(tenki.equals("雨")){
+                        if(tenki.equals("曇時々雨")){
                             txt5.append("また、湿度も高く蒸し暑くなるでしょう。\n");
                         }
                         if(tenki.equals("晴れ")){
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(Txt2 < Txt){
                         txt5.setText("現在予想より温度が低くなっております。\n");
-                        if(tenki.equals("雨")){
+                        if(tenki.equals("曇時々雨")){
                             txt5.append("雨も降っており寒い1日になるでしょう。\n");
                         }
                         if(tenki.equals("曇時々晴")){
