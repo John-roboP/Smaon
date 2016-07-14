@@ -4,11 +4,6 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     static String Str2cp;
     static double Txt=0.0;                                       //ホリエモンの温度を数値化
     static double Txt2=0.0;                                      //ラズパイパイの温度を数値化
+    static int cityId=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static class PlaceholderFragment extends Fragment {
-        private final String uri = "http://api.openweathermap.org/data/2.5/forecast/city?id=1859171&APPID=d943f13cb21447ca156076c493e2f236";       //JSONデータのあるURLを設定
+        private final String uri = "http://api.openweathermap.org/data/2.5/forecast/city?id="+cityId+"&APPID=d943f13cb21447ca156076c493e2f236";       //JSONデータのあるURLを設定
 
         public PlaceholderFragment() {
         }
