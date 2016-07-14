@@ -8,44 +8,98 @@
     android:layout_gravity="right"
     android:layout_weight="1">
 
-<LinearLayout
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.t_robop.smaon.SettingActivity">
-
-
-
-
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="県指定"
-        android:id="@+id/textView01"
-        android:textSize="30dp" />
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner"
-        android:layout_weight="1"
-        android:spinnerMode="dialog"
-        android:entries="@array/items" />
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.t_robop.spinnert.MainActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="通知"
-        android:layout_weight="1"
-        android:id="@+id/textView00"
-        android:textSize="30dp" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonOK"
+            android:layout_gravity="bottom"
+            android:text="決定"
+            android:onClick="OKbutton" />
 
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:entries="@array/items"
+            android:spinnerMode="dialog" />
 
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner2"
+            android:layout_below="@+id/spinner"
+            android:layout_centerHorizontal="true"
+            android:entries="@array/hokkaido"
+            android:spinnerMode="dialog"/>
 
-</LinearLayout>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner3"
+            android:layout_below="@+id/spinner2"
+            android:layout_alignParentLeft="true"
+            android:entries="@array/tohoku"
+            android:spinnerMode="dialog"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner4"
+            android:layout_below="@+id/spinner2"
+            android:layout_alignParentLeft="true"
+            android:entries="@array/kanto"
+            android:spinnerMode="dialog"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner5"
+            android:layout_below="@+id/spinner2"
+            android:layout_alignParentLeft="true"
+            android:entries="@array/chubu"
+            android:spinnerMode="dialog"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner6"
+            android:layout_below="@+id/spinner2"
+            android:layout_alignParentLeft="true"
+            android:entries="@array/kansai"
+            android:spinnerMode="dialog"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner7"
+            android:layout_below="@+id/spinner2"
+            android:layout_alignParentLeft="true"
+            android:entries="@array/chugoku"
+            android:spinnerMode="dialog"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner8"
+            android:layout_below="@+id/spinner2"
+            android:layout_alignParentLeft="true"
+            android:entries="@array/shikoku"
+            android:spinnerMode="dialog"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner9"
+            android:layout_below="@+id/spinner2"
+            android:layout_alignParentLeft="true"
+            android:entries="@array/kyuushu"
+            android:spinnerMode="dialog"/>
+    </LinearLayout>
+
 </ScrollView>
