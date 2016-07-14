@@ -24,9 +24,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="県指定"
+            android:text="地域設定"
             android:id="@+id/textView"
-            android:textSize="30dp" />
+            android:textSize="25dp"
+            android:textIsSelectable="true" />
 
         <Spinner
             android:layout_width="wrap_content"
@@ -36,6 +37,13 @@
             android:layout_centerHorizontal="true"
             android:entries="@array/items"
             android:spinnerMode="dialog" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="県設定"
+            android:id="@+id/textView2"
+            android:textSize="25dp" />
 
         <Spinner
             android:layout_width="wrap_content"
