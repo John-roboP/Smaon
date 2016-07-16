@@ -8,6 +8,9 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 
 public class SettingActivity extends AppCompatActivity {
+
+   // private Sharepre Subclass;
+
     Spinner mSpinner1;
     Spinner Sphokkai;//北海道0
     Spinner Sptohoku;//東北1
@@ -22,7 +25,7 @@ public class SettingActivity extends AppCompatActivity {
     String selected;//地方判定用
     String City;//県判定用
 
- //   int CityID=0;//livedoorの県のURL末尾のID→未定
+    String CityID;//livedoorの県のURL末尾のID→未定
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,10 +186,15 @@ public class SettingActivity extends AppCompatActivity {
 
     public void OKbutton(View v){
 
+        Sharepre Sharepre = new Sharepre();     // インスタンス化
+
         switch (spHantei){
             case 0:
                 City = (String) Sphokkai.getSelectedItem();//取得
                 if (City.equals("札幌")){
+                    CityID = "xyz";
+
+                    Sharepre.share(CityID); //Sharedpreferences用のメソッド呼び出し。
 
                 }else if(City.equals("函館")){
 
@@ -325,3 +333,4 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 }
+

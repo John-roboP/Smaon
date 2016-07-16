@@ -27,7 +27,6 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
     int Level = 0;
 
 
- //   Handler mHandler = new Handler();
 
 
     @Override
