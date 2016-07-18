@@ -10,27 +10,35 @@ import android.widget.Toast;
  * Sharedpreferences用のアクティビティ
  */
 
-public class Sharepre extends Activity {
+public  class Sharepre extends Activity {
   //  String URLs;
   String readURL;
+    private Context mContext;
 
     //  コントラクター
-   public  Sharepre(){
+   public  Sharepre(Context context){
+       // this.context = context;
+        readURL="xxx";
+       mContext = context;
 
-    }
-    public void share(String URLs){
+   }
+    public  void share(String URLs){
 
            readURL =URLs;
+
+
+
+        SharedPreferences datum = mContext.getSharedPreferences("DataSave",Context.MODE_PRIVATE);
 //TODO 　ここが動かない。
 
-        SharedPreferences data = getSharedPreferences("DS", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor2 = data.edit();
+        //SharedPreferences datum = getSharedPreferences("DataSave", MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = datum.edit();
         editor2.putString("Cid",readURL);
 
         editor2.apply();
 
         //SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-        String Le = data.getString("Cid","0");
+        String Le = datum.getString("Cid","Nothing");
 
         Toast.makeText(this, Le, Toast.LENGTH_LONG).show();
 

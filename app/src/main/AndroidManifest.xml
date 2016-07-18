@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+        <activity android:name=".Sharepre" />
         <activity android:name=".GraphActivity" />
         <activity android:name=".SettingActivity"></activity>
     </application>

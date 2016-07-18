@@ -1,5 +1,6 @@
 package com.t_robop.smaon;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +11,7 @@ import android.widget.Spinner;
 public class SettingActivity extends AppCompatActivity {
 
    // private Sharepre Subclass;
-
+   private Context Context;
     Spinner mSpinner1;
     Spinner Sphokkai;//北海道0
     Spinner Sptohoku;//東北1
@@ -186,7 +187,7 @@ public class SettingActivity extends AppCompatActivity {
 
     public void OKbutton(View v){
 
-        Sharepre Sharepre = new Sharepre();     // インスタンス化
+        Sharepre Sharepre = new Sharepre(Context);     // インスタンス化
 
         switch (spHantei){
             case 0:
