@@ -16,7 +16,7 @@ public  class Sharepre extends Activity {
   String readURL;
     private Context mContext;
 
-    //  コントラクター
+    //  コンストラクター
    public  Sharepre(Context context){
 
         readURL="xxx";
@@ -26,8 +26,6 @@ public  class Sharepre extends Activity {
     public  void share(String URLs){
 
            readURL =URLs;
-
-
 
         SharedPreferences datum = mContext.getSharedPreferences("DataSave",Context.MODE_PRIVATE);
 //07/19完了

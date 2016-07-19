@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Str = intent.getStringExtra("date");
-        Str2 = intent.getStringExtra("cels");
+        Str2 = intent.getStringExtra("temper");
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
