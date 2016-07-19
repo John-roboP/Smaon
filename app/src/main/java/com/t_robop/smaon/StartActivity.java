@@ -35,7 +35,7 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
         setContentView(R.layout.activity_start);
 
         SharedPreferences data = getSharedPreferences("DataSave",MODE_PRIVATE);    //sharedPreference
-        Level = data.getInt("LevelSave",0);
+        Level = data.getInt("sStart",0);
 
 
 

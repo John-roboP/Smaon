@@ -1,6 +1,8 @@
 package com.t_robop.smaon;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,8 +12,7 @@ import android.widget.Spinner;
 
 public class SettingActivity extends AppCompatActivity {
 
-   // private Sharepre Subclass;
-   private Context Context;
+
     Spinner mSpinner1;
     Spinner Sphokkai;//北海道0
     Spinner Sptohoku;//東北1
@@ -26,7 +27,7 @@ public class SettingActivity extends AppCompatActivity {
     String selected;//地方判定用
     String City;//県判定用
 
-    String CityID;//livedoorの県のURL末尾のID→未定
+    String CityID;//県のURL末尾のID→未定
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,12 @@ public class SettingActivity extends AppCompatActivity {
         Spchugoku.setVisibility(View.GONE);  //非表示
         Spshikoku.setVisibility(View.GONE);  //非表示
         Spkyuushu.setVisibility(View.GONE);  //非表示
+
+        SharedPreferences Ldata = getSharedPreferences("DataSave",MODE_PRIVATE);
+        SharedPreferences.Editor editor = Ldata.edit();
+        editor.putInt("sStart",1);  //1は２回目以降
+
+        editor.apply();     //初回起動判定
 
 
 
@@ -187,15 +194,20 @@ public class SettingActivity extends AppCompatActivity {
 
     public void OKbutton(View v){
 
-        Sharepre Sharepre = new Sharepre(Context);     // インスタンス化
+        Sharepre Sharepre = new Sharepre(this.getApplicationContext());     // インスタンス化
 
         switch (spHantei){
             case 0:
                 City = (String) Sphokkai.getSelectedItem();//取得
                 if (City.equals("札幌")){
+
                     CityID = "xyz";
 
                     Sharepre.share(CityID); //Sharedpreferences用のメソッド呼び出し。
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
 
                 }else if(City.equals("函館")){
 
