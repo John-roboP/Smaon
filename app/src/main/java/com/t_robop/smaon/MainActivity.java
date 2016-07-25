@@ -28,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
     static String Str2cp;
     static double Txt=0.0;                                       //ホリエモンの温度を数値化
     static double Txt2=0.0;                                      //ラズパイパイの温度を数値化
-    static int cityId=0;
+    static int cityId=1850147;
+    static int humid=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,15 +72,15 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     try{
-                        JSONArray eventArray = result.getJSONArray("list");    //配列データを取得
-                        for (int i = 0; i < 1; i++) {                     //JSONのデータを追加
-                            JSONObject eventObj = eventArray.getJSONObject(1);
-                            JSONObject event = eventObj.getJSONObject("main");
-                            //tenki = eventObj.getString("telop");
-                            ondo = event.getString("temp");
-                            txt3.setText(ondo);
-                        }
-
+                        JSONArray eventArray = result.getJSONArray("list");//配列データを取得
+                        JSONObject eventObj = eventArray.getJSONObject(0);
+                        JSONArray tenkiArray = eventObj.getJSONArray("weather");
+                        JSONObject tenkiObj = tenkiArray.getJSONObject(0);
+                        tenki = tenkiObj.getString("main");
+                        JSONObject event = eventObj.getJSONObject("main");
+                        ondo = event.getString("temp");
+                        humid = event.getInt("humidity");
+                        txt3.setText(ondo);
                     }
                     catch(JSONException e){
                         e.printStackTrace();
@@ -89,43 +90,49 @@ public class MainActivity extends AppCompatActivity {
                     txt6.setText(Str2);
                     ondocp = ondo.substring(0,ondo.length());
                     Str2cp = Str2.substring(0,Str2.length());
-                    Txt = Math.floor(Double.parseDouble(ondocp)-273);
+                    Txt = Math.round(Double.parseDouble(ondocp)-273.15);
                     Txt2 = Double.parseDouble(Str2cp);
 
                     txt3.setText(String.valueOf(Txt));
 
                     if(Txt < Txt2){             //堀江<パイ
-                        txt5.setText("現在予想より温度が高くなっております。\n");
-                        /*if(tenki.equals("曇時々雨")){
-                            txt5.append("また、湿度も高く蒸し暑くなるでしょう。\n");
+                        txt5.setText("現在予想より温度が高くなっております。");
+                        if(tenki.equals("Rain")){
+                            txt5.append("また、雨も降っておりジメジメするでしょう。\n");
+                            if(humid >= 80){
+                                txt5.append("湿度も高く蒸し暑い日になります。\n");
+                            }
                         }
-                        if(tenki.equals("晴れ")){
+                        if(tenki.equals("Clear")){
                             txt5.append("日差しも強く、熱中症になる恐れがあります。\n");
                         }
-                        if(tenki.equals("曇り")){
+                        if(tenki.equals("Clouds")){
                             txt5.append("あああああああああああああ\n");
-                        }//*/
+                        }
                         if(Txt2-Txt > 5){
                             txt5.append("水分補給をこまめに行いましょう。\n");
                         }
                     }
                     else if(Txt2 < Txt){
                         txt5.setText("現在予想より温度が低くなっております。\n");
-                        /*if(tenki.equals("曇時々雨")){
+                        if(tenki.equals("Rain")){
                             txt5.append("雨も降っており寒い1日になるでしょう。\n");
+                            if(humid >= 80){
+                                txt5.append("寒暖差に気を付けましょう。\n");
+                            }
                         }
-                        if(tenki.equals("曇時々晴")){
+                        if(tenki.equals("Clear")){
                             txt5.append("日差しも強く、熱中症になる恐れがあります。\n");
                         }
-                        if(tenki.equals("曇り")){
+                        if(tenki.equals("Clouds")){
                             txt5.append("あああああああああああああ\n");
-                        }//*/
+                        }
                         if(Txt-Txt2 > 5){
                             txt5.append("上着を羽織って暖かくするようにしましょう。\n");
                         }
                     }
 
-                    txt5.append("体調管理に気を付けましょう。\n");
+                    txt5.append("\n体調管理に気を付けましょう。\n");
 
                 }
                 // 実行中
