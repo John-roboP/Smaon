@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                             txt5.append("日差しも強く、熱中症になる恐れがあります。\n");
                         }
                         if(tenki.equals("Clouds")){
-                            txt5.append("あああああああああああああ\n");
+                            //txt5.append("\n");
                         }
                         if(Txt2-Txt > 5){
                             txt5.append("水分補給をこまめに行いましょう。\n");
@@ -118,14 +118,14 @@ public class MainActivity extends AppCompatActivity {
                         if(tenki.equals("Rain")){
                             txt5.append("雨も降っており寒い1日になるでしょう。\n");
                             if(humid >= 80){
-                                txt5.append("寒暖差に気を付けましょう。\n");
+                                txt5.append("除湿を心掛け、カビやダニの繁殖に気を付けましょう。\n");
                             }
                         }
                         if(tenki.equals("Clear")){
                             txt5.append("日差しも強く、熱中症になる恐れがあります。\n");
                         }
                         if(tenki.equals("Clouds")){
-                            txt5.append("あああああああああああああ\n");
+                            //txt5.append("\n");
                         }
                         if(Txt-Txt2 > 5){
                             txt5.append("上着を羽織って暖かくするようにしましょう。\n");
