@@ -23,6 +23,7 @@ public class AsyncJsonLoader extends AsyncTask<String, Integer, JSONObject> {
         void cancel();
     }
 
+
     private AsyncCallback mAsyncCallback = null;
 
     public AsyncJsonLoader(AsyncCallback _asyncCallback) {

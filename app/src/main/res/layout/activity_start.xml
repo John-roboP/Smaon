@@ -7,21 +7,14 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#ffffff"
     tools:context="com.t_robop.smaon.StartActivity">
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:id="@+id/textView4" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="起動"
-        android:id="@+id/button"
-        android:onClick="jsonClick"
-        android:layout_marginBottom="130dp"
-        android:layout_alignParentBottom="true"
+        android:id="@+id/imageView"
+        android:layout_centerVertical="true"
+        android:src="@drawable/logo"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

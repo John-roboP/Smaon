@@ -2,8 +2,11 @@ package com.t_robop.smaon;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,36 +20,57 @@ import org.json.JSONObject;
 public class StartActivity extends Activity implements LoaderManager.LoaderCallbacks<JSONObject> {
 
     private static final int ADDRESSLOADER_ID = 0;
+    String str=null;
+    String str2=null;
 
-    String str;
-    String str2;
+
+    int Level = 0;
+
+
+ //   Handler mHandler = new Handler();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+        SharedPreferences data = getSharedPreferences("DataSave",MODE_PRIVATE);    //sharedPreference
+        Level = data.getInt("LevelSave",0);
 
 
 
-        //private TextView textView;
-      //  String str1;
 
-        getLoaderManager().restartLoader(ADDRESSLOADER_ID, null, this);
+        if(Level==0){   //初回起動判定→設定画面に飛ばす。
+
+
+            Intent setIntent =new Intent (this,SettingActivity.class);
+
+            startActivity(setIntent); //settingActivity変遷
+
+        }else {
+
+            getLoaderManager().restartLoader(ADDRESSLOADER_ID, null, this); //スレッド処理開始
+
+
+
+        }
+
 
     }
 
         @Override
         public Loader<JSONObject> onCreateLoader ( int id, Bundle args){
-            // TODO 自動生成されたメソッド・スタブ
 
-            String url = "http://192.168.1.31";
+
+            String url = "http://192.168.0.31/index.html";
 
             return new AsyncWorker(this, url);
         }
 
         @Override
         public void onLoadFinished (Loader < JSONObject > loader, JSONObject data){
-            // TODO 自動生成されたメソッド・スタブ
+
             if (data != null) {
 
                 try {
@@ -73,17 +97,22 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
             } else {
                 Log.d("onLoadFinished", "onLoadFinished error!");
             }
+
+            Intent sIntent = new Intent();      //インテント生成
+
+            sIntent.putExtra("date",str);       //日付を送っている
+            sIntent.putExtra("temper",str2);        //温度データを送っている
+            sIntent.setClass(this,MainActivity.class);
+
+
+            // MainActivity の起動
+            startActivity(sIntent);
+
         }
 
-    public void jsonClick(View v){
-        Intent intent = new Intent(StartActivity.this, MainActivity.class);
-        intent.putExtra("date", str);
-        intent.putExtra("cels", str2);
-        startActivity(intent);
-    }
         @Override
         public void onLoaderReset (Loader < JSONObject > loader) {
-            // TODO 自動生成されたメソッド・スタブ
+
 
         }
 

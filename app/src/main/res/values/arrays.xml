@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="items">
+
+        <item>北海道</item>
+        <item>東北</item>
+        <item>関東</item>
+        <item>中部</item>
+        <item>関西</item>
+        <item>四国</item>
+        <item>九州</item>
+
+    </string-array>
+    <string-array name="hokkaido">
+
+        <item>札幌</item>
+        <item>函館</item>
+        <item>釧路</item>
+
+    </string-array>
+    <string-array name="tohoku">
+
+        <item>青森</item>
+        <item>岩手</item>
+        <item>宮城</item>
+        <item>山形</item>
+        <item>福島</item>
+
+    </string-array>
+    <string-array name="kanto">
+
+        <item>茨城</item>
+        <item>栃木</item>
+        <item>群馬</item>
+        <item>埼玉</item>
+        <item>千葉</item>
+        <item>東京</item>
+        <item>神奈川</item>
+
+    </string-array>
+    <string-array name="chubu">
+
+        <item>山梨</item>
+        <item>長野</item>
+        <item>新潟</item>
+        <item>富山</item>
+        <item>石川</item>
+        <item>福井</item>
+        <item>静岡</item>
+        <item>愛知</item>
+        <item>岐阜</item>
+        <item>三重</item>
+
+    </string-array>
+    <string-array name="kansai">
+
+        <item>滋賀</item>
+        <item>京都</item>
+        <item>大阪</item>
+        <item>兵庫</item>
+        <item>奈良</item>
+        <item>和歌山</item>
+
+    </string-array>
+    <string-array name="chugoku">
+
+        <item>鳥取</item>
+        <item>島根</item>
+        <item>岡山</item>
+        <item>広島</item>
+        <item>山口</item>
+
+
+    </string-array>
+    <string-array name="shikoku">
+
+        <item>香川</item>
+        <item>愛媛</item>
+        <item>徳島</item>
+        <item>高知</item>
+
+    </string-array>
+    <string-array name="kyuushu">
+
+        <item>福岡</item>
+        <item>佐賀</item>
+        <item>長崎</item>
+        <item>熊本</item>
+        <item>大分</item>
+        <item>宮崎</item>
+        <item>鹿児島</item>
+        <item>沖縄</item>
+
+    </string-array>
+
+
+
+</resources>
