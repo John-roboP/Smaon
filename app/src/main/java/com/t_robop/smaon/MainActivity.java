@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                             txt5.append("日差しも強く、熱中症になる恐れがあります。\n");
                         }
                         if(tenki.equals("Clouds")){
-                            //txt5.append("\n");
+                            txt5.append("日は照っておらず比較的涼しくなるでしょう。\n");
                         }
                         if(Txt2-Txt > 5){
                             txt5.append("水分補給をこまめに行いましょう。\n");
@@ -122,10 +122,10 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         if(tenki.equals("Clear")){
-                            txt5.append("日差しも強く、熱中症になる恐れがあります。\n");
+                            txt5.append("しかし日が照っているので、暖かくなるでしょう。\n");
                         }
                         if(tenki.equals("Clouds")){
-                            //txt5.append("\n");
+                            txt5.append("日が雲で隠れており涼しくなるでしょう\n");
                         }
                         if(Txt-Txt2 > 5){
                             txt5.append("上着を羽織って暖かくするようにしましょう。\n");
