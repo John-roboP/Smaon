@@ -104,7 +104,13 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         if(tenki.equals("Clear")){
-                            txt5.append("日差しも強く、熱中症になる恐れがあります。\n");
+                            txt5.append("洗濯物を干すのに良い天気です。\n");
+                            if(Txt2 > 30){
+                                txt5.append("日差しも強く、熱中症になる恐れがあります。\n");
+                            }
+                            if(Txt2 < 20){
+                                txt5.append("ポカポカして暖かい一日になるでしょう。\n");
+                            }
                         }
                         if(tenki.equals("Clouds")){
                             txt5.append("日は照っておらず比較的涼しくなるでしょう。\n");
