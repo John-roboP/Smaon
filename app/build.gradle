@@ -5,6 +5,18 @@ android {
     buildToolsVersion "23.0.2"
     useLibrary 'org.apache.http.legacy'
 
+    //追加
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+    // 中略
+
+
+    dependencies {
+        compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+    }
+    //ここまで
+
     defaultConfig {
         applicationId "com.t_robop.smaon"
         minSdkVersion 16
