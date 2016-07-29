@@ -53,9 +53,12 @@ public class SettingActivity extends AppCompatActivity {
         SharedPreferences data = getSharedPreferences("DataSave",MODE_PRIVATE);    //sharedPreference
         SharedPreferences.Editor editor = data.edit();
         editor.putInt("IdSave", CityID);
-        editor.putInt("LevelSave",1);
         editor.apply();
 
+        SharedPreferences Data2 = getSharedPreferences("DateSave",MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = Data2.edit();
+        editor2.putInt("LevelSave",1);
+        editor2.apply();
 
         mSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
