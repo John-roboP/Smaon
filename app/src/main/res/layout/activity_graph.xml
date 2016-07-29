@@ -16,11 +16,18 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
 
 
-
+        <Button
+            android:id="@+id/week"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="createLineChartData_week"
+            android:text="週"
+            android:textSize="30dp" />
 
         <Button
             android:id="@+id/month"
@@ -29,7 +36,7 @@
             android:layout_height="wrap_content"
             android:onClick="createLineChartData_month"
             android:text="月"
-            android:textSize="20dp"/>
+            android:textSize="30dp" />
 
         <Button
             android:id="@+id/year"
@@ -38,7 +45,25 @@
             android:layout_height="wrap_content"
             android:onClick="createLineChartData_year"
             android:text="年"
-            android:textSize="20dp"/>
+            android:textSize="30dp" />
+
+        <Button
+            android:id="@+id/left_move"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="createLeft_move"
+            android:text="←"
+            android:textSize="30dp" />
+
+        <Button
+            android:id="@+id/right_move"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="createRight_move"
+            android:text="→"
+            android:textSize="30dp" />
 
 
     </LinearLayout>

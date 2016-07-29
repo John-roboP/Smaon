@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.LineData;
@@ -27,44 +28,59 @@ public class GraphActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         lineChart = (LineChart) findViewById(R.id.line_chart);
-
-
     }
 
+    //ボタン
+    //週刊グラフのボタン
+    public void createLineChartData_week(View v) {
+        createLineChart();
+        //グラフの生成
+        lineChart.setData(createLineChartDataWeek());
+    }
+
+    //月刊グラフのボタン
     public void createLineChartData_month(View v) {
         createLineChart();
         //グラフの生成
         lineChart.setData(createLineChartDataMonth());
     }
 
-    //ボタン
+    //年間グラフのボタン
     public void createLineChartData_year(View v) {
         createLineChart();
         //グラフの生成
         lineChart.setData(createLineChartDataYear());
     }
 
+    //グラフの左移動
+    public void createLeft_move(View v) {
+
+    }
+
+    //グラフの右移動
+    public void createRight_move(View v) {
+
+    }
+
+
 
     //グラフの設定
     private void createLineChart() {
-
         lineChart.setDescription("さいたま市　平均気温");     //グラフの説明
-        lineChart.getAxisLeft().setEnabled(false);
+        lineChart.getAxisRight().setEnabled(false); //y軸の右ラベルの無効
         lineChart.setDrawGridBackground(true);  //グリッド線
-        lineChart.setEnabled(true);
-
-
         lineChart.setDoubleTapToZoomEnabled(false); //ダブルタップズームの無効化
-
-
         lineChart.getLegend().setEnabled(true); //判例有効化
-
+        lineChart.fitScreen();//拡大を初期化
+        //凡例の削除
+        Legend legend = lineChart.getLegend();
+        legend.setEnabled(false);
 
         //X軸周り
         XAxis xAxis = lineChart.getXAxis();
-        xAxis.setDrawLabels(true);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(true);
+        xAxis.setDrawLabels(true);  //ラベルの描画
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //ラベルの位置
+        xAxis.setDrawGridLines(true);   //グリッド線
         xAxis.setSpaceBetweenLabels(0);
 
         //Y軸周り
@@ -73,11 +89,63 @@ public class GraphActivity extends AppCompatActivity {
         yAxis.setShowOnlyMinMax(true);
         yAxis.setStartAtZero(false);
         yAxis.setDrawGridLines(true);
+        yAxis.setEnabled(true);
 
+        YAxis rightAxis = lineChart.getAxisRight();
+        rightAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        rightAxis.setShowOnlyMinMax(true);
+        rightAxis.setStartAtZero(false);
+        rightAxis.setDrawGridLines(true);
+        rightAxis.setEnabled(false);
 
         lineChart.invalidate();
+    }
 
 
+    //週間グラフを作成
+    private LineData createLineChartDataWeek() {
+        ArrayList<LineDataSet> LineDataSets = new ArrayList<>();
+
+
+        Date now = new Date();
+        // androidから日を取得
+        int day = getDay(now);
+        //月末までの日数
+        int dayLimitLength = getLastDay(now) - getDay(now);
+
+        //週間の制限
+        /*データは5つ以上でなければならない
+            もし条件を満たさないのであれば、
+            else文で処理する
+         */
+
+
+        ArrayList<String> xValues = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            dayLimitLength--;
+            if (dayLimitLength == -2) {
+                day = -i + 1;
+            }
+            xValues.add((i + day) + "日");
+        }
+
+
+        // 週間気温
+        ArrayList<Entry> valuesA = new ArrayList<>();
+        float valuesA_temp[] = {23.1F, 23.3F, 23.4F, 23.6F, 23.7F, 23.9F, 24F, 24.1F, 24.3F, 24.4F, 24.5F, 24.7F, 24.8F, 24.9F, 25F, 25.1F, 25.2F, 25.4F, 25.5F, 25.6F, 25.7F, 25.8F, 26F, 26.1F, 26.2F, 26.3F, 26.5F, 26.6F, 26.7F, 26.7F, 26.8F};
+
+        for (int i = 0; i < 5; i++) {
+            valuesA.add(new Entry(valuesA_temp[i], i));
+        }
+
+
+        LineDataSet valuesADataSet = new LineDataSet(valuesA, "平均気温");  //グラフ全体のラベル
+        valuesADataSet.setColor(ColorTemplate.COLORFUL_COLORS[3]);  //グラフの色
+        LineDataSets.add(valuesADataSet);   //グラフをセット
+
+
+        LineData lineData = new LineData(xValues, LineDataSets); //グラフを返す
+        return lineData;
     }
 
 
@@ -85,7 +153,7 @@ public class GraphActivity extends AppCompatActivity {
     private LineData createLineChartDataMonth() {
         ArrayList<LineDataSet> LineDataSets = new ArrayList<>();
 
-        lineChart.fitScreen();
+
         Date now = new Date();
         // androidから日付を取得
         int lastDay = getLastDay(now);
@@ -97,6 +165,7 @@ public class GraphActivity extends AppCompatActivity {
             xValues.add(String.valueOf(i + 1));
         }
 
+
         // 月間気温
         ArrayList<Entry> valuesA = new ArrayList<>();
         float valuesA_temp[] = {23.1F, 23.3F, 23.4F, 23.6F, 23.7F, 23.9F, 24F, 24.1F, 24.3F, 24.4F, 24.5F, 24.7F, 24.8F, 24.9F, 25F, 25.1F, 25.2F, 25.4F, 25.5F, 25.6F, 25.7F, 25.8F, 26F, 26.1F, 26.2F, 26.3F, 26.5F, 26.6F, 26.7F, 26.7F, 26.8F};
@@ -104,16 +173,17 @@ public class GraphActivity extends AppCompatActivity {
             valuesA.add(new Entry(valuesA_temp[i], i));
         }
 
-
-        LineDataSet valuesADataSet = new LineDataSet(valuesA, "最高気温");  //グラフ全体のラベル
+        LineDataSet valuesADataSet = new LineDataSet(valuesA, "平均気温");  //グラフ全体のラベル
         valuesADataSet.setColor(ColorTemplate.COLORFUL_COLORS[3]);  //グラフの色
         LineDataSets.add(valuesADataSet);   //グラフをセット
 
 
-        LineData lineData = new LineData(xValues, LineDataSets); //グラフを返す
+
+        LineData lineData = new LineData(xValues, LineDataSets); //グラフを返すse
         return lineData;
     }
 
+    //ゲッター
     //月末を取得
     static public int getLastDay(Date now) {
 
@@ -126,6 +196,7 @@ public class GraphActivity extends AppCompatActivity {
         return lastDay;
     }
 
+    //日を取得
     static public int getDay(Date now) {
         Calendar c = Calendar.getInstance();
         c.setTime(now);
@@ -151,7 +222,7 @@ public class GraphActivity extends AppCompatActivity {
             valuesA.add(new Entry(valuesA_temp[i], i));
         }
 
-        LineDataSet valuesADataSet = new LineDataSet(valuesA, "最高気温");  //グラフ全体のラベル
+        LineDataSet valuesADataSet = new LineDataSet(valuesA, "平均気温");  //グラフ全体のラベル
         valuesADataSet.setColor(ColorTemplate.COLORFUL_COLORS[3]);  //グラフの色
         LineDataSets.add(valuesADataSet);   //グラフをセット
 
