@@ -11,6 +11,7 @@ import android.util.Log;
 
 /**
  * Created by Ryo on 2016/07/19.
+ *
  */
 
 
@@ -32,7 +33,6 @@ public class TempService extends Service {
     }
 
     @Override
-
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand");
 

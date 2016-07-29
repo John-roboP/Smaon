@@ -24,11 +24,7 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
     String str=null;
     String str2=null;
 
-
     int Level = 0;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +57,8 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
 
 
     }
+
+
   /*  private OnClickListener startListener = new OnClickListener() {
         public void onClick(View v) {
             startService(new Intent(NotificationActivity.this, NotificationChangeService.class));
@@ -74,11 +72,12 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
     };
 
             */
+
     @Override
         public Loader<JSONObject> onCreateLoader ( int id, Bundle args){
 
 
-            String url = "http://192.168.0.31/index.html";
+            String url = "http://192.168.1.31/index.html";
 
             return new AsyncWorker(this, url);
         }
