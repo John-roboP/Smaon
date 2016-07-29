@@ -1,5 +1,6 @@
 package com.t_robop.smaon;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,7 @@ public class SettingActivity extends AppCompatActivity {
     String selected;//地方判定用
     String City;//県判定用
 
- //   int CityID=0;//livedoorの県のURL末尾のID→未定
+    int CityID=0;//livedoorの県のURL末尾のID→未定
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,115 +188,115 @@ public class SettingActivity extends AppCompatActivity {
             case 0:
                 City = (String) Sphokkai.getSelectedItem();//取得
                 if (City.equals("札幌")){
-
+                    CityID = 2128295;
                 }else if(City.equals("函館")){
-
+                    CityID = 2130188;
                 }else{
-                    //釧路
+                    CityID = 2129376;//釧路
                 }
 
                 break;
             case 1:
                 City = (String) Sptohoku.getSelectedItem();
                 if (City.equals("青森")){
-
+                    CityID = 2130658;
                 }else if(City.equals("岩手")){
-
+                    CityID = 2111834;
                 }else if(City.equals("宮城")){
-
+                    CityID = 2111149;
                 }else if(City.equals("山形")){
-
+                    CityID = 2110556;
                 }else{
-                    //福島
+                    CityID = 2112141;//福島
                 }
 
                 break;
             case 2:
                 City = (String) Spkanto.getSelectedItem();
                 if (City.equals("茨城")){
-
+                    CityID = 2110683;
                 }else if(City.equals("栃木")){
-
+                    CityID = 1849053;
                 }else if(City.equals("群馬")){
-
+                    CityID = 1851002;
                 }else if(City.equals("埼玉")){
-
+                    CityID = 6940394;
                 }else if(City.equals("千葉")){
-
+                    CityID = 2113015;
                 }else if(City.equals("東京")){
-
+                    CityID = 1850147;
                 }else{
-                    //神奈川
+                    CityID = 1848354;//神奈川
                 }
 
                 break;
             case 3:
                 City = (String) Spchubu.getSelectedItem();
                 if (City.equals("山梨")){
-
+                    CityID = 1859100;
                 }else if(City.equals("長野")){
-
+                    CityID = 1856215;
                 }else if(City.equals("新潟")){
-
+                    CityID = 1855431;
                 }else if(City.equals("富山")){
-
+                    CityID = 1849876;
                 }else if(City.equals("石川")){
-
+                    CityID = 1857470;
                 }else if(City.equals("福井")){
-
+                    CityID = 1863985;
                 }else if(City.equals("静岡")){
-
+                    CityID = 1851717;
                 }else if(City.equals("愛知")){
-
+                    CityID = 1856057;
                 }else if(City.equals("岐阜")){
-
+                    CityID = 1850892;
                 }else{
-                    //三重
+                    CityID = 1849796;//三重
                 }
 
                 break;
             case 4:
                 City = (String) Spkansai.getSelectedItem();
                 if (City.equals("滋賀")){
-
+                    CityID = 1862636;
                 }else if(City.equals("京都")){
-
+                    CityID = 1857910;
                 }else if(City.equals("大阪")){
-
+                    CityID = 1853909;
                 }else if(City.equals("兵庫")){
-
+                    CityID = 1847966;
                 }else if(City.equals("奈良")){
-
+                    CityID = 1855612;
                 }else{
-                    //和歌山
+                    CityID = 1926004;//和歌山
                 }
 
                 break;
             case 5:
                 City = (String) Spchugoku.getSelectedItem();
                 if (City.equals("鳥取")){
-
+                    CityID = 1849892;
                 }else if(City.equals("島根")){
-
+                    CityID = 1857550;
                 }else if(City.equals("岡山")){
-
+                    CityID = 1854383;
                 }else if(City.equals("広島")){
-
+                    CityID = 1862415;
                 }else{
-                    //山口
+                    CityID = 1848689;//山口
                 }
 
                 break;
             case 6:
                 City = (String) Spshikoku.getSelectedItem();
                 if (City.equals("香川")){
-
+                    CityID = 1851100;
                 }else if(City.equals("愛媛")){
-
+                    CityID = 1926099;
                 }else if(City.equals("徳島")){
-
+                    CityID = 1850158;
                 }else {
-                    //高知
+                    CityID = 1859146;//高知
 
                 }
 
@@ -303,25 +304,34 @@ public class SettingActivity extends AppCompatActivity {
             case 7:
                 City = (String) Spkyuushu.getSelectedItem();
                 if (City.equals("福岡")){
-
+                    CityID = 1863967;
                 }else if(City.equals("佐賀")){
-
+                    CityID = 1853303;
                 }else if(City.equals("長崎")){
-
+                    CityID = 1856177;
                 }else if(City.equals("熊本")){
-
+                    CityID = 1858421;
                 }else if(City.equals("大分")){
-
+                    CityID = 1849706;
                 }else if(City.equals("宮崎")){
-
+                    CityID = 1856717;
                 }else if(City.equals("鹿児島")){
-
+                    CityID = 1860827;
                 }else{
-                    //沖縄
+                    CityID = 1856035;//沖縄
                 }
 
                 break;
         }
+
+        Intent nintent = new Intent();
+
+        nintent.putExtra("Id",CityID);
+        nintent.setClass(this,MainActivity.class);
+
+        Intent Sintent = new Intent();
+        Sintent.setClassName("com.t_robop.smaon","com.t_robop.smaon.StartActivity");
+        startActivity(Sintent);
 
     }
 }

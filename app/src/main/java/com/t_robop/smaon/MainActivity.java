@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     static String Str2cp;
     static double Txt=0.0;                                       //ホリエモンの温度を数値化
     static double Txt2=0.0;                                      //ラズパイパイの温度を数値化
-    static int cityId=1850147;
+    static int cityId=0;
     static int humid=0;
 
 
@@ -43,12 +43,14 @@ public class MainActivity extends AppCompatActivity {
         txt2 = (TextView)findViewById(R.id.textView2);      //温度（ホリエモン）
         txt5 = (TextView)findViewById(R.id.textView5);      //提案文
         txt6 = (TextView)findViewById(R.id.textView6);
-
         img = (ImageView)findViewById(R.id.imageView2);
 
         Intent intent = getIntent();
         Str = intent.getStringExtra("date");
-        Str2 = intent.getStringExtra("cels");
+        Str2 = intent.getStringExtra("temper");
+
+        Intent intent2 = getIntent();
+        cityId = intent2.getIntExtra("Id",0);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -103,12 +105,14 @@ public class MainActivity extends AppCompatActivity {
                     if(Txt < Txt2){             //堀江<パイ
                         txt5.setText("現在予想より温度が高くなっております。");
                         if(tenki.equals("Rain")){
+                            img.setImageResource(R.drawable.ame);
                             txt5.append("また、雨も降っておりジメジメするでしょう。\n");
                             if(humid >= 80){
                                 txt5.append("湿度も高く蒸し暑い日になります。\n");
                             }
                         }
                         if(tenki.equals("Clear")){
+                            img.setImageResource(R.drawable.hare);
                             txt5.append("洗濯物を干すのに良い天気です。\n");
                             if(Txt2 > 30){
                                 txt5.append("日差しも強く、熱中症になる恐れがあります。\n");
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         if(tenki.equals("Clouds")){
+                            img.setImageResource(R.drawable.kumo);
                             txt5.append("日は照っておらず比較的涼しくなるでしょう。\n");
                         }
                         if(Txt2-Txt > 5){
@@ -127,15 +132,18 @@ public class MainActivity extends AppCompatActivity {
                     else if(Txt2 < Txt){
                         txt5.setText("現在予想より温度が低くなっております。\n");
                         if(tenki.equals("Rain")){
+                            img.setImageResource(R.drawable.ame);
                             txt5.append("雨も降っており寒い1日になるでしょう。\n");
                             if(humid >= 80){
                                 txt5.append("除湿を心掛け、カビやダニの繁殖に気を付けましょう。\n");
                             }
                         }
                         if(tenki.equals("Clear")){
+                            img.setImageResource(R.drawable.hare);
                             txt5.append("しかし日が照っているので、暖かくなるでしょう。\n");
                         }
                         if(tenki.equals("Clouds")){
+                            img.setImageResource(R.drawable.kumo);
                             txt5.append("日が雲で隠れており涼しくなるでしょう\n");
                         }
                         if(Txt-Txt2 > 5){

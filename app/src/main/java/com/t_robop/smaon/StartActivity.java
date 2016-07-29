@@ -63,7 +63,7 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
         public Loader<JSONObject> onCreateLoader ( int id, Bundle args){
 
 
-            String url = "http://192.168.0.31/index.html";
+            String url = "http://192.168.1.31";
 
             return new AsyncWorker(this, url);
         }
