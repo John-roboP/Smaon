@@ -1,6 +1,7 @@
 package com.t_robop.smaon;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +50,11 @@ public class SettingActivity extends AppCompatActivity {
         Spkyuushu.setVisibility(View.GONE);  //非表示
 
 
+        SharedPreferences data = getSharedPreferences("DataSave",MODE_PRIVATE);    //sharedPreference
+        SharedPreferences.Editor editor = data.edit();
+        editor.putInt("IdSave", CityID);
+        editor.putInt("LevelSave",1);
+        editor.apply();
 
 
         mSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -324,14 +330,9 @@ public class SettingActivity extends AppCompatActivity {
                 break;
         }
 
-        Intent nintent = new Intent();
+        Intent setIntent =new Intent (this,StartActivity.class);
 
-        nintent.putExtra("Id",CityID);
-        nintent.setClass(this,MainActivity.class);
-
-        Intent Sintent = new Intent();
-        Sintent.setClassName("com.t_robop.smaon","com.t_robop.smaon.StartActivity");
-        startActivity(Sintent);
+        startActivity(setIntent); //StartActivity変遷
 
     }
 }

@@ -80,8 +80,8 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
                     JSONObject object = jsonArray.getJSONObject(0); //一番初めのデータを参照,0はdate,1はセルシウス
                     JSONObject obj1 = jsonArray.getJSONObject(1);
                     //   String str = (String) object.get("name");
-                    str = object.getString("date");   //strにdate or celsius を代入
-                    str2 = obj1.getString("celsius");
+                    str = "2016/07/22/18/10/07";//object.getString("date");   //strにdate or celsius を代入
+                    str2 = "25.4";//obj1.getString("celsius");
 
                     Log.d("JSONObject", str);
 
