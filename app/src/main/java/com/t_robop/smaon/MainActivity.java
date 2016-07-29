@@ -100,8 +100,12 @@ public class MainActivity extends AppCompatActivity {
                     txt6.setText(Str2);
                     ondocp = ondo.substring(0,ondo.length());
                     Str2cp = Str2.substring(0,Str2.length());
-                    Txt = Math.round(Double.parseDouble(ondocp)-273.15);
-                    Txt2 = Double.parseDouble(Str2cp);
+                    try {
+                        Txt = Math.round(Double.parseDouble(ondocp) - 273.15);
+                        Txt2 = Double.parseDouble(Str2cp);
+                    }catch(NumberFormatException e){
+
+                    }
 
                     txt3.setText(String.valueOf(Txt));
 

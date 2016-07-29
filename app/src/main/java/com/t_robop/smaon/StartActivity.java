@@ -20,8 +20,8 @@ import org.json.JSONObject;
 public class StartActivity extends Activity implements LoaderManager.LoaderCallbacks<JSONObject> {
 
     private static final int ADDRESSLOADER_ID = 0;
-    String str=null;
-    String str2=null;
+    String str="aaa";
+    String str2="bbb";
 
 
     int Level = 0;
@@ -35,8 +35,8 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        SharedPreferences data = getSharedPreferences("DateSave",MODE_PRIVATE);    //sharedPreference
-        Level = data.getInt("sStart",0);
+        SharedPreferences datasy = getSharedPreferences("DataSave",MODE_PRIVATE);    //sharedPreference
+        Level = datasy.getInt("sStart",0);
 
 
 
@@ -80,8 +80,8 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
                     JSONObject object = jsonArray.getJSONObject(0); //一番初めのデータを参照,0はdate,1はセルシウス
                     JSONObject obj1 = jsonArray.getJSONObject(1);
                     //   String str = (String) object.get("name");
-                    str = "2016/07/22/18/10/07";//object.getString("date");   //strにdate or celsius を代入
-                    str2 = "25.4";//obj1.getString("celsius");
+                    str = object.getString("date");   //strにdate or celsius を代入
+                    str2 = obj1.getString("celsius");
 
                     Log.d("JSONObject", str);
 
@@ -96,6 +96,11 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
 
             } else {
                 Log.d("onLoadFinished", "onLoadFinished error!");
+            }
+
+            if(str.equals("aaa") || str2.equals("bbb")){
+                str="xxx";
+                str2="yyy";
             }
 
             Intent sIntent = new Intent();      //インテント生成

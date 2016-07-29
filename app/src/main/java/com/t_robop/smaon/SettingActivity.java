@@ -33,9 +33,9 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
 
         SharedPreferences OnceSta =getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editorX = OnceSta.edit();
-        editorX.putInt("sStart",1);     //初回起動判定を１にする
-        editorX.apply();    //保存
+        SharedPreferences.Editor editor3 = OnceSta.edit();
+        editor3.putInt("sStart",1);     //初回起動判定を１にする
+        editor3.apply();    //保存
 
         mSpinner1 = (Spinner) findViewById(R.id.spinner);
         Sphokkai = (Spinner) findViewById(R.id.spinner2);
