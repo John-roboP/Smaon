@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     static String Str2cp;
     static double Txt=0.0;                                       //ホリエモンの温度を数値化
     static double Txt2=0.0;                                      //ラズパイパイの温度を数値化
-    static int cityId=0;
+    static String cityId;
     static int humid=0;
 
 
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         Str2 = intent.getStringExtra("temper");
 
         SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
-        cityId = data.getInt("IdSave", 0);
+        cityId = data.getString("Cid", "0");
 
 
         if (savedInstanceState == null) {
