@@ -23,7 +23,7 @@ public class SettingActivity extends AppCompatActivity {
     String selected;//地方判定用
     String City;//県判定用
 
-    int CityID=0;//livedoorの県のURL末尾のID→未定
+    String CityID="0";//livedoorの県のURL末尾のID→未定
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,119 +184,325 @@ public class SettingActivity extends AppCompatActivity {
 
     public void OKbutton(View v){
 
+        Sharepre Sharepre = new Sharepre(this.getApplicationContext());     // インスタンス化
+
         switch (spHantei){
             case 0:
                 City = (String) Sphokkai.getSelectedItem();//取得
                 if (City.equals("札幌")){
-                    CityID = 2128295;
+                    CityID = "2128295";
+
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
+
+
                 }else if(City.equals("函館")){
-                    CityID = 2130188;
+                    CityID = "2130188";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else{
-                    CityID = 2129376;//釧路
+                    CityID = "2129376";//釧路
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }
 
                 break;
             case 1:
                 City = (String) Sptohoku.getSelectedItem();
                 if (City.equals("青森")){
-                    CityID = 2130658;
+                    CityID = "2130658";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
+
                 }else if(City.equals("岩手")){
-                    CityID = 2111834;
+                    CityID = "2111834";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("宮城")){
-                    CityID = 2111149;
+                    CityID = "2111149";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("山形")){
-                    CityID = 2110556;
+                    CityID = "2110556";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else{
-                    CityID = 2112141;//福島
+                    CityID = "2112141";//福島
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }
 
                 break;
             case 2:
                 City = (String) Spkanto.getSelectedItem();
                 if (City.equals("茨城")){
-                    CityID = 2110683;
+                    CityID = "2110683";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("栃木")){
-                    CityID = 1849053;
+                    CityID = "1849053";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("群馬")){
-                    CityID = 1851002;
+                    CityID = "1851002";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("埼玉")){
-                    CityID = 6940394;
+                    CityID = "6940394";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("千葉")){
-                    CityID = 2113015;
+                    CityID = "2113015";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("東京")){
-                    CityID = 1850147;
+                    CityID = "1850147";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else{
-                    CityID = 1848354;//神奈川
+                    CityID = "1848354";//神奈川
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }
 
                 break;
             case 3:
                 City = (String) Spchubu.getSelectedItem();
                 if (City.equals("山梨")){
-                    CityID = 1859100;
+                    CityID = "1859100";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("長野")){
-                    CityID = 1856215;
+                    CityID = "1856215";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("新潟")){
-                    CityID = 1855431;
+                    CityID = "1855431";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("富山")){
-                    CityID = 1849876;
+                    CityID = "1849876";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("石川")){
-                    CityID = 1857470;
+                    CityID = "1857470";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("福井")){
-                    CityID = 1863985;
+                    CityID = "1863985";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("静岡")){
-                    CityID = 1851717;
+                    CityID = "1851717";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("愛知")){
-                    CityID = 1856057;
+                    CityID = "1856057";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("岐阜")){
-                    CityID = 1850892;
+                    CityID = "1850892";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else{
-                    CityID = 1849796;//三重
+                    CityID = "1849796";//三重
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }
 
                 break;
             case 4:
                 City = (String) Spkansai.getSelectedItem();
                 if (City.equals("滋賀")){
-                    CityID = 1862636;
+                    CityID = "1862636";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("京都")){
-                    CityID = 1857910;
+                    CityID = "1857910";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("大阪")){
-                    CityID = 1853909;
+                    CityID = "1853909";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("兵庫")){
-                    CityID = 1847966;
+                    CityID = "1847966";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("奈良")){
-                    CityID = 1855612;
+                    CityID ="1855612";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else{
-                    CityID = 1926004;//和歌山
+                    CityID = "1926004";//和歌山
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }
 
                 break;
             case 5:
                 City = (String) Spchugoku.getSelectedItem();
                 if (City.equals("鳥取")){
-                    CityID = 1849892;
+                    CityID = "1849892";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("島根")){
-                    CityID = 1857550;
+                    CityID = "1857550";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("岡山")){
-                    CityID = 1854383;
+                    CityID = "1854383";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("広島")){
-                    CityID = 1862415;
+                    CityID = "1862415";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else{
-                    CityID = 1848689;//山口
+                    CityID = "1848689";//山口
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }
 
                 break;
             case 6:
                 City = (String) Spshikoku.getSelectedItem();
                 if (City.equals("香川")){
-                    CityID = 1851100;
+                    CityID = "1851100";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("愛媛")){
-                    CityID = 1926099;
+                    CityID = "1926099";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("徳島")){
-                    CityID = 1850158;
+                    CityID = "1850158";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else {
-                    CityID = 1859146;//高知
+                    CityID = "1859146";//高知
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
 
                 }
 
@@ -304,34 +510,65 @@ public class SettingActivity extends AppCompatActivity {
             case 7:
                 City = (String) Spkyuushu.getSelectedItem();
                 if (City.equals("福岡")){
-                    CityID = 1863967;
+                    CityID = "1863967";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("佐賀")){
-                    CityID = 1853303;
+                    CityID = "1853303";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("長崎")){
-                    CityID = 1856177;
+                    CityID = "1856177";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("熊本")){
-                    CityID = 1858421;
+                    CityID = "1858421";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("大分")){
-                    CityID = 1849706;
+                    CityID = "1849706";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("宮崎")){
-                    CityID = 1856717;
+                    CityID = "1856717";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else if(City.equals("鹿児島")){
-                    CityID = 1860827;
+                    CityID = "1860827";
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }else{
-                    CityID = 1856035;//沖縄
+                    CityID = "1856035";//沖縄
+                    Sharepre.share(CityID); //CityIDを保存するクラスへ
+
+                    Intent reintent = new Intent(this,StartActivity.class);
+
+                    startActivity(reintent);//再起動
                 }
 
                 break;
         }
-
-        Intent nintent = new Intent();
-
-        nintent.putExtra("Id",CityID);
-        nintent.setClass(this,MainActivity.class);
-
-        Intent Sintent = new Intent();
-        Sintent.setClassName("com.t_robop.smaon","com.t_robop.smaon.StartActivity");
-        startActivity(Sintent);
 
     }
 }

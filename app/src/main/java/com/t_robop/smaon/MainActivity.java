@@ -49,8 +49,10 @@ public class MainActivity extends AppCompatActivity {
         Str = intent.getStringExtra("date");
         Str2 = intent.getStringExtra("temper");
 
+
         Intent intent2 = getIntent();
         cityId = intent2.getIntExtra("Id",0);
+
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

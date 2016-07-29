@@ -3,6 +3,7 @@ package com.t_robop.smaon;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
@@ -23,20 +24,18 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
     String str=null;
     String str2=null;
 
-
     int Level = 0;
-
-
- //   Handler mHandler = new Handler();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+        startService(new Intent(getBaseContext(),TempService.class));   //サービスの開始
+
+
         SharedPreferences data = getSharedPreferences("DataSave",MODE_PRIVATE);    //sharedPreference
-        Level = data.getInt("LevelSave",0);
+        Level = data.getInt("sStart",0);
 
 
 
@@ -59,11 +58,26 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
 
     }
 
-        @Override
+
+  /*  private OnClickListener startListener = new OnClickListener() {
+        public void onClick(View v) {
+            startService(new Intent(NotificationActivity.this, NotificationChangeService.class));
+        }
+    };
+
+    private OnClickListener stopListener = new OnClickListener() {
+        public void onClick(View v) {
+            stopService(new Intent(NotificationActivity.this, NotificationChangeService.class));
+        }
+    };
+
+            */
+
+    @Override
         public Loader<JSONObject> onCreateLoader ( int id, Bundle args){
 
 
-            String url = "http://192.168.1.31";
+            String url = "http://192.168.1.31/index.html";
 
             return new AsyncWorker(this, url);
         }
