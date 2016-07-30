@@ -47,13 +47,12 @@ public class MainActivity extends AppCompatActivity {
         txt6 = (TextView)findViewById(R.id.textView6);
         img = (ImageView)findViewById(R.id.imageView2);
 
-        Intent intent = getIntent();
+        Intent intent = getIntent();                            //ラズパイのデータ取得
         Str = intent.getStringExtra("date");
         Str2 = intent.getStringExtra("temper");
 
-
-        SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-        cityId = data.getString("Cid","0");
+        SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
+        cityId = data.getString("Cid", "0");
 
 
         if (savedInstanceState == null) {
@@ -64,8 +63,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static class PlaceholderFragment extends Fragment {
-        private final String uri = "http://" +
-                "api.openweathermap.org/data/2.5/forecast/city?id="+cityId+"&APPID=d943f13cb21447ca156076c493e2f236";             //JSONデータのあるURLを設定
+        private final String uri = "http://api.openweathermap.org/data/2.5/forecast/city?id="+cityId+"&APPID=d943f13cb21447ca156076c493e2f236";             //JSONデータのあるURLを設定
 
         public PlaceholderFragment() {
         }
@@ -102,8 +100,12 @@ public class MainActivity extends AppCompatActivity {
                     txt6.setText(Str2);
                     ondocp = ondo.substring(0,ondo.length());
                     Str2cp = Str2.substring(0,Str2.length());
-                    Txt = Math.round(Double.parseDouble(ondocp)-273.15);
-                    Txt2 = Double.parseDouble(Str2cp);
+                    try {
+                        Txt = Math.round(Double.parseDouble(ondocp) - 273.15);
+                        Txt2 = Double.parseDouble(Str2cp);
+                    }catch(NumberFormatException e){
+
+                    }
 
                     txt3.setText(String.valueOf(Txt));
 

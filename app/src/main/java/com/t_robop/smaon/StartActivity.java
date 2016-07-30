@@ -3,7 +3,6 @@ package com.t_robop.smaon;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
@@ -21,21 +20,23 @@ import org.json.JSONObject;
 public class StartActivity extends Activity implements LoaderManager.LoaderCallbacks<JSONObject> {
 
     private static final int ADDRESSLOADER_ID = 0;
-    String str=null;
-    String str2=null;
+    String str="aaa";
+    String str2="bbb";
+
 
     int Level = 0;
+
+
+ //   Handler mHandler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        startService(new Intent(getBaseContext(),TempService.class));   //サービスの開始
-
-
-        SharedPreferences data = getSharedPreferences("DataSave",MODE_PRIVATE);    //sharedPreference
-        Level = data.getInt("sStart",0);
+        SharedPreferences datasy = getSharedPreferences("DataSave",MODE_PRIVATE);    //sharedPreference
+        Level = datasy.getInt("sStart",0);
 
 
 
@@ -58,26 +59,11 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
 
     }
 
-
-  /*  private OnClickListener startListener = new OnClickListener() {
-        public void onClick(View v) {
-            startService(new Intent(NotificationActivity.this, NotificationChangeService.class));
-        }
-    };
-
-    private OnClickListener stopListener = new OnClickListener() {
-        public void onClick(View v) {
-            stopService(new Intent(NotificationActivity.this, NotificationChangeService.class));
-        }
-    };
-
-            */
-
-    @Override
+        @Override
         public Loader<JSONObject> onCreateLoader ( int id, Bundle args){
 
 
-            String url = "http://192.168.1.31/index.html";
+            String url = "http://192.168.1.31";
 
             return new AsyncWorker(this, url);
         }
@@ -110,6 +96,11 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
 
             } else {
                 Log.d("onLoadFinished", "onLoadFinished error!");
+            }
+
+            if(str.equals("aaa") || str2.equals("bbb")){
+                str="xxx";
+                str2="yyy";
             }
 
             Intent sIntent = new Intent();      //インテント生成
