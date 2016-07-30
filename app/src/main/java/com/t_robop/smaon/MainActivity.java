@@ -1,6 +1,8 @@
 package com.t_robop.smaon;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     static String Str2cp;
     static double Txt=0.0;                                       //ホリエモンの温度を数値化
     static double Txt2=0.0;                                      //ラズパイパイの温度を数値化
-    static int cityId=0;
+    static String cityId;
     static int humid=0;
 
 
@@ -45,13 +47,12 @@ public class MainActivity extends AppCompatActivity {
         txt6 = (TextView)findViewById(R.id.textView6);
         img = (ImageView)findViewById(R.id.imageView2);
 
-        Intent intent = getIntent();
+        Intent intent = getIntent();                            //ラズパイのデータ取得
         Str = intent.getStringExtra("date");
         Str2 = intent.getStringExtra("temper");
 
-
-        Intent intent2 = getIntent();
-        cityId = intent2.getIntExtra("Id",0);
+        SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
+        cityId = data.getString("Cid", "0");
 
 
         if (savedInstanceState == null) {
@@ -99,8 +100,12 @@ public class MainActivity extends AppCompatActivity {
                     txt6.setText(Str2);
                     ondocp = ondo.substring(0,ondo.length());
                     Str2cp = Str2.substring(0,Str2.length());
-                    Txt = Math.round(Double.parseDouble(ondocp)-273.15);
-                    Txt2 = Double.parseDouble(Str2cp);
+                    try {
+                        Txt = Math.round(Double.parseDouble(ondocp) - 273.15);
+                        Txt2 = Double.parseDouble(Str2cp);
+                    }catch(NumberFormatException e){
+
+                    }
 
                     txt3.setText(String.valueOf(Txt));
 
