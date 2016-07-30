@@ -1,6 +1,8 @@
 package com.t_robop.smaon;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +31,13 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        SharedPreferences OnceSta =getSharedPreferences("DataSave", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editorX = OnceSta.edit();
+        editorX.putInt("sStart",1);     //初回起動判定を１にする
+        editorX.apply();    //保存
+
+
         mSpinner1 = (Spinner) findViewById(R.id.spinner);
         Sphokkai = (Spinner) findViewById(R.id.spinner2);
         Sptohoku = (Spinner) findViewById(R.id.spinner3);
@@ -185,6 +194,7 @@ public class SettingActivity extends AppCompatActivity {
     public void OKbutton(View v){
 
         Sharepre Sharepre = new Sharepre(this.getApplicationContext());     // インスタンス化
+
 
         switch (spHantei){
             case 0:
