@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     static TextView txt2;
     static TextView txt5;                                   //てーあん
     static TextView txt6;
+    static TextView txt4;
     static ImageView img;
     static String ondo;                                     //ホリエモンの温度
     static String ondocp;
@@ -33,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
     static double Txt=0.0;                                       //ホリエモンの温度を数値化
     static double Txt2=0.0;                                      //ラズパイパイの温度を数値化
     static String cityId;
+    static String time;
     static int humid=0;
+    static int Intime=0;
 
 
     @Override
@@ -41,10 +45,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         txt3 = (TextView)findViewById(R.id.textView3);      //温度（ラズパイ）
-        txt = (TextView)findViewById(R.id.textView);        //日付
+        txt = (TextView)findViewById(R.id.textView);
         txt2 = (TextView)findViewById(R.id.textView2);      //温度（ホリエモン）
         txt5 = (TextView)findViewById(R.id.textView5);      //提案文
         txt6 = (TextView)findViewById(R.id.textView6);
+        txt4 = (TextView)findViewById(R.id.textView4);      //日付
         img = (ImageView)findViewById(R.id.imageView2);
 
         Intent intent = getIntent();                            //ラズパイのデータ取得
@@ -87,10 +92,12 @@ public class MainActivity extends AppCompatActivity {
                         JSONArray tenkiArray = eventObj.getJSONArray("weather");
                         JSONObject tenkiObj = tenkiArray.getJSONObject(0);
                         tenki = tenkiObj.getString("main");
+                        time = eventObj.getString("dt_txt");
                         JSONObject event = eventObj.getJSONObject("main");
                         ondo = event.getString("temp");
                         humid = event.getInt("humidity");
                         txt3.setText(ondo);
+                        txt4.setText(time);
                     }
                     catch(JSONException e){
                         e.printStackTrace();
@@ -103,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         Txt = Math.round(Double.parseDouble(ondocp) - 273.15);
                         Txt2 = Double.parseDouble(Str2cp);
+                        Intime = Integer.parseInt(time.substring(12,13));
                     }catch(NumberFormatException e){
 
                     }
@@ -118,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                                 txt5.append("湿度も高く蒸し暑い日になります。\n");
                             }
                         }
-                        if(tenki.equals("Clear")){
+                        if(tenki.equals("Clear") && Intime >=6 && Intime <= 15){
                             img.setImageResource(R.drawable.hare);
                             txt5.append("洗濯物を干すのに良い天気です。\n");
                             if(Txt2 > 30){
@@ -126,6 +134,17 @@ public class MainActivity extends AppCompatActivity {
                             }
                             if(Txt2 < 20){
                                 txt5.append("ポカポカして暖かい一日になるでしょう。\n");
+                            }
+                        }
+                        else if(tenki.equals("Clear") && (Intime >=18 || Intime <= 3)){
+                            img.setImageResource(R.drawable.luna);
+                            txt5.append("今夜はきれいな星空が見れるでしょう。\n");
+                            if(Txt2 > 30){
+                                txt5.append("しかし、温度が高いので熱帯夜になりそうです。\n");
+                                txt5.append("熱中症に気を付けましょう。\n");
+                            }
+                            if(Txt2 < 20){
+                                txt5.append("今夜は涼しくなりますので、体を冷やしすぎないようにしましょう。\n");
                             }
                         }
                         if(tenki.equals("Clouds")){
@@ -145,9 +164,13 @@ public class MainActivity extends AppCompatActivity {
                                 txt5.append("除湿を心掛け、カビやダニの繁殖に気を付けましょう。\n");
                             }
                         }
-                        if(tenki.equals("Clear")){
+                        if(tenki.equals("Clear") && (Intime >=6 && Intime <= 15)){
                             img.setImageResource(R.drawable.hare);
                             txt5.append("しかし日が照っているので、暖かくなるでしょう。\n");
+                        }
+                        else if(tenki.equals("Clear") && (Intime >=18 || Intime <= 3)){
+                            img.setImageResource(R.drawable.luna);
+                            txt5.append("今夜は寒くなりそうですので、暖かくしたほうがいいでしょう。\n");
                         }
                         if(tenki.equals("Clouds")){
                             img.setImageResource(R.drawable.kumo);
@@ -178,5 +201,15 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
         }
     }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+            if(keyCode != KeyEvent.KEYCODE_BACK){
+                    finish();
+                    return true;
+                }else{
+                    return false;
+                }
+    }
+
 }
 
