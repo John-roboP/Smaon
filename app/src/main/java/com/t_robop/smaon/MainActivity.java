@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+
     static TextView txt3;
     static TextView txt;
     static TextView txt2;
@@ -178,5 +179,8 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
         }
     }
+
+
+
 }
 
