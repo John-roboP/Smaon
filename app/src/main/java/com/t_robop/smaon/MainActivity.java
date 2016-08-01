@@ -52,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
         txt4 = (TextView)findViewById(R.id.textView4);      //日付
         img = (ImageView)findViewById(R.id.imageView2);
 
-        Intent intent = getIntent();                            //ラズパイのデータ取得
+        //ラズパイのデータ取得
+        Intent intent = getIntent();
         Str = intent.getStringExtra("date");
         Str2 = intent.getStringExtra("temper");
 
@@ -88,14 +89,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                     try{
                         JSONArray eventArray = result.getJSONArray("list");//配列データを取得
-                        JSONObject eventObj = eventArray.getJSONObject(0);
-                        JSONArray tenkiArray = eventObj.getJSONArray("weather");
-                        JSONObject tenkiObj = tenkiArray.getJSONObject(0);
-                        tenki = tenkiObj.getString("main");
-                        time = eventObj.getString("dt_txt");
+                        JSONObject eventObj = eventArray.getJSONObject(0);            //一番初めのデータを取得
+                        JSONArray tenkiArray = eventObj.getJSONArray("weather");    //"main"配列の中身を取得
+                        JSONObject tenkiObj = tenkiArray.getJSONObject(0);           //一番初めのデータを取得
+                        tenki = tenkiObj.getString("main");                         //その時の天気を取得
+                        time = eventObj.getString("dt_txt");                        //日付を取得
                         JSONObject event = eventObj.getJSONObject("main");
-                        ondo = event.getString("temp");
-                        humid = event.getInt("humidity");
+                        ondo = event.getString("temp");                              //温度を取得
+                        humid = event.getInt("humidity");                           //湿度を取得
                         txt3.setText(ondo);
                         txt4.setText(time);
                     }
@@ -105,19 +106,22 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     txt6.setText(Str2);
+                    //ラズパイとオープンウェザーの温度をそれぞれコピー
                     ondocp = ondo.substring(0,ondo.length());
                     Str2cp = Str2.substring(0,Str2.length());
+
+                    //String→intに直す
                     try {
-                        Txt = Math.round(Double.parseDouble(ondocp) - 273.15);
+                        Txt = Math.round(Double.parseDouble(ondocp) - 273.15);  //絶対温度からセルシウスに変換
                         Txt2 = Double.parseDouble(Str2cp);
-                        Intime = Integer.parseInt(time.substring(12,13));
+                        Intime = Integer.parseInt(time.substring(12,13));       //時間を抽出
                     }catch(NumberFormatException e){
 
                     }
 
                     txt3.setText(String.valueOf(Txt));
 
-                    if(Txt < Txt2){             //堀江<パイ
+                    if(Txt < Txt2){             //オープン<ラズパイ
                         txt5.setText("現在予想より温度が高くなっております。");
                         if(tenki.equals("Rain")){
                             img.setImageResource(R.drawable.ame);
@@ -155,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                             txt5.append("水分補給をこまめに行いましょう。\n");
                         }
                     }
-                    else if(Txt2 < Txt){
+                    else if(Txt2 < Txt){            //オープン>ラズパイ
                         txt5.setText("現在予想より温度が低くなっております。\n");
                         if(tenki.equals("Rain")){
                             img.setImageResource(R.drawable.ame);
@@ -202,6 +206,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    //戻るボタンを押された時の処理
     public boolean onKeyDown(int keyCode, KeyEvent event) {
             if(keyCode != KeyEvent.KEYCODE_BACK){
                     finish();

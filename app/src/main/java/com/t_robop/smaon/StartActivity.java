@@ -98,6 +98,7 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
                 Log.d("onLoadFinished", "onLoadFinished error!");
             }
 
+            //nullデータを受け取った時の処理
             if(str.equals("aaa") || str2.equals("bbb")){
                 str="xxx";
                 str2="yyy";
