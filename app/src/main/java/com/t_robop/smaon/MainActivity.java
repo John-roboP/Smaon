@@ -15,7 +15,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -87,18 +89,29 @@ public class MainActivity extends AppCompatActivity {
                         showLoadError();                                // エラーメッセージを表示
                         return;
                     }
+                    Date nDate = new Date();
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                    int now = Integer.parseInt((sdf1.format(nDate)).substring(11,13));  //時間を抽出
+
                     try{
-                        JSONArray eventArray = result.getJSONArray("list");//配列データを取得
-                        JSONObject eventObj = eventArray.getJSONObject(0);            //一番初めのデータを取得
-                        JSONArray tenkiArray = eventObj.getJSONArray("weather");    //"main"配列の中身を取得
-                        JSONObject tenkiObj = tenkiArray.getJSONObject(0);           //一番初めのデータを取得
-                        tenki = tenkiObj.getString("main");                         //その時の天気を取得
-                        time = eventObj.getString("dt_txt");                        //日付を取得
-                        JSONObject event = eventObj.getJSONObject("main");
-                        ondo = event.getString("temp");                              //温度を取得
-                        humid = event.getInt("humidity");                           //湿度を取得
-                        txt3.setText(ondo);
-                        txt4.setText(time);
+                        JSONArray eventArray = result.getJSONArray("list");         //配列データを取得
+                        for(int i=0;i<eventArray.length();i++){
+                            JSONObject eventObj = eventArray.getJSONObject(i);            //一番初めのデータを取得
+                            JSONArray tenkiArray = eventObj.getJSONArray("weather");    //"main"配列の中身を取得
+                            JSONObject tenkiObj = tenkiArray.getJSONObject(0);           //一番初めのデータを取得
+                            time = eventObj.getString("dt_txt");                        //日付を取得
+                            Intime = Integer.parseInt(time.substring(11,13));       //時間を抽出
+                            if((now - Intime) < 3){
+                                time = sdf1.format(nDate);
+                                tenki = tenkiObj.getString("main");                         //その時の天気を取得
+                                JSONObject event = eventObj.getJSONObject("main");
+                                ondo = event.getString("temp");                              //温度を取得
+                                humid = event.getInt("humidity");                           //湿度を取得
+                                txt3.setText(ondo);
+                                txt4.setText(time);
+                                break;
+                            }
+                        }
                     }
                     catch(JSONException e){
                         e.printStackTrace();
@@ -114,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         Txt = Math.round(Double.parseDouble(ondocp) - 273.15);  //絶対温度からセルシウスに変換
                         Txt2 = Double.parseDouble(Str2cp);
-                        Intime = Integer.parseInt(time.substring(12,13));       //時間を抽出
                     }catch(NumberFormatException e){
 
                     }
@@ -209,12 +221,10 @@ public class MainActivity extends AppCompatActivity {
 
     //戻るボタンを押された時の処理
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-            if(keyCode != KeyEvent.KEYCODE_BACK){
-                    finish();
-                    return true;
-                }else{
-                    return false;
-                }
+            if(keyCode != KeyEvent.KEYCODE_BACK) {
+                finish();
+            }
+        return true;
     }
 
 }

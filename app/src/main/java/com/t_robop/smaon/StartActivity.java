@@ -101,7 +101,7 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
             //nullデータを受け取った時の処理
             if(str.equals("aaa") || str2.equals("bbb")){
                 str="xxx";
-                str2="yyy";
+                str2="0.0";
             }
 
             Intent sIntent = new Intent();      //インテント生成
