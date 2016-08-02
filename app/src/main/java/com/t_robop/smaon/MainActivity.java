@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
                         showLoadError();                                // エラーメッセージを表示
                         return;
                     }
+
+                    //現在の日付を取得
                     Date nDate = new Date();
                     SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                     int now = Integer.parseInt((sdf1.format(nDate)).substring(11,13));  //時間を抽出
