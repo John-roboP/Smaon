@@ -25,7 +25,7 @@ public class SettingActivity extends AppCompatActivity {
     String selected;//地方判定用
     String City;//県判定用
 
-    String CityID="0";//livedoorの県のURL末尾のID→未定
+    String CityID="0";//OpenWeatherMapの県のURL末尾のID→未定
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
