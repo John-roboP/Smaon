@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
 
     //戻るボタンを押された時の処理
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-            if(keyCode != KeyEvent.KEYCODE_BACK) {
+            if(keyCode == KeyEvent.KEYCODE_BACK) {
                 finish();
             }
         return true;

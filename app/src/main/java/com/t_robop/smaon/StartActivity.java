@@ -114,6 +114,8 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
             // MainActivity の起動
             startActivity(sIntent);
 
+            StartActivity.this.finish();
+
         }
 
         @Override
