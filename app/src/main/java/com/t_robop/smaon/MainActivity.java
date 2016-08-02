@@ -16,7 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     static TextView txt5;                                   //てーあん
     static TextView txt6;
     static TextView txt4;
+    static TextView txt7;
     static ImageView img;
     static String ondo;                                     //ホリエモンの温度
     static String ondocp;
@@ -52,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
         txt5 = (TextView)findViewById(R.id.textView5);      //提案文
         txt6 = (TextView)findViewById(R.id.textView6);
         txt4 = (TextView)findViewById(R.id.textView4);      //日付
-        img = (ImageView)findViewById(R.id.imageView2);
+        txt7 = (TextView)findViewById(R.id.textView7);      //天気（文）
+        img = (ImageView)findViewById(R.id.imageView2);     //天気（図）
 
         //ラズパイのデータ取得
         Intent intent = getIntent();
@@ -136,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
                     if(Txt < Txt2){             //オープン<ラズパイ
                         txt5.setText("現在予想より温度が高くなっております。");
                         if(tenki.equals("Rain")){
+                            txt7.setText("雨");
                             img.setImageResource(R.drawable.ame);
                             txt5.append("また、雨も降っておりジメジメするでしょう。\n");
                             if(humid >= 80){
@@ -143,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         if(tenki.equals("Clear") && Intime >=6 && Intime <= 15){
+                            txt7.setText("晴れ");
                             img.setImageResource(R.drawable.hare);
                             txt5.append("洗濯物を干すのに良い天気です。\n");
                             if(Txt2 > 30){
@@ -153,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         else if(tenki.equals("Clear") && (Intime >=18 || Intime <= 3)){
+                            txt7.setText("晴れ");
                             img.setImageResource(R.drawable.luna);
                             txt5.append("今夜はきれいな星空が見れるでしょう。\n");
                             if(Txt2 > 30){
@@ -164,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         if(tenki.equals("Clouds")){
+                            txt7.setText("くもり");
                             img.setImageResource(R.drawable.kumo);
                             txt5.append("日は照っておらず比較的涼しくなるでしょう。\n");
                         }
@@ -174,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                     else if(Txt2 < Txt){            //オープン>ラズパイ
                         txt5.setText("現在予想より温度が低くなっております。\n");
                         if(tenki.equals("Rain")){
+                            txt7.setText("雨");
                             img.setImageResource(R.drawable.ame);
                             txt5.append("雨も降っており寒い1日になるでしょう。\n");
                             if(humid >= 80){
@@ -181,14 +187,17 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         if(tenki.equals("Clear") && (Intime >=6 && Intime <= 15)){
+                            txt7.setText("晴れ");
                             img.setImageResource(R.drawable.hare);
                             txt5.append("しかし日が照っているので、暖かくなるでしょう。\n");
                         }
                         else if(tenki.equals("Clear") && (Intime >=18 || Intime <= 3)){
+                            txt7.setText("晴れ");
                             img.setImageResource(R.drawable.luna);
                             txt5.append("今夜は寒くなりそうですので、暖かくしたほうがいいでしょう。\n");
                         }
                         if(tenki.equals("Clouds")){
+                            txt7.setText("くもり");
                             img.setImageResource(R.drawable.kumo);
                             txt5.append("日が雲で隠れており涼しくなるでしょう\n");
                         }
