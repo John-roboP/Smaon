@@ -46,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txt3 = (TextView)findViewById(R.id.textView3);      //温度（ラズパイ）
+        txt3 = (TextView)findViewById(R.id.textView3);      //温度（OWM）
         txt = (TextView)findViewById(R.id.textView);
-        txt2 = (TextView)findViewById(R.id.textView2);      //温度（ホリエモン）
+        txt2 = (TextView)findViewById(R.id.textView2);
         txt5 = (TextView)findViewById(R.id.textView5);      //提案文
-        txt6 = (TextView)findViewById(R.id.textView6);
+        txt6 = (TextView)findViewById(R.id.textView6);      //温度（ラズパイ）
         txt4 = (TextView)findViewById(R.id.textView4);      //日付
         txt7 = (TextView)findViewById(R.id.textView7);      //天気（文）
         img = (ImageView)findViewById(R.id.imageView2);     //天気（図）
