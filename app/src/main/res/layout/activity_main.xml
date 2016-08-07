@@ -10,7 +10,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.t_robop.smaon.MainActivity"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="#FFFFE0">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -28,7 +29,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/waku1">
         <TextView
             android:layout_width="150dp"
             android:layout_height="75dp"
@@ -36,6 +38,7 @@
             android:text="予想温度"
             android:id="@+id/textView2"
             android:layout_gravity="center"
+            android:gravity="center"
             android:textIsSelectable="false" />
 
         <TextView
@@ -44,19 +47,23 @@
             android:textSize="30sp"
             android:text=""
             android:id="@+id/textView3"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:gravity="center"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/waku1">
         <TextView
             android:layout_width="150dp"
             android:layout_height="75dp"
             android:textSize="20sp"
             android:text="現在の温度"
             android:id="@+id/textView"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:gravity="center" />
 
         <TextView
             android:layout_width="150dp"
@@ -65,7 +72,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text=""
             android:id="@+id/textView6"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:gravity="center"/>
     </LinearLayout>
 
     <RelativeLayout
