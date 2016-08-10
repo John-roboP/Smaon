@@ -21,12 +21,12 @@
 
 
         <Button
-            android:id="@+id/week"
+            android:id="@+id/current"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="createLineChartData_week"
-            android:text="週"
+            android:onClick="createLineChartData_current"
+            android:text="今"
             android:textSize="30dp" />
 
         <Button
