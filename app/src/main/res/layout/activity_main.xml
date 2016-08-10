@@ -35,18 +35,18 @@
             android:layout_width="150dp"
             android:layout_height="75dp"
             android:textSize="20sp"
-            android:text="予想温度"
-            android:id="@+id/textView2"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textIsSelectable="false" />
+            android:text="現在の温度"
+            android:id="@+id/textView"
+            android:layout_gravity="center_vertical"
+            android:gravity="center" />
 
         <TextView
             android:layout_width="150dp"
             android:layout_height="75dp"
             android:textSize="30sp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text=""
-            android:id="@+id/textView3"
+            android:id="@+id/textView6"
             android:layout_gravity="center"
             android:gravity="center"/>
     </LinearLayout>
@@ -60,18 +60,18 @@
             android:layout_width="150dp"
             android:layout_height="75dp"
             android:textSize="20sp"
-            android:text="現在の温度"
-            android:id="@+id/textView"
-            android:layout_gravity="center_vertical"
-            android:gravity="center" />
+            android:text="予想温度"
+            android:id="@+id/textView2"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textIsSelectable="false" />
 
         <TextView
             android:layout_width="150dp"
             android:layout_height="75dp"
             android:textSize="30sp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text=""
-            android:id="@+id/textView6"
+            android:id="@+id/textView3"
             android:layout_gravity="center"
             android:gravity="center"/>
     </LinearLayout>
@@ -107,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="25sp"
+            android:textSize="21sp"
             android:layout_gravity="fill"
             android:gravity="top"
             android:text=""

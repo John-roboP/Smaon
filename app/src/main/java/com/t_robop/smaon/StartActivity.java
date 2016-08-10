@@ -20,14 +20,14 @@ import org.json.JSONObject;
 public class StartActivity extends Activity implements LoaderManager.LoaderCallbacks<JSONObject> {
 
     private static final int ADDRESSLOADER_ID = 0;
-    String str="aaa";
-    String str2="bbb";
+    String str = "aaa";
+    String str2 = "bbb";
 
 
     int Level = 0;
 
 
- //   Handler mHandler = new Handler();
+    //   Handler mHandler = new Handler();
 
 
     @Override
@@ -35,93 +35,90 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        SharedPreferences datasy = getSharedPreferences("DataSave",MODE_PRIVATE);    //sharedPreference
-        Level = datasy.getInt("sStart",0);
+        SharedPreferences datasy = getSharedPreferences("DataSave", MODE_PRIVATE);    //sharedPreference
+        Level = datasy.getInt("sStart", 0);
 
 
+        if (Level == 0) {   //初回起動判定→設定画面に飛ばす。
 
 
-        if(Level==0){   //初回起動判定→設定画面に飛ばす。
-
-
-            Intent setIntent =new Intent (this,SettingActivity.class);
+            Intent setIntent = new Intent(this, SettingActivity.class);
 
             startActivity(setIntent); //settingActivity変遷
 
-        }else {
+        } else {
 
             getLoaderManager().restartLoader(ADDRESSLOADER_ID, null, this); //スレッド処理開始
 
 
-
         }
 
 
     }
 
-        @Override
-        public Loader<JSONObject> onCreateLoader ( int id, Bundle args){
+    @Override
+    public Loader<JSONObject> onCreateLoader(int id, Bundle args) {
 
 
-            String url = "http://192.168.1.31";
+        String url = "http://192.168.1.16";
 
-            return new AsyncWorker(this, url);
-        }
+        return new AsyncWorker(this, url);
+    }
 
-        @Override
-        public void onLoadFinished (Loader < JSONObject > loader, JSONObject data){
+    @Override
+    public void onLoadFinished(Loader<JSONObject> loader, JSONObject data) {
 
-            if (data != null) {
+        if (data != null) {
 
-                try {
+            try {
 
-                    JSONArray jsonArray = data.getJSONArray("pidatas"); //pidatasの配列参照
+                JSONArray jsonArray = data.getJSONArray("pidatas"); //pidatasの配列参照
 
-                    JSONObject object = jsonArray.getJSONObject(0); //一番初めのデータを参照,0はdate,1はセルシウス
-                    JSONObject obj1 = jsonArray.getJSONObject(1);
-                    //   String str = (String) object.get("name");
-                    str = object.getString("date");   //strにdate or celsius を代入
-                    str2 = obj1.getString("celsius");
+                JSONObject object = jsonArray.getJSONObject(0); //一番初めのデータを参照,0はdate,1はセルシウス
+                JSONObject obj1 = jsonArray.getJSONObject(1);
+                //   String str = (String) object.get("name");
+                str = object.getString("date");   //strにdate or celsius を代入
+                str2 = obj1.getString("celsius");
 
-                    Log.d("JSONObject", str);
+                Log.d("JSONObject", str);
 
-                 //   str1 = str2;
-                    //String date = jsonObject.getString("name");
-                    Log.d("JSONObject", "JSONObject");
+                //   str1 = str2;
+                //String date = jsonObject.getString("name");
+                Log.d("JSONObject", "JSONObject");
 
-                } catch (JSONException e) {
-                    Log.d("onLoadFinished", "JSONのパースに失敗しました。 JSONException=" + e);
-                }
-
-
-            } else {
-                Log.d("onLoadFinished", "onLoadFinished error!");
+            } catch (JSONException e) {
+                Log.d("onLoadFinished", "JSONのパースに失敗しました。 JSONException=" + e);
             }
 
-            //nullデータを受け取った時の処理
-            if(str.equals("aaa") || str2.equals("bbb")){
-                str="xxx";
-                str2="0.0";
-            }
 
-            Intent sIntent = new Intent();      //インテント生成
-
-            sIntent.putExtra("date",str);       //日付を送っている
-            sIntent.putExtra("temper",str2);        //温度データを送っている
-            sIntent.setClass(this,MainActivity.class);
-
-
-            // MainActivity の起動
-            startActivity(sIntent);
-
-            StartActivity.this.finish();
-
+        } else {
+            Log.d("onLoadFinished", "onLoadFinished error!");
         }
 
-        @Override
-        public void onLoaderReset (Loader < JSONObject > loader) {
-
-
+        //nullデータを受け取った時の処理
+        if (str.equals("aaa") || str2.equals("bbb")) {
+            str = "xxx";
+            str2 = "0.0";
         }
+
+        Intent sIntent = new Intent();      //インテント生成
+
+        sIntent.putExtra("date", str);       //日付を送っている
+        sIntent.putExtra("temper", str2);        //温度データを送っている
+        sIntent.setClass(this, MainActivity.class);
+
+
+        // MainActivity の起動
+        startActivity(sIntent);
+
+        StartActivity.this.finish();
 
     }
+
+    @Override
+    public void onLoaderReset(Loader<JSONObject> loader) {
+
+
+    }
+
+}

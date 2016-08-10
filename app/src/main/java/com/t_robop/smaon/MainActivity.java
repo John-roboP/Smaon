@@ -3,6 +3,7 @@ package com.t_robop.smaon;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -54,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
         txt4 = (TextView)findViewById(R.id.textView4);      //日付
         txt7 = (TextView)findViewById(R.id.textView7);      //天気（文）
         img = (ImageView)findViewById(R.id.imageView2);     //天気（図）
+
+        txt6.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));  //ラズパイ温度のフォントを変更
+
 
         //ラズパイのデータ取得
         Intent intent = getIntent();
