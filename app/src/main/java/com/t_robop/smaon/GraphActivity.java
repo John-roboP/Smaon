@@ -1,6 +1,8 @@
 package com.t_robop.smaon;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +30,11 @@ public class GraphActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         lineChart = (LineChart) findViewById(R.id.line_chart);
+
+        //ラズパイの温度を受け取る
+        SharedPreferences datatem = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
+        String razOndo = datatem.getString("rOndo", "0");
+
     }
 
     //ボタン

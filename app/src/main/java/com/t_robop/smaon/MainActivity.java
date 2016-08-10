@@ -67,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
         cityId = data.getString("Cid", "0");
 
+        SharedPreferences Ondo =getSharedPreferences("DataSave", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor4 = Ondo.edit();
+        editor4.putString("rOndo",Str2);     //初回起動判定を１にする
+        editor4.apply();    //保存
+
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -213,7 +218,6 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     txt5.append("\n体調管理に気を付けましょう。\n");
-
                 }
                 // 実行中
                 public void progressUpdate(int progress) {
