@@ -1,5 +1,8 @@
 package com.t_robop.smaon;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.DragEvent;
@@ -26,15 +29,20 @@ public class GraphActivity extends AppCompatActivity {
     int screen_transition;
     DragEvent dragEvent;
     ScrollView scrollView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         lineChart = (LineChart) findViewById(R.id.line_chart);
         createLineChart();
+        //ラズパイの温度を受け取る
+                SharedPreferences datatem = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
+                String razOndo = datatem.getString("rOndo", "0");
+
 
         lineChart.computeScroll();
-        if(lineChart.onDragEvent(dragEvent)){
+        if (lineChart.onDragEvent(dragEvent)) {
             lineChart.fitScreen();
             //グラフの生成
             lineChart.setData(createLineChartDataWeek());
@@ -75,14 +83,15 @@ public class GraphActivity extends AppCompatActivity {
 
         setEnabledGraphButton(3);
     }
-    public void setEnabledGraphButton(int a){
+
+    public void setEnabledGraphButton(int a) {
         Button button_current = (Button) findViewById(R.id.current);
         Button button_month = (Button) findViewById(R.id.month);
         Button button_year = (Button) findViewById(R.id.year);
         button_current.setEnabled(true);
         button_month.setEnabled(true);
         button_year.setEnabled(true);
-        switch (a){
+        switch (a) {
             case 1:
                 button_current.setEnabled(false);
                 break;
