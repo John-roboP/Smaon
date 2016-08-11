@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     static String Str;                                      //ラズパイパイの日付
     static String Str2;                                     //ラズパイパイの温度
     static String Str2cp;
+    static String gOndo;                                    //Graphactivityに送るための温度
     static double Txt=0.0;                                       //ホリエモンの温度を数値化
     static double Txt2=0.0;                                      //ラズパイパイの温度を数値化
     static String cityId;
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences Ondo =getSharedPreferences("DataSave", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor4 = Ondo.edit();
-        editor4.putString("rOndo",Str2);     //初回起動判定を１にする
+        editor4.putString("rOndo",gOndo);     //初回起動判定を１にする
         editor4.apply();    //保存
 
 
@@ -113,10 +114,11 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject tenkiObj = tenkiArray.getJSONObject(0);           //一番初めのデータを取得
                             time = eventObj.getString("dt_txt");                        //日付を取得
                             Intime = Integer.parseInt(time.substring(11,13));       //時間を抽出
+                            JSONObject event = eventObj.getJSONObject("main");
+                            gOndo = event.getString("temp");   //GraphActivityに送る温度を格納
                             if((now - Intime) < 3){
                                 time = sdf1.format(nDate);
                                 tenki = tenkiObj.getString("main");                         //その時の天気を取得
-                                JSONObject event = eventObj.getJSONObject("main");
                                 ondo = event.getString("temp");                              //温度を取得
                                 humid = event.getInt("humidity");                           //湿度を取得
                                 txt3.setText(ondo);
