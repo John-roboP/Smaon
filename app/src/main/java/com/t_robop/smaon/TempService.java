@@ -36,6 +36,13 @@ public class TempService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand");
 
+        try{
+            Thread.sleep(60000);     //ミリ秒sleep2分
+        }catch (InterruptedException e){        //sleep処理.遅延
+        }
+//TODO サービスの起動と時間での分岐
+
+
         Context context = getBaseContext();
 
         Intent Vintent = new Intent(context, TempService.class);
@@ -43,9 +50,12 @@ public class TempService extends Service {
         PendingIntent pendingIntent = PendingIntent.getService(context, -1, Vintent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        alarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), AlarmManager.INTERVAL_HOUR, pendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(),AlarmManager.INTERVAL_HOUR, pendingIntent);
+
+        Log.d(TAG, "Alarm");
 
         return START_STICKY;
+
     }
 
     @Override
@@ -53,5 +63,6 @@ public class TempService extends Service {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
     }
+
 
 }

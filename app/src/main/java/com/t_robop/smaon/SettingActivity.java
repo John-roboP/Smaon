@@ -25,7 +25,7 @@ public class SettingActivity extends AppCompatActivity {
     String selected;//地方判定用
     String City;//県判定用
 
-    String CityID="0";//livedoorの県のURL末尾のID→未定
+    String CityID="0";//OpenWeatherMapの県のURL末尾のID→未定
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +33,10 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
 
         SharedPreferences OnceSta =getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor3 = OnceSta.edit();
-        editor3.putInt("sStart",1);     //初回起動判定を１にする
-        editor3.apply();    //保存
+        SharedPreferences.Editor editorX = OnceSta.edit();
+        editorX.putInt("sStart",1);     //初回起動判定を１にする
+        editorX.apply();    //保存
+
 
         mSpinner1 = (Spinner) findViewById(R.id.spinner);
         Sphokkai = (Spinner) findViewById(R.id.spinner2);
@@ -190,9 +191,12 @@ public class SettingActivity extends AppCompatActivity {
         });
     }
 
-    public void OKbutton(View v){
+    public void OKbutton(View v){   //決定ボタン
+
+        //TODO　ここにedittextからURLを取得する文を追加する。そしてSharedpreで保存。
 
         Sharepre Sharepre = new Sharepre(this.getApplicationContext());     // インスタンス化
+
 
         switch (spHantei){
             case 0:
