@@ -2,6 +2,7 @@ package com.t_robop.smaon;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -70,7 +71,10 @@ public class GraphActivity extends AppCompatActivity {
 
     }
 
-
+    public  void moveMain(View v){
+        Intent intent = new Intent(GraphActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
 
     //グラフの設定
     private void createLineChart() {
