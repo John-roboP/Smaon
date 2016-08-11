@@ -3,6 +3,7 @@ package com.t_robop.smaon;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -46,14 +47,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txt3 = (TextView)findViewById(R.id.textView3);      //温度（ラズパイ）
+        txt3 = (TextView)findViewById(R.id.textView3);      //温度（OWM）
         txt = (TextView)findViewById(R.id.textView);
-        txt2 = (TextView)findViewById(R.id.textView2);      //温度（ホリエモン）
+        txt2 = (TextView)findViewById(R.id.textView2);
         txt5 = (TextView)findViewById(R.id.textView5);      //提案文
-        txt6 = (TextView)findViewById(R.id.textView6);
+        txt6 = (TextView)findViewById(R.id.textView6);      //温度（ラズパイ）
         txt4 = (TextView)findViewById(R.id.textView4);      //日付
         txt7 = (TextView)findViewById(R.id.textView7);      //天気（文）
         img = (ImageView)findViewById(R.id.imageView2);     //天気（図）
+
+        txt6.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));  //ラズパイ温度のフォントを変更
+
 
         //ラズパイのデータ取得
         Intent intent = getIntent();
@@ -62,6 +66,11 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
         cityId = data.getString("Cid", "0");
+
+        SharedPreferences Ondo =getSharedPreferences("DataSave", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor4 = Ondo.edit();
+        editor4.putString("rOndo",Str2);     //初回起動判定を１にする
+        editor4.apply();    //保存
 
 
         if (savedInstanceState == null) {
@@ -90,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
                         showLoadError();                                // エラーメッセージを表示
                         return;
                     }
+
+                    //現在の日付を取得
                     Date nDate = new Date();
                     SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                     int now = Integer.parseInt((sdf1.format(nDate)).substring(11,13));  //時間を抽出
@@ -207,7 +218,6 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     txt5.append("\n体調管理に気を付けましょう。\n");
-
                 }
                 // 実行中
                 public void progressUpdate(int progress) {
