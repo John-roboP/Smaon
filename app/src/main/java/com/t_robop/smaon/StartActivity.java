@@ -27,9 +27,10 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
     int Level = 0;
 
 
-//TODO 戻るボタンを押したとき、戻れないようにする処理を追加
+//TODO 戻るボタンを押したとき、戻れないようにする処理を追加/////
 
-    @Override
+
+   @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
