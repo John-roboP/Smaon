@@ -27,16 +27,18 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
     int Level = 0;
 
 
- //   Handler mHandler = new Handler();
+//TODO 戻るボタンを押したとき、戻れないようにする処理を追加/////
+//ok
 
-
-    @Override
+   @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
         SharedPreferences datasy = getSharedPreferences("DataSave",MODE_PRIVATE);    //sharedPreference
         Level = datasy.getInt("sStart",0);
+
+
 
 
 
@@ -63,7 +65,7 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
         public Loader<JSONObject> onCreateLoader ( int id, Bundle args){
 
 
-            String url = "http://192.168.1.31";
+            String url = "http://japantelecom.sakura.ne.jp/";
 
             return new AsyncWorker(this, url);
         }
