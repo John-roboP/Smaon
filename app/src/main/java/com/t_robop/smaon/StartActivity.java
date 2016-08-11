@@ -28,7 +28,7 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
 
 
 //TODO 戻るボタンを押したとき、戻れないようにする処理を追加/////
-
+//ok
 
    @Override
     protected void onCreate(Bundle savedInstanceState) {
