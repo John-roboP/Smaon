@@ -13,6 +13,13 @@
         android:layout_margin="16dp" />
 
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textView8" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -25,7 +32,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:onClick="createLineChartData_current"
+            android:onClick="createLineChartDataCurrent"
             android:text="今"
             android:textSize="30dp" />
 
@@ -34,7 +41,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:onClick="createLineChartData_month"
+            android:onClick="createLineChartDataMonth"
             android:text="月"
             android:textSize="30dp" />
 
@@ -43,7 +50,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:onClick="createLineChartData_year"
+            android:onClick="createLineChartDataYear"
             android:text="年"
             android:textSize="30dp" />
 
