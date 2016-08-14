@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -23,16 +24,16 @@ import com.github.mikephil.charting.data.Entry;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-//
+
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
+    int screen_transition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         lineChart = (LineChart) findViewById(R.id.line_chart);
-        TextView textView =(TextView) findViewById(R.id.textView8);
 
     }
 
@@ -49,6 +50,7 @@ public class GraphActivity extends AppCompatActivity {
         createLineChart();
         //グラフの生成
         lineChart.setData(createLineChartDataCurrent());
+        setEnabledGraphButton(1);
     }
 
     //月刊グラフのボタン
@@ -56,6 +58,11 @@ public class GraphActivity extends AppCompatActivity {
         createLineChart();
         //グラフの生成
         lineChart.setData(createLineChartDataMonth());
+        lineChart.fitScreen();
+        lineChart.setVisibleXRangeMaximum(6F);    //画面拡大を1周間の気温まで
+        //グラフ画面専用変数の初期化
+        screen_transition = 0;
+        setEnabledGraphButton(2);
     }
 
     //年間グラフのボタン
@@ -63,16 +70,42 @@ public class GraphActivity extends AppCompatActivity {
         createLineChart();
         //グラフの生成
         lineChart.setData(createLineChartDataYear());
+        setEnabledGraphButton(3);
     }
 
+    public void setEnabledGraphButton(int a) {
+        Button button_current = (Button) findViewById(R.id.current);
+        Button button_month = (Button) findViewById(R.id.month);
+        Button button_year = (Button) findViewById(R.id.year);
+        button_current.setEnabled(true);
+        button_month.setEnabled(true);
+        button_year.setEnabled(true);
+        switch (a) {
+            case 1:
+                button_current.setEnabled(false);
+                break;
+            case 2:
+                button_month.setEnabled(false);
+                break;
+            case 3:
+                button_year.setEnabled(false);
+                break;
+        }
+    }
     //グラフの左移動
     public void createLeft_move(View v) {
-
+        if (screen_transition > 0) {
+            screen_transition -= 7;
+            lineChart.moveViewToX(screen_transition);
+        }
     }
 
     //グラフの右移動
     public void createRight_move(View v) {
-
+        if (screen_transition < 24) {
+            screen_transition += 7;
+            lineChart.moveViewToX(screen_transition);
+        }
     }
 
     public  void moveMain(View v){

@@ -12,14 +12,6 @@
         android:layout_height="408dp"
         android:layout_margin="16dp" />
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/textView8" />
-
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
