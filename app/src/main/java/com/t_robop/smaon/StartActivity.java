@@ -31,8 +31,6 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
     int penint = 0;
 
 
-    //   Handler mHandler = new Handler();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
