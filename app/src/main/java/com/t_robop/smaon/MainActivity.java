@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         txt6.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));  //ラズパイ温度のフォントを変更
 
 
+
         //ラズパイのデータ取得
         Intent intent = getIntent();
         Str = intent.getStringExtra("date");
