@@ -109,7 +109,7 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="177dp">
+        android:layout_height="152dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -123,5 +123,14 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="93dp"
+        android:layout_height="wrap_content"
+        android:text="グラフ表示"
+        android:onClick="onClickGraph"
+        android:id="@+id/button"
+        android:layout_gravity="right" />
 
 </LinearLayout>

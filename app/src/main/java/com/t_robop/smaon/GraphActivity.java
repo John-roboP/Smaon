@@ -24,23 +24,25 @@ import java.util.Date;
 //
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
+    static String razOndo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         lineChart = (LineChart) findViewById(R.id.line_chart);
+        SharedPreferences datatem = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
+        razOndo = datatem.getString("rOndo", "0");                                           //ラズパイの温度を受け取る
     }
 
-    //ラズパイの温度を受け取る
-    SharedPreferences datatem = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
-    String razOndo = datatem.getString("rOndo", "0");
+
+
 
 
 
     //ボタン
     //週刊グラフのボタン
-    public void createLineChartData_week(View v) {
+    public void createLineChartData_current(View v) {
         createLineChart();
         //グラフの生成
         lineChart.setData(createLineChartDataWeek());
