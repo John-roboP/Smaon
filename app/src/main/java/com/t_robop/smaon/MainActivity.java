@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,12 +36,14 @@ public class MainActivity extends AppCompatActivity {
     static String Str;                                      //ラズパイパイの日付
     static String Str2;                                     //ラズパイパイの温度
     static String Str2cp;
+    static String gOndo;
     static double Txt=0.0;                                       //ホリエモンの温度を数値化
     static double Txt2=0.0;                                      //ラズパイパイの温度を数値化
     static String cityId;
     static String time;
     static int humid=0;
     static int Intime=0;
+    static Sharepre Sharepre;
 
 
     @Override
@@ -68,10 +71,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
         cityId = data.getString("Cid", "0");
 
-        SharedPreferences Ondo =getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor4 = Ondo.edit();
-        editor4.putString("rOndo",Str2);     //初回起動判定を１にする
-        editor4.apply();    //保存
+        Sharepre = new Sharepre(this.getApplicationContext());
+
 
 
         if (savedInstanceState == null) {
@@ -84,12 +85,14 @@ public class MainActivity extends AppCompatActivity {
     public static class PlaceholderFragment extends Fragment {
         private final String uri = "http://api.openweathermap.org/data/2.5/forecast/city?id="+cityId+"&APPID=d943f13cb21447ca156076c493e2f236";             //JSONデータのあるURLを設定
 
+
         public PlaceholderFragment() {
         }
 
         @Override
         public void onStart() {
             super.onStart();
+
             AsyncJsonLoader asyncJsonLoader = new AsyncJsonLoader(new AsyncJsonLoader.AsyncCallback() {
                 // 実行前
                 public void preExecute() {
@@ -114,10 +117,12 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject tenkiObj = tenkiArray.getJSONObject(0);           //一番初めのデータを取得
                             time = eventObj.getString("dt_txt");                        //日付を取得
                             Intime = Integer.parseInt(time.substring(11,13));       //時間を抽出
+                            JSONObject event = eventObj.getJSONObject("main");
+                            gOndo = event.getString("temp"); //GraphActivityに送る温度を格納
+                            Sharepre.graTemp(gOndo);
                             if((now - Intime) < 3){
                                 time = sdf1.format(nDate);
                                 tenki = tenkiObj.getString("main");                         //その時の天気を取得
-                                JSONObject event = eventObj.getJSONObject("main");
                                 ondo = event.getString("temp");                              //温度を取得
                                 humid = event.getInt("humidity");                           //湿度を取得
                                 txt3.setText(ondo);
@@ -245,6 +250,11 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         return true;
+    }
+
+    public void onClickGraph(View v){
+        Intent gIntent = new Intent(getApplicationContext(), GraphActivity.class);
+        startActivity(gIntent);
     }
 
 }
