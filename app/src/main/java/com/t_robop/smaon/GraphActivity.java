@@ -2,11 +2,13 @@ package com.t_robop.smaon;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -30,6 +32,8 @@ public class GraphActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         lineChart = (LineChart) findViewById(R.id.line_chart);
+        TextView textView =(TextView) findViewById(R.id.textView8);
+
     }
 
     //ラズパイの温度を受け取る
@@ -38,23 +42,24 @@ public class GraphActivity extends AppCompatActivity {
 
 
 
+
     //ボタン
     //週刊グラフのボタン
-    public void createLineChartData_week(View v) {
+    public void createLineChartDataCurrent(View v) {
         createLineChart();
         //グラフの生成
-        lineChart.setData(createLineChartDataWeek());
+        lineChart.setData(createLineChartDataCurrent());
     }
 
     //月刊グラフのボタン
-    public void createLineChartData_month(View v) {
+    public void createLineChartDataMonth(View v) {
         createLineChart();
         //グラフの生成
         lineChart.setData(createLineChartDataMonth());
     }
 
     //年間グラフのボタン
-    public void createLineChartData_year(View v) {
+    public void createLineChartDataYear(View v) {
         createLineChart();
         //グラフの生成
         lineChart.setData(createLineChartDataYear());
@@ -70,7 +75,10 @@ public class GraphActivity extends AppCompatActivity {
 
     }
 
-
+    public  void moveMain(View v){
+        Intent intent = new Intent(GraphActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
 
     //グラフの設定
     private void createLineChart() {
@@ -111,7 +119,7 @@ public class GraphActivity extends AppCompatActivity {
 
 
     //週間グラフを作成
-    private LineData createLineChartDataWeek() {
+    private LineData createLineChartDataCurrent() {
         ArrayList<LineDataSet> LineDataSets = new ArrayList<>();
 
 

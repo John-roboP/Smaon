@@ -2,6 +2,9 @@ package com.t_robop.smaon;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
@@ -20,11 +23,12 @@ import org.json.JSONObject;
 public class StartActivity extends Activity implements LoaderManager.LoaderCallbacks<JSONObject> {
 
     private static final int ADDRESSLOADER_ID = 0;
-    String str = "aaa";
-    String str2 = "bbb";
+    String  str = "aaa";
+    public String str2 = "bbb";
 
 
     int Level = 0;
+    int penint = 0;
 
 
     //   Handler mHandler = new Handler();
@@ -35,8 +39,11 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+
         SharedPreferences datasy = getSharedPreferences("DataSave", MODE_PRIVATE);    //sharedPreference
-        Level = datasy.getInt("sStart", 0);
+        Level = datasy.getInt("sStart", 0); //初期値0
+        penint = datasy.getInt("tdata",0);
+
 
 
         if (Level == 0) {   //初回起動判定→設定画面に飛ばす。
