@@ -35,7 +35,8 @@ public class GraphActivity extends AppCompatActivity {
 
     //ラズパイの温度を受け取る
     SharedPreferences datatem = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
-    String razOndo = datatem.getString("rOndo", "0");
+    String razOndo = datatem.getString("owmOndo", "0");
+
 
     //ボタン
     //5日分グラフのボタン

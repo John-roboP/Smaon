@@ -107,7 +107,8 @@ public class MainActivity extends AppCompatActivity {
                     //現在の日付を取得
                     Date nDate = new Date();
                     SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                    int now = Integer.parseInt((sdf1.format(nDate)).substring(11,13));  //時間を抽出
+                    int now = Integer.parseInt((sdf1.format(nDate)).substring(11,13));  //時間を抽出(NOW)
+                    int day = Integer.parseInt((sdf1.format(nDate)).substring(9,10));   //日にちを抽出(NOW)
 
                     try{
                         JSONArray eventArray = result.getJSONArray("list");         //配列データを取得
@@ -116,20 +117,21 @@ public class MainActivity extends AppCompatActivity {
                             JSONArray tenkiArray = eventObj.getJSONArray("weather");    //"main"配列の中身を取得
                             JSONObject tenkiObj = tenkiArray.getJSONObject(0);           //一番初めのデータを取得
                             time = eventObj.getString("dt_txt");                        //日付を取得
-                            Intime = Integer.parseInt(time.substring(11,13));       //時間を抽出
+                            Intime = Integer.parseInt(time.substring(11,13));       //時間を抽出(OWM)
+                            int intDay = Integer.parseInt(time.substring(9,10));    //日にちを抽出(OWM)
                             JSONObject event = eventObj.getJSONObject("main");
                             gOndo = event.getString("temp"); //GraphActivityに送る温度を格納
-                            Sharepre.graTemp(gOndo);
-                            if((now - Intime) < 3){
+                            if((now - Intime) < 3 && (day == intDay)){
                                 time = sdf1.format(nDate);
                                 tenki = tenkiObj.getString("main");                         //その時の天気を取得
                                 ondo = event.getString("temp");                              //温度を取得
                                 humid = event.getInt("humidity");                           //湿度を取得
                                 txt3.setText(ondo);
                                 txt4.setText(time);
-                                break;
+                                //break;
                             }
                         }
+                        Sharepre.graTemp(gOndo);
                     }
                     catch(JSONException e){
                         e.printStackTrace();
