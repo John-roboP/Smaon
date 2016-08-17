@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static class PlaceholderFragment extends Fragment {
-        private final String uri = "http://api.openweathermap.org/data/2.5/forecast/city?id="+cityId+"&APPID=d943f13cb21447ca156076c493e2f236";             //JSONデータのあるURLを設定
+        private final String uri = "c";             //JSONデータのあるURLを設定
 
 
         public PlaceholderFragment() {
