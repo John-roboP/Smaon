@@ -198,7 +198,11 @@ public class MainActivity extends AppCompatActivity {
                         if(tenki.equals("Clouds")){
                             txt7.setText("くもり");
                             img.setImageResource(R.drawable.kumo);
-                            txt5.append("日は照っておらず比較的涼しくなるでしょう。\n");
+                            if(humid < 80){
+                                txt5.append("日は照っておらず比較的涼しくなるでしょう。\n");
+                            }else{
+                                txt5.append("太陽は雲に隠れていますが、湿度が高くとても蒸し暑くなるでしょう。\n");
+                            }
                         }
                         if(Txt2-Txt > 5){
                             txt5.append("水分補給をこまめに行いましょう。\n");
@@ -234,6 +238,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
+                    if(humid<30){
+                        txt5.append("空気が乾いているので、湿度を保つようにしましょう。\n");
+                    }
                     txt5.append("\n体調管理に気を付けましょう。\n");
                 }
                 // 実行中
