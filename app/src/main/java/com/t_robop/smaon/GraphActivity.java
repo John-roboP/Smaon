@@ -1,8 +1,6 @@
 package com.t_robop.smaon;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
@@ -25,77 +23,59 @@ import java.util.Date;
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
     int screen_transition;
-    float monthlyTemp[] = new float[38];
+    float every3Times[] = new float[39];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         lineChart = (LineChart) findViewById(R.id.line_chart);
-        //ラズパイの温度を受け取る
-        Intent oIntent = getIntent();
-        String[] razOndo = oIntent.getStringArrayExtra("owmOndo");
 
-        int i;
-        for(i = 0; i < 38; i++){
-            monthlyTemp[i] = Float.parseFloat(razOndo[i]);
-            if(monthlyTemp[i] > 0.0){
-                monthlyTemp[i] -= 273.15;
+        Intent oIntent = getIntent();
+        String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
+
+        for (int i = 0; i < 39; i++) {
+            every3Times[i] = Float.parseFloat(owmTemp[i]);
+            if (every3Times[i] > 0.0) {
+                every3Times[i] -= 273.15;
             }
         }
     }
 
     //ボタン
-    //5日分グラフのボタン
-    public void createLineChartDataCurrent(View v) {
+    //時刻ごとのグラフボタン
+    public void setLineChartDataTime(View v) {
         createLineChart();
         //グラフの生成
-        lineChart.setData(createLineChartDataCurrent());
+        lineChart.setData(createLineChartDataTime());
         setEnabledGraphButton(1);
     }
 
-    //月間グラフのボタン
-    public void createLineChartDataMonth(View v) {
+    //5日分グラフのボタン
+    public void setLineChartDataCurrent(View v) {
         createLineChart();
         //グラフの生成
-        lineChart.setData(createLineChartDataMonth());
-        lineChart.fitScreen();
-        lineChart.setVisibleXRangeMaximum(6F);    //画面拡大を1周間の気温まで
-        //グラフ画面専用変数の初期化
-        screen_transition = 0;
+        lineChart.setData(createLineChartDataCurrent());
         setEnabledGraphButton(2);
     }
 
-    //年間グラフのボタン
-    public void createLineChartDataYear(View v) {
-        createLineChart();
-        //グラフの生成
-        lineChart.setData(createLineChartDataYear());
-        setEnabledGraphButton(3);
-    }
-
-    public void setEnabledGraphButton(int a) {
+    public void setEnabledGraphButton(int num) {
         Button button_current = (Button) findViewById(R.id.current);
-        Button button_month = (Button) findViewById(R.id.month);
-        Button button_year = (Button) findViewById(R.id.year);
+        Button button_date = (Button) findViewById(R.id.time);
         button_current.setEnabled(true);
-        button_month.setEnabled(true);
-        button_year.setEnabled(true);
-        switch (a) {
+        button_date.setEnabled(true);
+        switch (num) {
             case 1:
-                button_current.setEnabled(false);
+                button_date.setEnabled(false);
                 break;
             case 2:
-                button_month.setEnabled(false);
-                break;
-            case 3:
-                button_year.setEnabled(false);
+                button_current.setEnabled(false);
                 break;
         }
     }
 
     //グラフの左移動
-    public void createLeft_move(View v) {
+    public void leftMove(View v) {
         if (screen_transition > 0) {
             screen_transition -= 7;
             lineChart.moveViewToX(screen_transition);
@@ -103,14 +83,14 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     //グラフの右移動
-    public void createRight_move(View v) {
+    public void rightMove(View v) {
         if (screen_transition < 24) {
             screen_transition += 7;
             lineChart.moveViewToX(screen_transition);
         }
     }
 
-    public  void moveMain(View v){
+    public void moveMain(View v) {
         Intent intent = new Intent(GraphActivity.this, MainActivity.class);
         startActivity(intent);
     }
@@ -164,22 +144,42 @@ public class GraphActivity extends AppCompatActivity {
         return lineData;
     }
 
-
-    float annualTemp[] = {4.5F, 4.8F, 9.4F, 14.1F, 20.8F, 22.3F, 26.6F, 26.6F, 22.5F, 17.8F, 13.2F, 8.1F};
-
-    //週間グラフを作成
-    private LineData createLineChartDataCurrent() {
-        // androidから日を取得
-        int day = getDay(new Date());
-        //月末までの日数
-        int dayLimitLength = getLastDay(new Date()) - getDay(new Date());
-
+    //時刻グラフを作成
+    private LineData createLineChartDataTime() {
         /*
-        週間の制限
+        制限
         アプリ起動時に29日かつ、その月が31日までの時、
         「29,30,31,1,2」日のデータになるように
         ラベル、値をループさせる
          */
+        ArrayList<String> xValues = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            xValues.add((i * 3) + "時");
+        }
+
+        // 週間気温
+        ArrayList<Entry> graphValues = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            graphValues.add(new Entry(every3Times[i], i));
+        }
+
+        LineData lineData = setChart(graphValues, xValues);
+        return lineData;
+    }
+
+    //5日間グラフを作成
+    private LineData createLineChartDataCurrent() {
+        /*
+        制限
+        アプリ起動時に29日かつ、その月が31日までの時、
+        「29,30,31,1,2」日のデータになるように
+        ラベル、値をループさせる
+         */
+        // androidから日を取得
+        int day = getDay(new Date());
+        //月末までの日数
+        int dayLimitLength = getLastDay(new Date()) - getDay(new Date());
+        //ラベルの格納
         ArrayList<String> xValues = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             dayLimitLength--;
@@ -189,52 +189,17 @@ public class GraphActivity extends AppCompatActivity {
             xValues.add((i + day) + "日");
         }
 
-        // 週間気温
+
+        // 値の格納
         ArrayList<Entry> graphValues = new ArrayList<>();
+        float total=0;
         for (int i = 0; i < 5; i++) {
-            graphValues.add(new Entry(monthlyTemp[i], i));
-        }
-
-        LineData lineData = setChart(graphValues, xValues);
-        return lineData;
-    }
-
-    // 月間グラフを作成
-    private LineData createLineChartDataMonth() {
-        // androidから日付を取得
-        int lastDay = getLastDay(new Date());
-
-        ArrayList<String> xValues = new ArrayList<>();
-        for (int i = 0; i < lastDay; i++) {
-            xValues.add(String.valueOf(i + 1));
-        }
-
-        // 月間気温
-        ArrayList<Entry> graphValues = new ArrayList<>();
-        for (int i = 0; i < lastDay; i++) {
-            graphValues.add(new Entry(monthlyTemp[i], i));
-        }
-
-        LineData lineData = setChart(graphValues, xValues);
-        return lineData;
-    }
-
-    // 年間グラフを作成
-    private LineData createLineChartDataYear() {
-        ArrayList<LineDataSet> LineDataSets = new ArrayList<>();
-        lineChart.fitScreen();
-
-        // X軸のラベル
-        ArrayList<String> xValues = new ArrayList<>();
-        String monthNum[] = {"1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"};
-        for (int i = 0; i < 12; i++) {
-            xValues.add(monthNum[i]);
-        }
-
-        // 年間気温
-        ArrayList<Entry> graphValues = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
-            graphValues.add(new Entry(annualTemp[i], i));
+            int index;
+            for (int j = 0; j < 8; j++) {
+                index =(i*8)+j+1;
+                total += every3Times[index];
+            }
+            graphValues.add(new Entry((total / 8), i));
         }
 
         LineData lineData = setChart(graphValues, xValues);
