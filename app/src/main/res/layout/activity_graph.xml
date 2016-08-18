@@ -18,32 +18,22 @@
         android:layout_gravity="center_horizontal"
         android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/date"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="setLineChartDataTime"
+            android:text="時"
+            android:textSize="30dp" />
 
         <Button
             android:id="@+id/current"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:onClick="createLineChartDataCurrent"
-            android:text="今"
-            android:textSize="30dp" />
-
-        <Button
-            android:id="@+id/month"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:onClick="createLineChartDataMonth"
-            android:text="月"
-            android:textSize="30dp" />
-
-        <Button
-            android:id="@+id/year"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:onClick="createLineChartDataYear"
-            android:text="年"
+            android:onClick="setLineChartDataCurrent"
+            android:text="日"
             android:textSize="30dp" />
 
         <Button
@@ -51,7 +41,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:onClick="createLeft_move"
+            android:onClick="leftMove"
             android:text="←"
             android:textSize="30dp" />
 
@@ -60,7 +50,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:onClick="createRight_move"
+            android:onClick="rightMove"
             android:text="→"
             android:textSize="30dp" />
 
