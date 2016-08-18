@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,20 +31,23 @@ public class MainActivity extends AppCompatActivity {
     static TextView txt4;
     static TextView txt7;
     static ImageView img;
-    static String ondo;                                     //ホリエモンの温度
-    static String ondocp;
+    static String ondo;                                     //OWMの温度
+    static String ondocp;                                   //OWMの温度（計算用）
     static String tenki;                                    //その日の天気
-    static String Str;                                      //ラズパイパイの日付
-    static String Str2;                                     //ラズパイパイの温度
-    static String Str2cp;
+    static String Str;                                      //ラズパイの日付
+    static String Str2;                                     //ラズパイの温度
+    static String Str2cp;                                   //ラズパイの温度（計算用）
     static String gOndo;
     static double Txt=0.0;                                       //ホリエモンの温度を数値化
     static double Txt2=0.0;                                      //ラズパイパイの温度を数値化
     static String cityId;
-    static String time;
+    static String time;                                     //OWMの時刻
+    static int gTime;                                       //timeをGraphActivityに送るために格納
+    static String nTime;                                    //現在時刻
     static int humid=0;
     static int Intime=0;
     static Sharepre Sharepre;
+    static String[] gaOndo = new String[37];
 
 
     @Override
@@ -58,10 +62,9 @@ public class MainActivity extends AppCompatActivity {
         txt4 = (TextView)findViewById(R.id.textView4);      //日付
         txt7 = (TextView)findViewById(R.id.textView7);      //天気（文）
         img = (ImageView)findViewById(R.id.imageView2);     //天気（図）
+        Button btn = (Button)findViewById(R.id.button2);
 
         txt6.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));  //ラズパイ温度のフォントを変更
-
-
 
         //ラズパイのデータ取得
         Intent intent = getIntent();
@@ -73,18 +76,22 @@ public class MainActivity extends AppCompatActivity {
 
         Sharepre = new Sharepre(this.getApplicationContext());
 
-
-
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+        btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container, new PlaceholderFragment())
+                        .commit();
+            }
+        });
     }
 
     public static class PlaceholderFragment extends Fragment {
         private final String uri = "http://api.openweathermap.org/data/2.5/forecast/city?id="+cityId+"&APPID=d943f13cb21447ca156076c493e2f236";             //JSONデータのあるURLを設定
-
 
         public PlaceholderFragment() {
         }
@@ -92,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onStart() {
             super.onStart();
-
             AsyncJsonLoader asyncJsonLoader = new AsyncJsonLoader(new AsyncJsonLoader.AsyncCallback() {
                 // 実行前
                 public void preExecute() {
@@ -107,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
                     //現在の日付を取得
                     Date nDate = new Date();
                     SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                    int now = Integer.parseInt((sdf1.format(nDate)).substring(11,13));  //時間を抽出
+                    int now = Integer.parseInt((sdf1.format(nDate)).substring(11,13));  //時間を抽出(NOW)
+                    int day = Integer.parseInt((sdf1.format(nDate)).substring(8,10));   //日にちを抽出(NOW)
 
                     try{
                         JSONArray eventArray = result.getJSONArray("list");         //配列データを取得
@@ -116,18 +123,19 @@ public class MainActivity extends AppCompatActivity {
                             JSONArray tenkiArray = eventObj.getJSONArray("weather");    //"main"配列の中身を取得
                             JSONObject tenkiObj = tenkiArray.getJSONObject(0);           //一番初めのデータを取得
                             time = eventObj.getString("dt_txt");                        //日付を取得
-                            Intime = Integer.parseInt(time.substring(11,13));       //時間を抽出
-                            JSONObject event = eventObj.getJSONObject("main");
-                            gOndo = event.getString("temp"); //GraphActivityに送る温度を格納
-                            Sharepre.graTemp(gOndo);
-                            if((now - Intime) < 3){
-                                time = sdf1.format(nDate);
+                            Intime = Integer.parseInt(time.substring(11,13));       //時間を抽出(OWM)
+                            int intDay = Integer.parseInt(time.substring(8,10));    //日にちを抽出(OWM)
+                            JSONObject event = eventObj.getJSONObject("main");      //天気データを参照
+                            gOndo = event.getString("temp");                        //GraphActivityに送る温度を格納
+                            gaOndo[i] = gOndo;                                      //gOndoを配列化してGraphActivityに送る
+                            if(i==0){
+                                gTime = Intime;
+                            }
+                            if((Math.abs(now - Intime)) <= 3 && (day == intDay)){
+                                nTime = sdf1.format(nDate);
                                 tenki = tenkiObj.getString("main");                         //その時の天気を取得
                                 ondo = event.getString("temp");                              //温度を取得
                                 humid = event.getInt("humidity");                           //湿度を取得
-                                txt3.setText(ondo);
-                                txt4.setText(time);
-                                break;
                             }
                         }
                     }
@@ -136,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
                         showLoadError(); // エラーメッセージを表示
                     }
 
-                    txt6.setText(Str2);
                     //ラズパイとオープンウェザーの温度をそれぞれコピー
                     ondocp = ondo.substring(0,ondo.length());
                     Str2cp = Str2.substring(0,Str2.length());
@@ -148,8 +155,9 @@ public class MainActivity extends AppCompatActivity {
                     }catch(NumberFormatException e){
 
                     }
-
-                    txt3.setText(String.valueOf(Txt));
+                    txt3.setText(String.valueOf(Txt));                          //OWMの温度をテキストビューに格納
+                    txt6.setText(Str2);                                         //ラズパイの温度をテキストビューに格納
+                    txt4.setText(nTime);                                         //現在時刻をテキストビューに格納
 
                     if(Txt < Txt2){             //オープン<ラズパイ
                         txt5.setText("現在予想より温度が高くなっております。");
@@ -170,6 +178,9 @@ public class MainActivity extends AppCompatActivity {
                             }
                             if(Txt2 < 20){
                                 txt5.append("ポカポカして暖かい一日になるでしょう。\n");
+                            }
+                            if(humid >= 80){
+                                txt5.append("湿度も高く蒸し暑い日になります。\n");
                             }
                         }
                         else if(tenki.equals("Clear") && (Intime >=18 || Intime <= 3)){
@@ -243,7 +254,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     //戻るボタンを押された時の処理
     public boolean onKeyDown(int keyCode, KeyEvent event) {
             if(keyCode == KeyEvent.KEYCODE_BACK) {
@@ -251,9 +261,11 @@ public class MainActivity extends AppCompatActivity {
             }
         return true;
     }
-
+    //MainActivity→GraphActivityに遷移
     public void onClickGraph(View v){
         Intent gIntent = new Intent(getApplicationContext(), GraphActivity.class);
+        gIntent.putExtra("owmOndo",gaOndo);
+        gIntent.putExtra("owmDate",gTime);
         startActivity(gIntent);
     }
 
