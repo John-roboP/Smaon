@@ -24,7 +24,7 @@ public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
     int screen_transition;
     float every3Times[] = new float[39];
-
+    int owmDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +33,7 @@ public class GraphActivity extends AppCompatActivity {
 
         Intent oIntent = getIntent();
         String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
-        int owmDate = oIntent.getIntExtra("owmDate",0);
+        owmDate = oIntent.getIntExtra("owmDate",0);
 
         for (int i = 0; i < 39; i++) {
             every3Times[i] = Float.parseFloat(owmTemp[i]);
@@ -153,9 +153,10 @@ public class GraphActivity extends AppCompatActivity {
         「29,30,31,1,2」日のデータになるように
         ラベル、値をループさせる
          */
+
         ArrayList<String> xValues = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            xValues.add((i * 3) + "時");
+            xValues.add(owmDate+(i * 3) + "時");
         }
 
         // 週間気温
