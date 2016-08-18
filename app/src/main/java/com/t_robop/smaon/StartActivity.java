@@ -68,6 +68,7 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
         String url = "http://japantelecom.sakura.ne.jp/";
 
         return new AsyncWorker(this, url);
+
     }
 
     @Override

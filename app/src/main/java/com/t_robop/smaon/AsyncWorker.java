@@ -18,7 +18,8 @@ import java.io.ByteArrayOutputStream;
  */
 public class AsyncWorker extends AsyncTaskLoader<JSONObject> {
 
-    private String urlText;
+     String urlText;
+
 
     public AsyncWorker(Context context, String urlText) {
         super(context);
@@ -28,6 +29,10 @@ public class AsyncWorker extends AsyncTaskLoader<JSONObject> {
 
     @Override
     public JSONObject loadInBackground() {
+
+        //Yesterday sYesterday = new Yesterday();
+
+        //sYesterday.();
 
 
         HttpClient httpClient = new DefaultHttpClient();
