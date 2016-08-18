@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     static double Txt2=0.0;                                      //ラズパイパイの温度を数値化
     static String cityId;
     static String time;                                     //OWMの時刻
-    static String gTime;                                    //timeをGraphActivityに送るために格納
+    static int gTime;                                       //timeをGraphActivityに送るために格納
     static String nTime;                                    //現在時刻
     static int humid=0;
     static int Intime=0;
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                             gOndo = event.getString("temp");                        //GraphActivityに送る温度を格納
                             gaOndo[i] = gOndo;                                      //gOndoを配列化してGraphActivityに送る
                             if(i==0){
-                                gTime = time;
+                                gTime = Intime;
                             }
                             if((Math.abs(now - Intime)) <= 3 && (day == intDay)){
                                 nTime = sdf1.format(nDate);
