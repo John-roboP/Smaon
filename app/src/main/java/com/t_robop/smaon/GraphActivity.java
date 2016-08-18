@@ -25,18 +25,25 @@ import java.util.Date;
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
     int screen_transition;
+    float monthlyTemp[] = new float[38];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         lineChart = (LineChart) findViewById(R.id.line_chart);
+        //ラズパイの温度を受け取る
+        Intent oIntent = getIntent();
+        String[] razOndo = oIntent.getStringArrayExtra("owmOndo");
+
+        int i;
+        for(i = 0; i < 38; i++){
+            monthlyTemp[i] = Float.parseFloat(razOndo[i]);
+            if(monthlyTemp[i] > 0.0){
+                monthlyTemp[i] -= 273.15;
+            }
+        }
     }
-
-    //ラズパイの温度を受け取る
-    SharedPreferences datatem = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
-    String razOndo = datatem.getString("owmOndo", "0");
-
 
     //ボタン
     //5日分グラフのボタン
@@ -157,7 +164,7 @@ public class GraphActivity extends AppCompatActivity {
         return lineData;
     }
 
-    float monthlyTemp[] = {23.1F, 23.3F, 23.4F, 23.6F, 23.7F, 23.9F, 24F, 24.1F, 24.3F, 24.4F, 24.5F, 24.7F, 24.8F, 24.9F, 25F, 25.1F, 25.2F, 25.4F, 25.5F, 25.6F, 25.7F, 25.8F, 26F, 26.1F, 26.2F, 26.3F, 26.5F, 26.6F, 26.7F, 26.7F, 26.8F};
+
     float annualTemp[] = {4.5F, 4.8F, 9.4F, 14.1F, 20.8F, 22.3F, 26.6F, 26.6F, 22.5F, 17.8F, 13.2F, 8.1F};
 
     //週間グラフを作成

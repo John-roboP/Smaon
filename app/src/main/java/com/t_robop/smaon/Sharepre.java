@@ -14,7 +14,6 @@ import android.content.SharedPreferences;
 public  class Sharepre extends Activity {
 
   String readURL;
-    String rTemp;
     private Context mContext;
 
     //  コンストラクター
@@ -40,16 +39,5 @@ public  class Sharepre extends Activity {
 
 
     }
-    public void graTemp(String Temp){
-
-        rTemp = Temp;
-
-        SharedPreferences Ondo =mContext.getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor4 = Ondo.edit();
-        editor4.putString("rOndo",rTemp);     //初回起動判定を１にする
-        editor4.apply();    //保存
-    }
-
-
 
 }
