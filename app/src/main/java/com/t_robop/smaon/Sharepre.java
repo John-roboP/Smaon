@@ -15,14 +15,16 @@ public  class Sharepre extends Activity {
 
   String readURL;
     private Context mContext;
+    String[] Snum;
 
     //  コンストラクター
    public  Sharepre(Context context){
-
+    Snum = new String[23];
         readURL="xxx";
        mContext = context;
 
    }
+
     public  void share(String URLs){
 
            readURL =URLs;

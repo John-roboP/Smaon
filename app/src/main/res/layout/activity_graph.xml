@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.t_robop.smaon.GraphActivity">
+    tools:context="com.t_robop.smaon.GraphActivity"
+    android:background="#4169E1">
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"

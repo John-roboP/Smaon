@@ -20,15 +20,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 public class StartActivity extends Activity implements LoaderManager.LoaderCallbacks<JSONObject> {
 
     private static final int ADDRESSLOADER_ID = 0;
-    String  str = "aaa";
-    public String str2 = "bbb";
-
-
+    private  String  str = "aaa";   //取得時間
+    public String str2 = "bbb"; //現在の気温
+    String[] Ytime;
+    JSONObject[] Yobject;//宣言
+    private String Ynum="0";
+    private String Yjson;
     int Level = 0;
     int penint = 0;
+    double estimatemp; //予則温度
+    int yestertempP;//+1時間
+    int yestertempM; //−1時間
+    int yestertempN; //今の時間
+    private double nowtemp;    //リアルタイム温度
+    int zP;//引き算後
+    int zPa;//絶対値
 
 
 
@@ -36,7 +48,8 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
+        Yobject =new JSONObject[24];
+        Ytime =new String[24];
 
         SharedPreferences datasy = getSharedPreferences("DataSave", MODE_PRIVATE);    //sharedPreference
         Level = datasy.getInt("sStart", 0); //初期値0
@@ -68,10 +81,33 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
         String url = "http://japantelecom.sakura.ne.jp/";
 
         return new AsyncWorker(this, url);
+
     }
 
     @Override
     public void onLoadFinished(Loader<JSONObject> loader, JSONObject data) {
+
+        SharedPreferences Ydata = getSharedPreferences("YSave", MODE_PRIVATE);    //sharedPreference
+        Yjson = Ydata.getString("Yesterdayjson","abc" ); //初期値abc
+
+        /**
+        ！昨日の温度データを配列に代入！
+         **/
+
+        try {
+            JSONArray Yarray = new JSONArray(Yjson);
+            for(int i = 0, length = Yarray.length(); i < length; i++){
+                Ynum= String.valueOf(i);
+                Yobject[i] = Yarray.getJSONObject(i);
+                Ytime[i]=Yobject[i].getString(Ynum);        //jsonobjectからstringに変換
+
+            }
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+
+
+
 
         if (data != null) {
 
@@ -105,9 +141,63 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
             str = "xxx";
             str2 = "0.0";
         }
+        /**
+         *
+         * 一時間後の温度を予想するアルゴリズム
+         *
+         */
+
+        Calendar calendar = Calendar.getInstance();//インスタンス化
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);  //時間を取得
+        int minute = calendar.get(Calendar.MINUTE);      //分を取得
+        nowtemp    = Double.parseDouble(str2);   //現在の温度をint型に変換
+
+        if(minute>=40){ //40より大きかったら次の1時間を比較
+            yestertempM = Integer.parseInt(Ytime[hour]);
+            yestertempN = Integer.parseInt(Ytime[hour+1]);    //今の温度をStringからint型に変換
+            yestertempP = Integer.parseInt(Ytime[hour+2]);
+
+
+        }else {
+
+            yestertempM = Integer.parseInt(Ytime[hour - 1]);
+            yestertempN = Integer.parseInt(Ytime[hour]);    //今の温度をStringからint型に変換
+            yestertempP = Integer.parseInt(Ytime[hour + 1]);
+        }
+
+       zP=yestertempN-yestertempP;
+
+        zPa=Math.abs(zP);   //絶対値
+
+
+        if(zPa<200) {
+                estimatemp=nowtemp;     //第2.5.8パターン
+        } else  if (yestertempN - yestertempM > 0 && yestertempP - yestertempN > 0) {
+                //第1パターン
+            estimatemp =yestertempP/yestertempN * nowtemp;
+        }else if(yestertempN-yestertempM>0 && yestertempP-yestertempN>0){
+                //第3パターン
+            estimatemp=yestertempN+(nowtemp*1000-yestertempN)/1000;
+        }else if(yestertempM-yestertempN>0 && yestertempP-yestertempN>0){
+                //第7パターン
+            estimatemp=yestertempN+(nowtemp*1000-yestertempN)/1000;
+        }else  if(yestertempM-yestertempN>0 && yestertempP-yestertempN>0){
+            //第9パターン
+            estimatemp =yestertempP/yestertempN * nowtemp;
+        }else if(yestertempP-yestertempN>0){
+            //第4パターン
+            estimatemp = yestertempP/yestertempN*nowtemp*1.05;
+        }else if(yestertempN-yestertempP>0){
+            //第6パターン
+            estimatemp = yestertempP/yestertempN*nowtemp*0.95;
+        }
+
+
+
 
         Intent sIntent = new Intent();      //インテント生成
-
+        sIntent.putExtra("estima",estimatemp);  //1時間後の予測温度を送っている
+        sIntent.putExtra("jsarray",Ytime);
         sIntent.putExtra("date", str);       //日付を送っている
         sIntent.putExtra("temper", str2);        //温度データを送っている
         sIntent.setClass(this, MainActivity.class);
