@@ -23,7 +23,7 @@ import java.util.Date;
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
     int screen_transition;
-    float every3Times[] = new float[39];
+    float every3Times[] = new float[37];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +33,9 @@ public class GraphActivity extends AppCompatActivity {
 
         Intent oIntent = getIntent();
         String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
+        String owmDate = oIntent.getStringExtra("owmDate");
 
-        for (int i = 0; i < 39; i++) {
+        for (int i = 0; i < 37; i++) {
             every3Times[i] = Float.parseFloat(owmTemp[i]);
             if (every3Times[i] > 0.0) {
                 every3Times[i] -= 273.15;

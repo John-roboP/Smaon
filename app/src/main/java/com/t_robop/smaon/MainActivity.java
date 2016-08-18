@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,11 +41,13 @@ public class MainActivity extends AppCompatActivity {
     static double Txt=0.0;                                       //ホリエモンの温度を数値化
     static double Txt2=0.0;                                      //ラズパイパイの温度を数値化
     static String cityId;
-    static String time;
+    static String time;                                     //OWMの時刻
+    static String gTime;                                    //timeをGraphActivityに送るために格納
+    static String nTime;                                    //現在時刻
     static int humid=0;
     static int Intime=0;
     static Sharepre Sharepre;
-    static String[] gaOndo = new String[38];
+    static String[] gaOndo = new String[37];
 
 
     @Override
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         txt4 = (TextView)findViewById(R.id.textView4);      //日付
         txt7 = (TextView)findViewById(R.id.textView7);      //天気（文）
         img = (ImageView)findViewById(R.id.imageView2);     //天気（図）
+        Button btn = (Button)findViewById(R.id.button2);
 
         txt6.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));  //ラズパイ温度のフォントを変更
 
@@ -77,6 +81,13 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+        btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container, new PlaceholderFragment())
+                        .commit();
+            }
+        });
     }
 
     public static class PlaceholderFragment extends Fragment {
@@ -117,8 +128,11 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject event = eventObj.getJSONObject("main");      //天気データを参照
                             gOndo = event.getString("temp");                        //GraphActivityに送る温度を格納
                             gaOndo[i] = gOndo;                                      //gOndoを配列化してGraphActivityに送る
+                            if(i==0){
+                                gTime = time;
+                            }
                             if((Math.abs(now - Intime)) <= 3 && (day == intDay)){
-                                time = sdf1.format(nDate);
+                                nTime = sdf1.format(nDate);
                                 tenki = tenkiObj.getString("main");                         //その時の天気を取得
                                 ondo = event.getString("temp");                              //温度を取得
                                 humid = event.getInt("humidity");                           //湿度を取得
@@ -143,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     txt3.setText(String.valueOf(Txt));                          //OWMの温度をテキストビューに格納
                     txt6.setText(Str2);                                         //ラズパイの温度をテキストビューに格納
-                    txt4.setText(time);                                         //現在時刻をテキストビューに格納
+                    txt4.setText(nTime);                                         //現在時刻をテキストビューに格納
 
                     if(Txt < Txt2){             //オープン<ラズパイ
                         txt5.setText("現在予想より温度が高くなっております。");
@@ -251,7 +265,9 @@ public class MainActivity extends AppCompatActivity {
     public void onClickGraph(View v){
         Intent gIntent = new Intent(getApplicationContext(), GraphActivity.class);
         gIntent.putExtra("owmOndo",gaOndo);
+        gIntent.putExtra("owmDate",gTime);
         startActivity(gIntent);
     }
+
 }
 
