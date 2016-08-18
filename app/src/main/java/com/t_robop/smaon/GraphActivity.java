@@ -1,8 +1,6 @@
 package com.t_robop.smaon;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
@@ -25,21 +23,24 @@ import java.util.Date;
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
     int screen_transition;
-    int total;  //平均気温用仮変数
-    float averageTemps[];
+    float every3Times[] = new float[39];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         lineChart = (LineChart) findViewById(R.id.line_chart);
+
+        Intent oIntent = getIntent();
+        String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
+
+        for (int i = 0; i < 39; i++) {
+            every3Times[i] = Float.parseFloat(owmTemp[i]);
+            if (every3Times[i] > 0.0) {
+                every3Times[i] -= 273.15;
+            }
+        }
     }
-
-    float every3Times[]={23.1F, 23.3F, 23.4F, 23.6F, 23.7F, 23.9F, 24F, 24.1F, 24.3F, 24.4F, 24.5F, 24.7F, 24.8F, 24.9F, 25F, 25.1F, 25.2F, 25.4F, 25.5F, 25.6F, 25.7F, 25.8F, 26F, 26.1F, 26.2F, 26.3F, 26.5F, 26.6F, 26.7F, 26.7F, 26.8F};
-
-    //ラズパイの温度を受け取る
-    SharedPreferences datatem = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
-    String razOndo = datatem.getString("owmOndo", "0");
 
     //ボタン
     //時刻ごとのグラフボタン
@@ -60,7 +61,7 @@ public class GraphActivity extends AppCompatActivity {
 
     public void setEnabledGraphButton(int num) {
         Button button_current = (Button) findViewById(R.id.current);
-        Button button_date = (Button) findViewById(R.id.date);
+        Button button_date = (Button) findViewById(R.id.time);
         button_current.setEnabled(true);
         button_date.setEnabled(true);
         switch (num) {
@@ -89,7 +90,7 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
 
-    public  void moveMain(View v){
+    public void moveMain(View v) {
         Intent intent = new Intent(GraphActivity.this, MainActivity.class);
         startActivity(intent);
     }
@@ -188,14 +189,17 @@ public class GraphActivity extends AppCompatActivity {
             xValues.add((i + day) + "日");
         }
 
+
         // 値の格納
         ArrayList<Entry> graphValues = new ArrayList<>();
-        for(int i=0;i<5;i++){
-            for(int j=0;j<8;i++){
-                total += every3Times[j];
+        float total=0;
+        for (int i = 0; i < 5; i++) {
+            int index;
+            for (int j = 0; j < 8; j++) {
+                index =(i*8)+j+1;
+                total += every3Times[index];
             }
-            averageTemps[i]= total / 8;
-            graphValues.add(new Entry(averageTemps[i], i));
+            graphValues.add(new Entry((total / 8), i));
         }
 
         LineData lineData = setChart(graphValues, xValues);
