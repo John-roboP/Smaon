@@ -150,7 +150,7 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
         Calendar calendar = Calendar.getInstance();//インスタンス化
         int hour = calendar.get(Calendar.HOUR_OF_DAY);  //時間を取得
         int minute = calendar.get(Calendar.MINUTE);      //分を取得
-        nowtemp    = Integer.parseInt(str2);   //現在の温度をint型に変換
+        nowtemp    = Double.parseDouble(str2);   //現在の温度をint型に変換
 
         if(minute>=40){ //40より大きかったら次の1時間を比較
             yestertempM = Integer.parseInt(Ytime[hour]);
@@ -197,6 +197,7 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
 
         Intent sIntent = new Intent();      //インテント生成
         sIntent.putExtra("estima",estimatemp);  //1時間後の予測温度を送っている
+        sIntent.putExtra("jsarray",Ytime);
         sIntent.putExtra("date", str);       //日付を送っている
         sIntent.putExtra("temper", str2);        //温度データを送っている
         sIntent.setClass(this, MainActivity.class);
