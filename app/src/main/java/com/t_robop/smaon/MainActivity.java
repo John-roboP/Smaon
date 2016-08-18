@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     static TextView txt6;
     static TextView txt4;
     static TextView txt7;
+    static TextView txt9;
     static ImageView img;
     static String ondo;                                     //OWMの温度
     static String ondocp;                                   //OWMの温度（計算用）
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     static int sum=0;
     static Sharepre Sharepre;
     static String[] gaOndo = new String[37];
+    static String[] yesOndo = new String[24];
+    static double agoOndo=0.0;
 
 
     @Override
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         txt3 = (TextView)findViewById(R.id.textView3);      //温度（OWM）
         txt = (TextView)findViewById(R.id.textView);
         txt2 = (TextView)findViewById(R.id.textView2);
+        txt9 = (TextView)findViewById(R.id.textView9);
         txt5 = (TextView)findViewById(R.id.textView5);      //提案文
         txt6 = (TextView)findViewById(R.id.textView6);      //温度（ラズパイ）
         txt4 = (TextView)findViewById(R.id.textView4);      //日付
@@ -66,11 +70,15 @@ public class MainActivity extends AppCompatActivity {
         Button btn = (Button)findViewById(R.id.button2);
 
         txt6.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));  //ラズパイ温度のフォントを変更
+        txt7.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));  //天気概要のフォントを変更
 
         //ラズパイのデータ取得
         Intent intent = getIntent();
         Str = intent.getStringExtra("date");
         Str2 = intent.getStringExtra("temper");
+        agoOndo = intent.getDoubleExtra("estima",0.0);
+        yesOndo = intent.getStringArrayExtra("jsarray");
+
 
         SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
         cityId = data.getString("Cid", "0");
@@ -160,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     txt3.setText(String.valueOf(Txt));                          //OWMの温度をテキストビューに格納
                     txt6.setText(Str2);                                         //ラズパイの温度をテキストビューに格納
                     txt4.setText(nTime);                                         //現在時刻をテキストビューに格納
+                    txt9.setText(String.valueOf(agoOndo));                      //昨日の同時刻の温度を格納
 
                     if(Txt < Txt2){             //オープン<ラズパイ
                         txt5.setText("現在予想より温度が高くなっております。");
@@ -240,10 +249,13 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
+                    if(Math.abs(agoOndo-Txt) > 5){
+                        txt5.append("昨日との温度差が激しいので、体温管理をしっかりしましょう。\n");
+                    }
                     if(humid<30){
                         txt5.append("空気が乾燥しているので、保湿を怠らないようにしましょう。\n");
                     }
-                    txt5.append("\n体調管理に気を付けましょう。\n");
+                    txt5.append("体調管理に気を付けましょう。\n");
                 }
                 // 実行中
                 public void progressUpdate(int progress) {
@@ -276,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
         gIntent.putExtra("owmOndo",gaOndo);
         gIntent.putExtra("owmDate",gTime);
         gIntent.putExtra("count",sum);
+        gIntent.putExtra("jsarray",yesOndo);
         startActivity(gIntent);
     }
 
