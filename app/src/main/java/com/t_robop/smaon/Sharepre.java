@@ -25,6 +25,7 @@ public  class Sharepre extends Activity {
        mContext = context;
 
    }
+
     public  void share(String URLs){
 
            readURL =URLs;
@@ -49,14 +50,6 @@ public  class Sharepre extends Activity {
         SharedPreferences.Editor editor4 = Ondo.edit();
         editor4.putString("rOndo",rTemp);     //初回起動判定を１にする
         editor4.apply();    //保存
-    }
-    public void Yestersave(String Ytemp,int times){
-        Snum[times]=Ytemp;
-        SharedPreferences Ydat = mContext.getSharedPreferences("YSave",Context.MODE_PRIVATE);
-        SharedPreferences.Editor Yed = Ydat.edit();
-        Yed.putString("Yesterdaytemp",Snum[times]);
-        Yed.apply();
-
     }
 
 

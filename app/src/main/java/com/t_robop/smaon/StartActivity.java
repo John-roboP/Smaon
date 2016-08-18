@@ -20,13 +20,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class StartActivity extends Activity implements LoaderManager.LoaderCallbacks<JSONObject> {
 
     private static final int ADDRESSLOADER_ID = 0;
-    String  str = "aaa";
+    private  String  str = "aaa";
     public String str2 = "bbb";
-
-
+    String[] Ytime;
+    JSONObject[] Yobject;//宣言
+    private String Ynum="0";
+    private String Yjson;
     int Level = 0;
     int penint = 0;
 
@@ -36,7 +40,8 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
+        Yobject =new JSONObject[24];
+        Ytime =new String[24];
 
         SharedPreferences datasy = getSharedPreferences("DataSave", MODE_PRIVATE);    //sharedPreference
         Level = datasy.getInt("sStart", 0); //初期値0
@@ -74,6 +79,28 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
     @Override
     public void onLoadFinished(Loader<JSONObject> loader, JSONObject data) {
 
+        SharedPreferences Ydata = getSharedPreferences("YSave", MODE_PRIVATE);    //sharedPreference
+        Yjson = Ydata.getString("Yesterdayjson","abc" ); //初期値abc
+
+        /**
+        ！昨日の温度データを配列に代入！
+         **/
+
+        try {
+            JSONArray Yarray = new JSONArray(Yjson);
+            for(int i = 0, length = Yarray.length(); i < length; i++){
+                Ynum= String.valueOf(i);
+                Yobject[i] = Yarray.getJSONObject(i);
+                Ytime[i]=Yobject[i].getString(Ynum);        //jsonobjectからstringに変換
+
+            }
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+
+
+
+
         if (data != null) {
 
             try {
@@ -107,8 +134,8 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
             str2 = "0.0";
         }
 
-        Intent sIntent = new Intent();      //インテント生成
 
+        Intent sIntent = new Intent();      //インテント生成
         sIntent.putExtra("date", str);       //日付を送っている
         sIntent.putExtra("temper", str2);        //温度データを送っている
         sIntent.setClass(this, MainActivity.class);
