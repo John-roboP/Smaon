@@ -91,25 +91,62 @@
             android:id="@+id/imageView2"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_centerHorizontal="true" />
+            android:layout_below="@+id/textView7"
+            android:layout_alignRight="@+id/textView7"
+            android:layout_alignEnd="@+id/textView7" />
 
         <TextView
             android:layout_width="150dp"
-            android:layout_height="15dp"
+            android:layout_height="30dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:gravity="center"
             android:layout_gravity="center"
             android:textSize="15sp"
             android:textColor="#FFFFFF"
-            android:text="Small Text"
+            android:text="     Small Text"
             android:id="@+id/textView7"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="19dp"
+            android:layout_marginEnd="19dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_alignBottom="@+id/imageView2"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="161dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:background="@drawable/waku1"
+                android:text="昨日の同時刻"
+                android:id="@+id/textView8"
+                android:layout_weight="0.31" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text=""
+                android:id="@+id/textView9"
+                android:background="@drawable/waku1"
+                android:layout_weight="0.38" />
+        </LinearLayout>
+
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="152dp">
+        android:layout_height="152dp"
+        android:background="@drawable/waku3">
         <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -136,18 +173,20 @@
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="93dp"
-        android:layout_height="wrap_content"
+        android:layout_height="31dp"
         android:text="グラフ表示"
         android:onClick="onClickGraph"
-        android:id="@+id/button" />
+        android:id="@+id/button"
+        android:background="@drawable/waku2"/>
 
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="34dp"
             android:text="UPDATA"
             android:id="@+id/button2"
-            android:onClick="onClickUpdata"/>
+            android:onClick="onClickUpdata"
+            android:background="@drawable/waku2"/>
     </LinearLayout>
 
 </LinearLayout>
