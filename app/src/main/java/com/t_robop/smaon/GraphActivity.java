@@ -23,8 +23,9 @@ import java.util.Date;
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
     int screen_transition;
-    float every3Times[] = new float[39];
+    float every3Times[] = new float[36];
     int owmDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,9 +34,9 @@ public class GraphActivity extends AppCompatActivity {
 
         Intent oIntent = getIntent();
         String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
-        owmDate = oIntent.getIntExtra("owmDate",0);
+        owmDate = oIntent.getIntExtra("owmDate", 0);
 
-        for (int i = 0; i < 39; i++) {
+        for (int i = 0; i < 35; i++) {
             every3Times[i] = Float.parseFloat(owmTemp[i]);
             if (every3Times[i] > 0.0) {
                 every3Times[i] -= 273.15;
@@ -155,8 +156,11 @@ public class GraphActivity extends AppCompatActivity {
          */
 
         ArrayList<String> xValues = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            xValues.add(owmDate+(i * 3) + "時");
+        for (int i = 0; i < 8 - (owmDate / 3); i++) {
+            xValues.add(owmDate + (i * 3) + "時");
+        }
+        for (int j = 0; j < (owmDate / 3) + 1; j++) {
+            xValues.add((j * 3) + "時");
         }
 
         // 週間気温
@@ -191,18 +195,38 @@ public class GraphActivity extends AppCompatActivity {
             xValues.add((i + day) + "日");
         }
 
+        int lenght1 =  (8- (owmDate / 3)+1);
 
         // 値の格納
         ArrayList<Entry> graphValues = new ArrayList<>();
-        float total = 0;
-        for (int i = 0; i < 5; i++) {
-            int index;
-            for (int j = 0; j < 8; j++) {
-                index = (i * 8) + j + 1;
-                total += every3Times[index];
-            }
-            graphValues.add(new Entry((total / 8), i));
+
+        float averageTemp=0;
+        int flag=0;
+        //1日目
+        for (int i = 0; i < lenght1; i++) {
+            averageTemp += every3Times[i];
+            flag++;
         }
+        graphValues.add(new Entry((averageTemp/lenght1), 0));
+        averageTemp=0;
+        //2,3,4日目
+        for (int i = 0; i < 3; i++) {
+            for (int j=0;j<8;j++){
+                averageTemp+=every3Times[(lenght1)+i*8+j];
+            }
+            graphValues.add(new Entry(averageTemp/8,i+1));
+            flag++;
+            averageTemp=0;
+        }
+        averageTemp=0;
+        //5日目
+        for (int i = 0; i <= 8-lenght1; i++) {
+            averageTemp += every3Times[flag+i];
+        }
+        graphValues.add(new Entry((averageTemp/lenght1+1), 4));
+
+
+
 
         LineData lineData = setChart(graphValues, xValues);
         return lineData;
