@@ -139,7 +139,8 @@
         android:layout_height="wrap_content"
         android:text="グラフ表示"
         android:onClick="onClickGraph"
-        android:id="@+id/button" />
+        android:id="@+id/button"
+        android:background="@drawable/waku2"/>
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -147,7 +148,8 @@
             android:layout_height="wrap_content"
             android:text="UPDATA"
             android:id="@+id/button2"
-            android:onClick="onClickUpdata"/>
+            android:onClick="onClickUpdata"
+            android:background="@drawable/waku2"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -35,7 +35,7 @@ public class GraphActivity extends AppCompatActivity {
         String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
         String owmDate = oIntent.getStringExtra("owmDate");
 
-        for (int i = 0; i < 37; i++) {
+        for (int i = 0; i < 36; i++) {
             every3Times[i] = Float.parseFloat(owmTemp[i]);
             if (every3Times[i] > 0.0) {
                 every3Times[i] -= 273.15;

@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     static String nTime;                                    //現在時刻
     static int humid=0;
     static int Intime=0;
+    static int sum=0;
     static Sharepre Sharepre;
     static String[] gaOndo = new String[37];
 
@@ -137,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                                 ondo = event.getString("temp");                              //温度を取得
                                 humid = event.getInt("humidity");                           //湿度を取得
                             }
+                            sum++;
                         }
                     }
                     catch(JSONException e){
@@ -239,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if(humid<30){
-                        txt5.append("空気が乾いているので、湿度を保つようにしましょう。\n");
+                        txt5.append("空気が乾燥しているので、保湿を怠らないようにしましょう。\n");
                     }
                     txt5.append("\n体調管理に気を付けましょう。\n");
                 }
@@ -273,6 +275,7 @@ public class MainActivity extends AppCompatActivity {
         Intent gIntent = new Intent(getApplicationContext(), GraphActivity.class);
         gIntent.putExtra("owmOndo",gaOndo);
         gIntent.putExtra("owmDate",gTime);
+        gIntent.putExtra("count",sum);
         startActivity(gIntent);
     }
 
