@@ -13,6 +13,16 @@
     android:weightSum="1"
     android:background="#4169E1">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary">
+    </android.support.v7.widget.Toolbar>
+
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -21,7 +31,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFFFFF"
-            android:text="Medium Text"
+            android:text="読み込み中"
             android:id="@+id/textView4"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -48,7 +58,7 @@
             android:layout_weight="1"
             android:textSize="30sp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text=""
+            android:text="読み込み中"
             android:id="@+id/textView6"
             android:layout_gravity="center"
             android:gravity="center"/>
@@ -75,7 +85,7 @@
             android:layout_height="75dp"
             android:layout_weight="1"
             android:textSize="30sp"
-            android:text=""
+            android:text="読み込み中"
             android:id="@+id/textView3"
             android:layout_gravity="center"
             android:gravity="center"/>

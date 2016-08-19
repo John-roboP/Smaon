@@ -25,6 +25,7 @@ public class GraphActivity extends AppCompatActivity {
     int screen_transition;
     float every3Times[] = new float[39];
     int owmDate;
+    int cnt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +35,9 @@ public class GraphActivity extends AppCompatActivity {
         Intent oIntent = getIntent();
         String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
         owmDate = oIntent.getIntExtra("owmDate",0);
+        cnt = oIntent.getIntExtra("count",0);
 
-        for (int i = 0; i < 39; i++) {
+        for (int i = 0; i < cnt; i++) {
             every3Times[i] = Float.parseFloat(owmTemp[i]);
             if (every3Times[i] > 0.0) {
                 every3Times[i] -= 273.15;
