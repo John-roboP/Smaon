@@ -50,6 +50,8 @@ public class GraphActivity extends AppCompatActivity {
         createLineChart();
         //グラフの生成
         lineChart.setData(createLineChartDataTime());
+        lineChart.setGridBackgroundColor((int)4169E1);
+
         setEnabledGraphButton(1);
     }
 
@@ -97,7 +99,7 @@ public class GraphActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //グラフの設定
+    //グラフ全体の設定
     private void createLineChart() {
         lineChart.setDescription("さいたま市　平均気温");     //グラフの説明
         lineChart.getAxisRight().setEnabled(false); //y軸の右ラベルの無効
@@ -105,6 +107,10 @@ public class GraphActivity extends AppCompatActivity {
         lineChart.setDoubleTapToZoomEnabled(false); //ダブルタップズームの無効化
         lineChart.getLegend().setEnabled(true); //判例有効化
         lineChart.fitScreen();//拡大を初期化
+        lineChart.setBackgroundColor(2);
+
+//        lineChart.setHighlightPerDragEnabled(true);
+        lineChart.setScaleEnabled(true);
 
         //凡例の削除
         Legend legend = lineChart.getLegend();
@@ -117,19 +123,16 @@ public class GraphActivity extends AppCompatActivity {
         xAxis.setDrawGridLines(true);   //グリッド線
         xAxis.setSpaceBetweenLabels(0);
 
+
         //Y軸周り
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        yAxis.setShowOnlyMinMax(true);
         yAxis.setStartAtZero(false);
         yAxis.setDrawGridLines(true);
         yAxis.setEnabled(true);
 
         YAxis rightAxis = lineChart.getAxisRight();
         rightAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        rightAxis.setShowOnlyMinMax(true);
-        rightAxis.setStartAtZero(false);
-        rightAxis.setDrawGridLines(true);
         rightAxis.setEnabled(false);
 
         lineChart.invalidate();
@@ -140,6 +143,7 @@ public class GraphActivity extends AppCompatActivity {
         ArrayList<LineDataSet> LineDataSets = new ArrayList<>();
         LineDataSet graphValuesDataSet = new LineDataSet(graphValues, "平均気温");  //グラフ全体のラベル
         graphValuesDataSet.setColor(ColorTemplate.COLORFUL_COLORS[3]);  //グラフの色
+        graphValuesDataSet.setValueTextSize(12);    //値のテキストサイズ
         LineDataSets.add(graphValuesDataSet);   //グラフをセット
 
         LineData lineData = new LineData(xValues, LineDataSets); //グラフを返す
