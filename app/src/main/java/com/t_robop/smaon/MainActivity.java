@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction()
                                 .add(R.id.container, new PlaceholderFragment())
                                 .commit();
+                        break;
                     case R.id.action_settings3:
                         Intent setIntent = new Intent(getApplicationContext(),SettingActivity.class);
                         startActivity(setIntent);
