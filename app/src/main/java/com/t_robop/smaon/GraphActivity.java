@@ -23,26 +23,31 @@ import java.util.Date;
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
     int screen_transition;
-    float every3Times[] = new float[36];
+//    float every3Times[] = new float[36];
     int owmDate;
-
+//    float rasTemps[];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         lineChart = (LineChart) findViewById(R.id.line_chart);
 
-        Intent oIntent = getIntent();
-        String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
-        owmDate = oIntent.getIntExtra("owmDate", 0);
-
-        for (int i = 0; i < 35; i++) {
-            every3Times[i] = Float.parseFloat(owmTemp[i]);
-            if (every3Times[i] > 0.0) {
-                every3Times[i] -= 273.15;
-            }
-        }
+//        Intent oIntent = getIntent();
+//        String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
+//        owmDate = oIntent.getIntExtra("owmDate", 0);
+//        String[] jsarray = oIntent.getStringArrayExtra("jsarray");
+//        for(int i=0;i<24;i++){
+//            rasTemps[i] =Float.parseFloat(jsarray[i]);
+//        }
+//        for (int i = 0; i < 35; i++) {
+//            every3Times[i] = Float.parseFloat(owmTemp[i]);
+//            if (every3Times[i] > 0.0) {
+//                every3Times[i] -= 273.15;
+//            }
+//        }
     }
+    float every3Times[]={23.1F, 23.3F, 23.4F, 23.6F, 23.7F, 23.9F, 24F, 24.1F, 24.3F, 24.4F, 24.5F, 24.7F, 24.8F, 24.9F, 25F, 25.1F, 25.2F, 25.4F, 25.5F, 25.6F, 25.7F, 25.8F, 26F, 26.1F, 26.2F, 26.3F, 26.5F, 26.6F, 26.7F, 26.7F, 26.8F};
+    float rasTemps[]={23.3F, 23.4F, 23.6F, 23.7F, 23.9F, 24F, 24.1F, 24.3F, 24.4F, 24.5F, 24.7F, 24.8F, 24.9F, 25F, 25.1F, 25.2F, 25.4F, 25.5F, 25.6F, 25.7F, 25.8F, 26F, 26.1F, 26.2F, 26.3F, 26.5F, 26.6F, 26.7F, 26.7F, 26.8F};
 
     //ボタン
     //時刻ごとのグラフボタン
@@ -53,6 +58,9 @@ public class GraphActivity extends AppCompatActivity {
         lineChart.setGridBackgroundColor((int)4169E1);
 
         setEnabledGraphButton(1);
+        lineChart.setVisibleXRangeMaximum(10F);    //画面拡大を1周間の気温まで
+        //グラフ画面専用変数の初期化
+        screen_transition = 0;
     }
 
     //5日分グラフのボタン
@@ -109,12 +117,11 @@ public class GraphActivity extends AppCompatActivity {
         lineChart.fitScreen();//拡大を初期化
         lineChart.setBackgroundColor(2);
 
-//        lineChart.setHighlightPerDragEnabled(true);
         lineChart.setScaleEnabled(true);
-
+        //:// TODO: 2016/08/19
         //凡例の削除
-        Legend legend = lineChart.getLegend();
-        legend.setEnabled(false);
+//        Legend legend = lineChart.getLegend();
+//        legend.setEnabled(false);
 
         //X軸周り
         XAxis xAxis = lineChart.getXAxis();
@@ -122,7 +129,6 @@ public class GraphActivity extends AppCompatActivity {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //ラベルの位置
         xAxis.setDrawGridLines(true);   //グリッド線
         xAxis.setSpaceBetweenLabels(0);
-
 
         //Y軸周り
         YAxis yAxis = lineChart.getAxisLeft();
@@ -139,13 +145,7 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     //ラベルの設定
-    public LineData setChart(ArrayList graphValues, ArrayList xValues) {
-        ArrayList<LineDataSet> LineDataSets = new ArrayList<>();
-        LineDataSet graphValuesDataSet = new LineDataSet(graphValues, "平均気温");  //グラフ全体のラベル
-        graphValuesDataSet.setColor(ColorTemplate.COLORFUL_COLORS[3]);  //グラフの色
-        graphValuesDataSet.setValueTextSize(12);    //値のテキストサイズ
-        LineDataSets.add(graphValuesDataSet);   //グラフをセット
-
+    public LineData setChart(ArrayList xValues,ArrayList LineDataSets) {
         LineData lineData = new LineData(xValues, LineDataSets); //グラフを返す
         return lineData;
     }
@@ -159,21 +159,46 @@ public class GraphActivity extends AppCompatActivity {
         ラベル、値をループさせる
          */
 
+//        ArrayList<String> xValues = new ArrayList<>();
+//        for (int i = 0; i < 8 - (owmDate / 3); i++) {
+//            xValues.add(owmDate + (i * 3) + "時");
+//        }
+//        for (int j = 0; j < (owmDate / 3) + 1; j++) {
+//            xValues.add((j * 3) + "時");
+//        }
+
         ArrayList<String> xValues = new ArrayList<>();
-        for (int i = 0; i < 8 - (owmDate / 3); i++) {
-            xValues.add(owmDate + (i * 3) + "時");
+        for (int i = 0; i < 24; i++) {
+            xValues.add((i)+ "時");
         }
-        for (int j = 0; j < (owmDate / 3) + 1; j++) {
-            xValues.add((j * 3) + "時");
+        for (int i = 0; i < 24; i++) {
+            xValues.add((i)+ "時");
+        }
+        for (int j = 0; j < owmDate; j++) {
+            xValues.add((j+1) + "時");
         }
 
-        // 週間気温
-        ArrayList<Entry> graphValues = new ArrayList<>();
+        ArrayList<LineDataSet> LineDataSets = new ArrayList<>();
+        //値のセット
+        //OWM
+        ArrayList<Entry> owmValues = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            graphValues.add(new Entry(every3Times[i], i));
+            owmValues.add(new Entry(every3Times[i], 24+owmDate/3));
         }
-
-        LineData lineData = setChart(graphValues, xValues);
+        LineDataSet owmDataSet = new LineDataSet(owmValues, "予想気温");  //データのセット
+        owmDataSet.setColor(ColorTemplate.COLORFUL_COLORS[2]);  //色の設定
+        owmDataSet.setValueTextSize(12);
+        LineDataSets.add(owmDataSet);   //OWMグラフのセット
+        //Raspberry Pi
+        ArrayList<Entry> rasValues = new ArrayList<>();
+        for (int i=0;i<24;i++){
+            rasValues.add(new Entry(rasTemps[i],i));
+        }
+        LineDataSet rasDataSet = new LineDataSet(rasValues, "ラズパイ");  //データのセット
+        rasDataSet.setColor(ColorTemplate.COLORFUL_COLORS[3]);  //色の設定
+        rasDataSet.setValueTextSize(12);
+        LineDataSets.add(rasDataSet);   //OWMグラフのセット
+        LineData lineData = setChart(xValues,LineDataSets);
         return lineData;
     }
 
