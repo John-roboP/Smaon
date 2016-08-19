@@ -7,7 +7,10 @@ import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     static int Intime=0;
     static int sum=0;
     static Sharepre Sharepre;
-    static String[] gaOndo = new String[37];
+    static String[] gaOndo = new String[40];
     static String[] yesOndo = new String[24];
     static double agoOndo=0.0;
 
@@ -58,25 +61,57 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txt3 = (TextView)findViewById(R.id.textView3);      //温度（OWM）
-        txt = (TextView)findViewById(R.id.textView);
-        txt2 = (TextView)findViewById(R.id.textView2);
-        txt9 = (TextView)findViewById(R.id.textView9);
-        txt5 = (TextView)findViewById(R.id.textView5);      //提案文
-        txt6 = (TextView)findViewById(R.id.textView6);      //温度（ラズパイ）
-        txt4 = (TextView)findViewById(R.id.textView4);      //日付
-        txt7 = (TextView)findViewById(R.id.textView7);      //天気（文）
-        img = (ImageView)findViewById(R.id.imageView2);     //天気（図）
-        Button btn = (Button)findViewById(R.id.button2);
+        txt3 = (TextView) findViewById(R.id.textView3);      //温度（OWM）
+        txt = (TextView) findViewById(R.id.textView);
+        txt2 = (TextView) findViewById(R.id.textView2);
+        txt9 = (TextView) findViewById(R.id.textView9);
+        txt5 = (TextView) findViewById(R.id.textView5);      //提案文
+        txt6 = (TextView) findViewById(R.id.textView6);      //温度（ラズパイ）
+        txt4 = (TextView) findViewById(R.id.textView4);      //日付
+        txt7 = (TextView) findViewById(R.id.textView7);      //天気（文）
+        img = (ImageView) findViewById(R.id.imageView2);     //天気（図）
 
         txt6.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));  //ラズパイ温度のフォントを変更
         txt7.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));  //天気概要のフォントを変更
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_settings:
+                        //MainActivity→GraphActivityに遷移
+                        Intent gIntent = new Intent(getApplicationContext(), GraphActivity.class);
+                        gIntent.putExtra("owmOndo",gaOndo);
+                        gIntent.putExtra("owmDate",gTime);
+                        gIntent.putExtra("count",sum);
+                        gIntent.putExtra("jsarray",yesOndo);
+                        startActivity(gIntent);
+                        break;
+                    case R.id.action_settings2:
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.container, new PlaceholderFragment())
+                                .commit();
+                        break;
+                    case R.id.action_settings3:
+                        Intent setIntent = new Intent(getApplicationContext(),SettingActivity.class);
+                        startActivity(setIntent);
+                        break;
+                        default:
+                            break;
+                }
+                return true;
+            }
+        });
+
 
         //ラズパイのデータ取得
         Intent intent = getIntent();
         Str = intent.getStringExtra("date");
         Str2 = intent.getStringExtra("temper");
-        agoOndo = intent.getDoubleExtra("estima",0.0);
+        agoOndo = intent.getDoubleExtra("estima", 0.0);
         yesOndo = intent.getStringArrayExtra("jsarray");
 
 
@@ -90,13 +125,12 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-        btn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.container, new PlaceholderFragment())
-                        .commit();
-            }
-        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     public static class PlaceholderFragment extends Fragment {
@@ -281,15 +315,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         return true;
-    }
-    //MainActivity→GraphActivityに遷移
-    public void onClickGraph(View v){
-        Intent gIntent = new Intent(getApplicationContext(), GraphActivity.class);
-        gIntent.putExtra("owmOndo",gaOndo);
-        gIntent.putExtra("owmDate",gTime);
-        gIntent.putExtra("count",sum);
-        gIntent.putExtra("jsarray",yesOndo);
-        startActivity(gIntent);
     }
 
 }
