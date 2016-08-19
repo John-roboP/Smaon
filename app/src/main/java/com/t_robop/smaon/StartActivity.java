@@ -29,7 +29,7 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
     private  String  str = "aaa";   //取得時間
     public String str2 = "bbb"; //現在の気温
     String[] Ytime;
-    JSONObject[] Yobject;//宣言
+    JSONObject[] Yobject;   //宣言
     private String Ynum="0";
     private String Yjson;
     int Level = 0;
