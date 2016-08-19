@@ -175,14 +175,4 @@
         </ScrollView>
     </RelativeLayout>
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="93dp"
-        android:layout_height="31dp"
-        android:text="グラフ表示"
-        android:onClick="onClickGraph"
-        android:id="@+id/button2"
-        android:background="@drawable/waku2"
-        android:layout_gravity="right" />
-
 </LinearLayout>

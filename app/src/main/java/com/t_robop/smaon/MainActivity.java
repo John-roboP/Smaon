@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
     static String[] gaOndo = new String[40];
     static String[] yesOndo = new String[24];
     static double agoOndo=0.0;
-    static Button btn;
 
 
     @Override
@@ -71,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         txt4 = (TextView) findViewById(R.id.textView4);      //日付
         txt7 = (TextView) findViewById(R.id.textView7);      //天気（文）
         img = (ImageView) findViewById(R.id.imageView2);     //天気（図）
-        btn = (Button) findViewById(R.id.button2);
 
         txt6.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));  //ラズパイ温度のフォントを変更
         txt7.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));  //天気概要のフォントを変更
@@ -84,8 +82,13 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_settings:
-                        View v = btn;
-                        onClickGraph(v);
+                        //MainActivity→GraphActivityに遷移
+                        Intent gIntent = new Intent(getApplicationContext(), GraphActivity.class);
+                        gIntent.putExtra("owmOndo",gaOndo);
+                        gIntent.putExtra("owmDate",gTime);
+                        gIntent.putExtra("count",sum);
+                        gIntent.putExtra("jsarray",yesOndo);
+                        startActivity(gIntent);
                         break;
                     case R.id.action_settings2:
                         getSupportFragmentManager().beginTransaction()
@@ -311,15 +314,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         return true;
-    }
-    //MainActivity→GraphActivityに遷移
-    public void onClickGraph(View v){
-        Intent gIntent = new Intent(getApplicationContext(), GraphActivity.class);
-        gIntent.putExtra("owmOndo",gaOndo);
-        gIntent.putExtra("owmDate",gTime);
-        gIntent.putExtra("count",sum);
-        gIntent.putExtra("jsarray",yesOndo);
-        startActivity(gIntent);
     }
 
 }
