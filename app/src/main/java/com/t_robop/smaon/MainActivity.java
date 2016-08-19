@@ -7,7 +7,10 @@ import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     static TextView txt6;
     static TextView txt4;
     static TextView txt7;
+    static TextView txt9;
     static ImageView img;
     static String ondo;                                     //OWMの温度
     static String ondocp;                                   //OWMの温度（計算用）
@@ -46,30 +50,70 @@ public class MainActivity extends AppCompatActivity {
     static String nTime;                                    //現在時刻
     static int humid=0;
     static int Intime=0;
+    static int sum=0;
     static Sharepre Sharepre;
-    static String[] gaOndo = new String[37];
+    static String[] gaOndo = new String[40];
+    static String[] yesOndo = new String[24];
+    static double agoOndo=0.0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txt3 = (TextView)findViewById(R.id.textView3);      //温度（OWM）
-        txt = (TextView)findViewById(R.id.textView);
-        txt2 = (TextView)findViewById(R.id.textView2);
-        txt5 = (TextView)findViewById(R.id.textView5);      //提案文
-        txt6 = (TextView)findViewById(R.id.textView6);      //温度（ラズパイ）
-        txt4 = (TextView)findViewById(R.id.textView4);      //日付
-        txt7 = (TextView)findViewById(R.id.textView7);      //天気（文）
-        img = (ImageView)findViewById(R.id.imageView2);     //天気（図）
-        Button btn = (Button)findViewById(R.id.button2);
+        txt3 = (TextView) findViewById(R.id.textView3);      //温度（OWM）
+        txt = (TextView) findViewById(R.id.textView);
+        txt2 = (TextView) findViewById(R.id.textView2);
+        txt9 = (TextView) findViewById(R.id.textView9);
+        txt5 = (TextView) findViewById(R.id.textView5);      //提案文
+        txt6 = (TextView) findViewById(R.id.textView6);      //温度（ラズパイ）
+        txt4 = (TextView) findViewById(R.id.textView4);      //日付
+        txt7 = (TextView) findViewById(R.id.textView7);      //天気（文）
+        img = (ImageView) findViewById(R.id.imageView2);     //天気（図）
 
         txt6.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));  //ラズパイ温度のフォントを変更
+        txt7.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));  //天気概要のフォントを変更
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_settings:
+                        //MainActivity→GraphActivityに遷移
+                        Intent gIntent = new Intent(getApplicationContext(), GraphActivity.class);
+                        gIntent.putExtra("owmOndo",gaOndo);
+                        gIntent.putExtra("owmDate",gTime);
+                        gIntent.putExtra("count",sum);
+                        gIntent.putExtra("jsarray",yesOndo);
+                        startActivity(gIntent);
+                        break;
+                    case R.id.action_settings2:
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.container, new PlaceholderFragment())
+                                .commit();
+                        break;
+                    case R.id.action_settings3:
+                        Intent setIntent = new Intent(getApplicationContext(),SettingActivity.class);
+                        startActivity(setIntent);
+                        break;
+                        default:
+                            break;
+                }
+                return true;
+            }
+        });
+
 
         //ラズパイのデータ取得
         Intent intent = getIntent();
         Str = intent.getStringExtra("date");
         Str2 = intent.getStringExtra("temper");
+        agoOndo = intent.getDoubleExtra("estima", 0.0);
+        yesOndo = intent.getStringArrayExtra("jsarray");
+
 
         SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
         cityId = data.getString("Cid", "0");
@@ -81,13 +125,12 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-        btn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.container, new PlaceholderFragment())
-                        .commit();
-            }
-        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     public static class PlaceholderFragment extends Fragment {
@@ -137,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                                 ondo = event.getString("temp");                              //温度を取得
                                 humid = event.getInt("humidity");                           //湿度を取得
                             }
+                            sum++;
                         }
                     }
                     catch(JSONException e){
@@ -158,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
                     txt3.setText(String.valueOf(Txt));                          //OWMの温度をテキストビューに格納
                     txt6.setText(Str2);                                         //ラズパイの温度をテキストビューに格納
                     txt4.setText(nTime);                                         //現在時刻をテキストビューに格納
+                    txt9.setText(String.valueOf(agoOndo));                      //昨日の同時刻の温度を格納
 
                     if(Txt < Txt2){             //オープン<ラズパイ
                         txt5.setText("現在予想より温度が高くなっております。");
@@ -198,7 +243,11 @@ public class MainActivity extends AppCompatActivity {
                         if(tenki.equals("Clouds")){
                             txt7.setText("くもり");
                             img.setImageResource(R.drawable.kumo);
-                            txt5.append("日は照っておらず比較的涼しくなるでしょう。\n");
+                            if(humid < 80){
+                                txt5.append("日は照っておらず比較的涼しくなるでしょう。\n");
+                            }else{
+                                txt5.append("太陽は雲に隠れていますが、湿度が高くとても蒸し暑くなるでしょう。\n");
+                            }
                         }
                         if(Txt2-Txt > 5){
                             txt5.append("水分補給をこまめに行いましょう。\n");
@@ -234,7 +283,13 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
-                    txt5.append("\n体調管理に気を付けましょう。\n");
+                    if(Math.abs(agoOndo-Txt) > 5){
+                        txt5.append("昨日との温度差が激しいので、体温管理をしっかりしましょう。\n");
+                    }
+                    if(humid<30){
+                        txt5.append("空気が乾燥しているので、保湿を怠らないようにしましょう。\n");
+                    }
+                    txt5.append("体調管理に気を付けましょう。\n");
                 }
                 // 実行中
                 public void progressUpdate(int progress) {
@@ -260,13 +315,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         return true;
-    }
-    //MainActivity→GraphActivityに遷移
-    public void onClickGraph(View v){
-        Intent gIntent = new Intent(getApplicationContext(), GraphActivity.class);
-        gIntent.putExtra("owmOndo",gaOndo);
-        gIntent.putExtra("owmDate",gTime);
-        startActivity(gIntent);
     }
 
 }

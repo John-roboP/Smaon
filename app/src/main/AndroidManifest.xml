@@ -21,11 +21,8 @@
         <activity android:name=".SettingActivity"/>
         <activity android:name=".GraphActivity">
         </activity>
-        <service android:name=".TempService"/>
 
 
-
-
-</application>
+    </application>
 
 </manifest>
