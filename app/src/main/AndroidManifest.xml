@@ -18,8 +18,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".SettingActivity" />
-        <activity android:name=".GraphActivity"></activity>
+        <activity android:name=".SettingActivity"/>
+        <activity android:name=".GraphActivity">
+        </activity>
     </application>
 
 </manifest>
