@@ -25,9 +25,6 @@ public class AsyncWorker extends AsyncTaskLoader<JSONObject> {
     private int i=0;
     String localurl;
     String yestadataurl;
-    String[] Ystr;
-    String   Ynum="0";//getString用
-    JSONObject[] Yobject;//宣言
     Context Acontext;
 
 
@@ -85,8 +82,7 @@ public class AsyncWorker extends AsyncTaskLoader<JSONObject> {
                     return null;
                 }
             }else{  //機能のデータを取得
-              //  Yobject= new JSONObject[23];    //24回回します。
-               // Ystr   = new String[23];
+
 
 
                 yestadataurl=localurl+"index2.html";
