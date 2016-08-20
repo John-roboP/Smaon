@@ -41,11 +41,11 @@ public class GraphActivity extends AppCompatActivity {
         for (int i = 0; i < 24; i++) {
             rasTemps[i] = (Float.parseFloat(jsarray[i])) / 1000F;
             //Raspberry Piの温度の小数点第2位を四捨五入
-            BigDecimal bd[]=new BigDecimal[40];
-            BigDecimal bd1[]=new BigDecimal[40];
+            BigDecimal bd[] = new BigDecimal[40];
+            BigDecimal bd1[] = new BigDecimal[40];
             bd[i] = new BigDecimal(rasTemps[i]);
             bd1[i] = bd[i].setScale(1, BigDecimal.ROUND_HALF_UP);
-            rasTemps[i]=(bd1[i].floatValue());
+            rasTemps[i] = (bd1[i].floatValue());
         }
 
         //OWMの温度をセルシウス温度にする
@@ -56,12 +56,12 @@ public class GraphActivity extends AppCompatActivity {
             }
         }
         //OWMの温度の小数点第2位を四捨五入
-        for (int i =0;i<35;i++){
-            BigDecimal bd[]=new BigDecimal[40];
-            BigDecimal bd1[]=new BigDecimal[40];
+        for (int i = 0; i < 35; i++) {
+            BigDecimal bd[] = new BigDecimal[40];
+            BigDecimal bd1[] = new BigDecimal[40];
             bd[i] = new BigDecimal(every3Times[i]);
             bd1[i] = bd[i].setScale(1, BigDecimal.ROUND_HALF_UP);
-            every3Times[i]=(bd1[i].floatValue());
+            every3Times[i] = (bd1[i].floatValue());
         }
         View v = findViewById(R.id.time);
         setLineChartDataTime(v);
@@ -180,6 +180,7 @@ public class GraphActivity extends AppCompatActivity {
         LineData lineData = new LineData(xValues, LineDataSets); //グラフを返す
         return lineData;
     }
+
     //時刻グラフを作成
     private LineData createLineChartDataTime() {
         /*
@@ -204,7 +205,7 @@ public class GraphActivity extends AppCompatActivity {
         for (int i = 0; i < 24; i++) {
             xValues.add((i) + "時");
         }
-        for (int j = 0; j < owmDate+3; j++) {
+        for (int j = 0; j < owmDate + 3; j++) {
             xValues.add(j + "時");
         }
 
@@ -213,7 +214,7 @@ public class GraphActivity extends AppCompatActivity {
         //OWM
         ArrayList<Entry> owmValues = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            owmValues.add(new Entry(every3Times[i], 24 + owmDate + (i*3)));
+            owmValues.add(new Entry(every3Times[i], 24 + owmDate + (i * 3)));
         }
         LineDataSet owmDataSet = new LineDataSet(owmValues, "予想気温");  //データのセット
         owmDataSet.setColor(ColorTemplate.COLORFUL_COLORS[2]);  //色の設定
@@ -246,27 +247,36 @@ public class GraphActivity extends AppCompatActivity {
         int dayLimitLength = getLastDay(new Date()) - getDay(new Date());
         //ラベルの格納
         ArrayList<String> xValues = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             dayLimitLength--;
             if (dayLimitLength == -2) {
                 day = -i + 1;
             }
-            xValues.add((i + day) + "日");
+            xValues.add((i + day-1) + "日");
         }
         //OWMの1日目の気温の個数
         int lenght1 = (8 - (owmDate / 3) + 1);
 
         // 値の格納
         ArrayList<Entry> graphValues = new ArrayList<>();
-
         float averageTemp = 0;
         int flag = 0;
+        /*
+        「前日」はRaspberry Piの気温
+        「1日目～5日目」はOWMの気温
+         */
+        //前日
+        for (int i = 0; i < 24; i++) {
+            averageTemp += rasTemps[i];
+        }
+        graphValues.add(new Entry((averageTemp / 24), 0));
+        averageTemp=0;
         //1日目
         for (int i = 0; i < lenght1; i++) {
             averageTemp += every3Times[flag];
             flag++;
         }
-        graphValues.add(new Entry((averageTemp / lenght1), 0));
+        graphValues.add(new Entry((averageTemp / lenght1), 1));
         averageTemp = 0;
         //2,3,4日目
         for (int i = 0; i < 3; i++) {
@@ -274,15 +284,15 @@ public class GraphActivity extends AppCompatActivity {
                 averageTemp += every3Times[flag];
                 flag++;
             }
-            graphValues.add(new Entry(averageTemp / 8, i + 1));
+            graphValues.add(new Entry(averageTemp / 8, i + 2));
             averageTemp = 0;
         }
         averageTemp = 0;
         //5日目
-        for (int i = 0; i < every3Times.length-flag; i++) {
+        for (int i = 0; i < every3Times.length - flag; i++) {
             averageTemp += every3Times[flag];
         }
-        graphValues.add(new Entry((averageTemp / lenght1 + 1), 4));
+        graphValues.add(new Entry((averageTemp / (every3Times.length - flag)), 5));
 
 
         LineData lineData = setChartA(graphValues, xValues);
