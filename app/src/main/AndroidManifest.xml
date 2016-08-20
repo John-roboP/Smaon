@@ -21,8 +21,6 @@
         <activity android:name=".SettingActivity"/>
         <activity android:name=".GraphActivity">
         </activity>
-
-
     </application>
 
 </manifest>
