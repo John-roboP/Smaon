@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.LineData;
@@ -16,6 +15,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.data.Entry;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,31 +23,49 @@ import java.util.Date;
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
     int screen_transition;
-//    float every3Times[] = new float[36];
+    float every3Times[] = new float[36];
     int owmDate;
-//    float rasTemps[];
+    float rasTemps[] = new float[24];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         lineChart = (LineChart) findViewById(R.id.line_chart);
+        //画面遷移時のintent
+        Intent oIntent = getIntent();
+        owmDate = oIntent.getIntExtra("owmDate", 0);
+        String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
+        String[] jsarray = oIntent.getStringArrayExtra("jsarray");
+        //Raspberry Pi
+        for (int i = 0; i < 24; i++) {
+            rasTemps[i] = (Float.parseFloat(jsarray[i])) / 1000F;
+            //Raspberry Piの温度の小数点第2位を四捨五入
+            BigDecimal bd[] = new BigDecimal[40];
+            BigDecimal bd1[] = new BigDecimal[40];
+            bd[i] = new BigDecimal(rasTemps[i]);
+            bd1[i] = bd[i].setScale(1, BigDecimal.ROUND_HALF_UP);
+            rasTemps[i] = (bd1[i].floatValue());
+        }
 
-//        Intent oIntent = getIntent();
-//        String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
-//        owmDate = oIntent.getIntExtra("owmDate", 0);
-//        String[] jsarray = oIntent.getStringArrayExtra("jsarray");
-//        for(int i=0;i<24;i++){
-//            rasTemps[i] =Float.parseFloat(jsarray[i]);
-//        }
-//        for (int i = 0; i < 35; i++) {
-//            every3Times[i] = Float.parseFloat(owmTemp[i]);
-//            if (every3Times[i] > 0.0) {
-//                every3Times[i] -= 273.15;
-//            }
-//        }
+        //OWMの温度をセルシウス温度にする
+        for (int i = 0; i < 35; i++) {
+            every3Times[i] = Float.parseFloat(owmTemp[i]);
+            if (every3Times[i] > 0.0) {
+                every3Times[i] -= 273.15;
+            }
+        }
+        //OWMの温度の小数点第2位を四捨五入
+        for (int i = 0; i < 35; i++) {
+            BigDecimal bd[] = new BigDecimal[40];
+            BigDecimal bd1[] = new BigDecimal[40];
+            bd[i] = new BigDecimal(every3Times[i]);
+            bd1[i] = bd[i].setScale(1, BigDecimal.ROUND_HALF_UP);
+            every3Times[i] = (bd1[i].floatValue());
+        }
+        View v = findViewById(R.id.time);
+        setLineChartDataTime(v);
     }
-    float every3Times[]={23.1F, 23.3F, 23.4F, 23.6F, 23.7F, 23.9F, 24F, 24.1F, 24.3F, 24.4F, 24.5F, 24.7F, 24.8F, 24.9F, 25F, 25.1F, 25.2F, 25.4F, 25.5F, 25.6F, 25.7F, 25.8F, 26F, 26.1F, 26.2F, 26.3F, 26.5F, 26.6F, 26.7F, 26.7F, 26.8F};
-    float rasTemps[]={23.3F, 23.4F, 23.6F, 23.7F, 23.9F, 24F, 24.1F, 24.3F, 24.4F, 24.5F, 24.7F, 24.8F, 24.9F, 25F, 25.1F, 25.2F, 25.4F, 25.5F, 25.6F, 25.7F, 25.8F, 26F, 26.1F, 26.2F, 26.3F, 26.5F, 26.6F, 26.7F, 26.7F, 26.8F};
 
     //ボタン
     //時刻ごとのグラフボタン
@@ -55,10 +73,10 @@ public class GraphActivity extends AppCompatActivity {
         createLineChart();
         //グラフの生成
         lineChart.setData(createLineChartDataTime());
-        lineChart.setGridBackgroundColor((int)4169E1);
+        lineChart.setGridBackgroundColor((int) 4169E1);
 
         setEnabledGraphButton(1);
-        lineChart.setVisibleXRangeMaximum(10F);    //画面拡大を1周間の気温まで
+        lineChart.setVisibleXRangeMaximum(80F);    //画面拡大を1周間の気温まで
         //グラフ画面専用変数の初期化
         screen_transition = 0;
     }
@@ -115,6 +133,7 @@ public class GraphActivity extends AppCompatActivity {
         lineChart.setDoubleTapToZoomEnabled(false); //ダブルタップズームの無効化
         lineChart.getLegend().setEnabled(true); //判例有効化
         lineChart.fitScreen();//拡大を初期化
+        lineChart.setPinchZoom(true);
         lineChart.setBackgroundColor(2);
 
         lineChart.setScaleEnabled(true);
@@ -145,7 +164,19 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     //ラベルの設定
-    public LineData setChart(ArrayList xValues,ArrayList LineDataSets) {
+    public LineData setChart(ArrayList xValues, ArrayList LineDataSets) {
+        LineData lineData = new LineData(xValues, LineDataSets); //グラフを返す
+        return lineData;
+    }
+
+    //ラベルの設定
+    public LineData setChartA(ArrayList graphValues, ArrayList xValues) {
+        ArrayList<LineDataSet> LineDataSets = new ArrayList<>();
+        LineDataSet graphValuesDataSet = new LineDataSet(graphValues, "平均気温");  //グラフ全体のラベル
+        graphValuesDataSet.setColor(ColorTemplate.COLORFUL_COLORS[3]);  //グラフの色
+        graphValuesDataSet.setValueTextSize(12);    //テキストサイズ
+        LineDataSets.add(graphValuesDataSet);   //グラフをセット
+
         LineData lineData = new LineData(xValues, LineDataSets); //グラフを返す
         return lineData;
     }
@@ -169,13 +200,13 @@ public class GraphActivity extends AppCompatActivity {
 
         ArrayList<String> xValues = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
-            xValues.add((i)+ "時");
+            xValues.add((i) + "時");
         }
         for (int i = 0; i < 24; i++) {
-            xValues.add((i)+ "時");
+            xValues.add((i) + "時");
         }
-        for (int j = 0; j < owmDate; j++) {
-            xValues.add((j+1) + "時");
+        for (int j = 0; j < owmDate + 3; j++) {
+            xValues.add(j + "時");
         }
 
         ArrayList<LineDataSet> LineDataSets = new ArrayList<>();
@@ -183,7 +214,7 @@ public class GraphActivity extends AppCompatActivity {
         //OWM
         ArrayList<Entry> owmValues = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            owmValues.add(new Entry(every3Times[i], 24+owmDate/3));
+            owmValues.add(new Entry(every3Times[i], 24 + owmDate + (i * 3)));
         }
         LineDataSet owmDataSet = new LineDataSet(owmValues, "予想気温");  //データのセット
         owmDataSet.setColor(ColorTemplate.COLORFUL_COLORS[2]);  //色の設定
@@ -191,14 +222,14 @@ public class GraphActivity extends AppCompatActivity {
         LineDataSets.add(owmDataSet);   //OWMグラフのセット
         //Raspberry Pi
         ArrayList<Entry> rasValues = new ArrayList<>();
-        for (int i=0;i<24;i++){
-            rasValues.add(new Entry(rasTemps[i],i));
+        for (int i = 0; i < 24; i++) {
+            rasValues.add(new Entry(rasTemps[i], i));
         }
         LineDataSet rasDataSet = new LineDataSet(rasValues, "ラズパイ");  //データのセット
         rasDataSet.setColor(ColorTemplate.COLORFUL_COLORS[3]);  //色の設定
         rasDataSet.setValueTextSize(12);
         LineDataSets.add(rasDataSet);   //OWMグラフのセット
-        LineData lineData = setChart(xValues,LineDataSets);
+        LineData lineData = setChart(xValues, LineDataSets);
         return lineData;
     }
 
@@ -216,48 +247,56 @@ public class GraphActivity extends AppCompatActivity {
         int dayLimitLength = getLastDay(new Date()) - getDay(new Date());
         //ラベルの格納
         ArrayList<String> xValues = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             dayLimitLength--;
             if (dayLimitLength == -2) {
                 day = -i + 1;
             }
-            xValues.add((i + day) + "日");
+            xValues.add((i + day-1) + "日");
         }
-
-        int lenght1 =  (8- (owmDate / 3)+1);
+        //OWMの1日目の気温の個数
+        int lenght1 = (8 - (owmDate / 3) + 1);
 
         // 値の格納
         ArrayList<Entry> graphValues = new ArrayList<>();
-
-        float averageTemp=0;
-        int flag=0;
+        float averageTemp = 0;
+        int flag = 0;
+        /*
+        「前日」はRaspberry Piの気温
+        「1日目～5日目」はOWMの気温
+         */
+        //前日
+        for (int i = 0; i < 24; i++) {
+            averageTemp += rasTemps[i];
+        }
+        graphValues.add(new Entry((averageTemp / 24), 0));
+        averageTemp=0;
         //1日目
         for (int i = 0; i < lenght1; i++) {
-            averageTemp += every3Times[i];
+            averageTemp += every3Times[flag];
             flag++;
         }
-        graphValues.add(new Entry((averageTemp/lenght1), 0));
-        averageTemp=0;
+        graphValues.add(new Entry((averageTemp / lenght1), 1));
+        averageTemp = 0;
         //2,3,4日目
         for (int i = 0; i < 3; i++) {
-            for (int j=0;j<8;j++){
-                averageTemp+=every3Times[(lenght1)+i*8+j];
+            for (int j = 0; j < 8; j++) {
+                averageTemp += every3Times[flag];
+                flag++;
             }
-            graphValues.add(new Entry(averageTemp/8,i+1));
-            flag++;
-            averageTemp=0;
+            graphValues.add(new Entry(averageTemp / 8, i + 2));
+            averageTemp = 0;
         }
-        averageTemp=0;
+        averageTemp = 0;
         //5日目
-        for (int i = 0; i <= 8-lenght1; i++) {
-            averageTemp += every3Times[flag+i];
+        for (int i = 0; i < every3Times.length - flag; i++) {
+            averageTemp += every3Times[flag];
         }
-        graphValues.add(new Entry((averageTemp/lenght1+1), 4));
+        float aaa=averageTemp / (every3Times.length - flag);
+        graphValues.add(new Entry(aaa, 5));
 
 
-
-
-        LineData lineData = setChart(graphValues, xValues);
+        LineData lineData = setChartA(graphValues, xValues);
         return lineData;
     }
 
