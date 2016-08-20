@@ -292,7 +292,8 @@ public class GraphActivity extends AppCompatActivity {
         for (int i = 0; i < every3Times.length - flag; i++) {
             averageTemp += every3Times[flag];
         }
-        graphValues.add(new Entry((averageTemp / (every3Times.length - flag)), 5));
+        float aaa=averageTemp / (every3Times.length - flag);
+        graphValues.add(new Entry(aaa, 5));
 
 
         LineData lineData = setChartA(graphValues, xValues);
