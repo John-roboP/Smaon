@@ -15,6 +15,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.data.Entry;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,20 +32,39 @@ public class GraphActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         lineChart = (LineChart) findViewById(R.id.line_chart);
-
+        //画面遷移時のintent
         Intent oIntent = getIntent();
-        String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
         owmDate = oIntent.getIntExtra("owmDate", 0);
+        String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
         String[] jsarray = oIntent.getStringArrayExtra("jsarray");
+        //Raspberry Pi
         for (int i = 0; i < 24; i++) {
             rasTemps[i] = (Float.parseFloat(jsarray[i])) / 1000F;
+            //Raspberry Piの温度の小数点第2位を四捨五入
+            BigDecimal bd[]=new BigDecimal[40];
+            BigDecimal bd1[]=new BigDecimal[40];
+            bd[i] = new BigDecimal(rasTemps[i]);
+            bd1[i] = bd[i].setScale(1, BigDecimal.ROUND_HALF_UP);
+            rasTemps[i]=(bd1[i].floatValue());
         }
+
+        //OWMの温度をセルシウス温度にする
         for (int i = 0; i < 35; i++) {
             every3Times[i] = Float.parseFloat(owmTemp[i]);
             if (every3Times[i] > 0.0) {
                 every3Times[i] -= 273.15;
             }
         }
+        //OWMの温度の小数点第2位を四捨五入
+        for (int i =0;i<35;i++){
+            BigDecimal bd[]=new BigDecimal[40];
+            BigDecimal bd1[]=new BigDecimal[40];
+            bd[i] = new BigDecimal(every3Times[i]);
+            bd1[i] = bd[i].setScale(1, BigDecimal.ROUND_HALF_UP);
+            every3Times[i]=(bd1[i].floatValue());
+        }
+        View v = findViewById(R.id.time);
+        setLineChartDataTime(v);
     }
 
     //ボタン
@@ -149,6 +169,17 @@ public class GraphActivity extends AppCompatActivity {
         return lineData;
     }
 
+    //ラベルの設定
+    public LineData setChartA(ArrayList graphValues, ArrayList xValues) {
+        ArrayList<LineDataSet> LineDataSets = new ArrayList<>();
+        LineDataSet graphValuesDataSet = new LineDataSet(graphValues, "平均気温");  //グラフ全体のラベル
+        graphValuesDataSet.setColor(ColorTemplate.COLORFUL_COLORS[3]);  //グラフの色
+        graphValuesDataSet.setValueTextSize(12);    //テキストサイズ
+        LineDataSets.add(graphValuesDataSet);   //グラフをセット
+
+        LineData lineData = new LineData(xValues, LineDataSets); //グラフを返す
+        return lineData;
+    }
     //時刻グラフを作成
     private LineData createLineChartDataTime() {
         /*
@@ -173,8 +204,8 @@ public class GraphActivity extends AppCompatActivity {
         for (int i = 0; i < 24; i++) {
             xValues.add((i) + "時");
         }
-        for (int j = 0; j < owmDate+2; j++) {
-            xValues.add((j + 1) + "時");
+        for (int j = 0; j < owmDate+3; j++) {
+            xValues.add(j + "時");
         }
 
         ArrayList<LineDataSet> LineDataSets = new ArrayList<>();
@@ -232,7 +263,7 @@ public class GraphActivity extends AppCompatActivity {
         int flag = 0;
         //1日目
         for (int i = 0; i < lenght1; i++) {
-            averageTemp += every3Times[i];
+            averageTemp += every3Times[flag];
             flag++;
         }
         graphValues.add(new Entry((averageTemp / lenght1), 0));
@@ -240,21 +271,21 @@ public class GraphActivity extends AppCompatActivity {
         //2,3,4日目
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 8; j++) {
-                averageTemp += every3Times[(lenght1) + i * 8 + j];
+                averageTemp += every3Times[flag];
+                flag++;
             }
             graphValues.add(new Entry(averageTemp / 8, i + 1));
-            flag++;
             averageTemp = 0;
         }
         averageTemp = 0;
         //5日目
-        for (int i = 0; i <= 8 - lenght1; i++) {
-            averageTemp += every3Times[flag + i];
+        for (int i = 0; i < every3Times.length-flag; i++) {
+            averageTemp += every3Times[flag];
         }
         graphValues.add(new Entry((averageTemp / lenght1 + 1), 4));
 
 
-        LineData lineData = setChart(graphValues, xValues);
+        LineData lineData = setChartA(graphValues, xValues);
         return lineData;
     }
 
