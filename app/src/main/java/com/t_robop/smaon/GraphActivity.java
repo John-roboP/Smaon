@@ -70,7 +70,7 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     //ボタン
-    //時刻ごとのグラフボタン
+    //時系列グラフボタン
     public void setLineChartDataTime(View v) {
         createLineChart();
         //グラフの生成
@@ -106,25 +106,8 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
 
-    //グラフの左移動
-    public void leftMove(View v) {
-        if (screen_transition > 0) {
-            screen_transition -= 7;
-            lineChart.moveViewToX(screen_transition);
-        }
-    }
-
-    //グラフの右移動
-    public void rightMove(View v) {
-        if (screen_transition < 24) {
-            screen_transition += 7;
-            lineChart.moveViewToX(screen_transition);
-        }
-    }
-
     //グラフ全体の設定
     private void createLineChart() {
-        lineChart.setDescription("さいたま市　平均気温");     //グラフの説明
         lineChart.getAxisRight().setEnabled(false); //y軸の右ラベルの無効
         lineChart.setDrawGridBackground(true);  //グリッド線
         lineChart.setDoubleTapToZoomEnabled(false); //ダブルタップズームの無効化
@@ -132,6 +115,7 @@ public class GraphActivity extends AppCompatActivity {
         lineChart.fitScreen();//拡大を初期化
         lineChart.setPinchZoom(true);
         lineChart.setBackgroundColor(2);
+        lineChart.setDescriptionTextSize(12);   //グラフの説明テキストサイズ
 
         lineChart.setScaleEnabled(true);
 
@@ -174,8 +158,9 @@ public class GraphActivity extends AppCompatActivity {
         return lineData;
     }
 
-    //時刻グラフを作成
+    //時系列グラフを作成
     private LineData createLineChartDataTime() {
+        lineChart.setDescription("時系列気温");     //グラフの説明
         /*
         制限
         アプリ起動時に29日かつ、その月が31日までの時、
@@ -219,6 +204,7 @@ public class GraphActivity extends AppCompatActivity {
 
     //5日間グラフを作成
     private LineData createLineChartDataCurrent() {
+        lineChart.setDescription("日平均気温");     //グラフの説明
         /*
         制限
         アプリ起動時に29日かつ、その月が31日までの時、
