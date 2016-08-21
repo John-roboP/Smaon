@@ -23,7 +23,8 @@ import java.util.Date;
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
     int screen_transition;
-    float every3Times[] = new float[36];
+    int owmCnt;
+    float every3Times[];
     int owmDate;
     float rasTemps[] = new float[24];
 
@@ -35,30 +36,32 @@ public class GraphActivity extends AppCompatActivity {
         //画面遷移時のintent
         Intent oIntent = getIntent();
         owmDate = oIntent.getIntExtra("owmDate", 0);
-        String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
         String[] jsarray = oIntent.getStringArrayExtra("jsarray");
+        String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
+        owmCnt = oIntent.getIntExtra("count", 0);
+        every3Times = new float[owmCnt];
         //Raspberry Pi
         for (int i = 0; i < 24; i++) {
             rasTemps[i] = (Float.parseFloat(jsarray[i])) / 1000F;
             //Raspberry Piの温度の小数点第2位を四捨五入
-            BigDecimal bd[] = new BigDecimal[40];
-            BigDecimal bd1[] = new BigDecimal[40];
+            BigDecimal bd[] = new BigDecimal[24];
+            BigDecimal bd1[] = new BigDecimal[24];
             bd[i] = new BigDecimal(rasTemps[i]);
             bd1[i] = bd[i].setScale(1, BigDecimal.ROUND_HALF_UP);
             rasTemps[i] = (bd1[i].floatValue());
         }
 
         //OWMの温度をセルシウス温度にする
-        for (int i = 0; i < 35; i++) {
+        for (int i = 0; i < owmCnt; i++) {
             every3Times[i] = Float.parseFloat(owmTemp[i]);
             if (every3Times[i] > 0.0) {
                 every3Times[i] -= 273.15;
             }
         }
         //OWMの温度の小数点第2位を四捨五入
-        for (int i = 0; i < 35; i++) {
-            BigDecimal bd[] = new BigDecimal[40];
-            BigDecimal bd1[] = new BigDecimal[40];
+        for (int i = 0; i < owmCnt; i++) {
+            BigDecimal bd[] = new BigDecimal[owmCnt];
+            BigDecimal bd1[] = new BigDecimal[owmCnt];
             bd[i] = new BigDecimal(every3Times[i]);
             bd1[i] = bd[i].setScale(1, BigDecimal.ROUND_HALF_UP);
             every3Times[i] = (bd1[i].floatValue());
@@ -68,15 +71,14 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     //ボタン
-    //時刻ごとのグラフボタン
+    //時系列グラフボタン
     public void setLineChartDataTime(View v) {
         createLineChart();
         //グラフの生成
         lineChart.setData(createLineChartDataTime());
-        lineChart.setGridBackgroundColor((int) 4169E1);
-
+        //拡大設定
+        lineChart.setVisibleXRangeMaximum(10F);
         setEnabledGraphButton(1);
-        lineChart.setVisibleXRangeMaximum(80F);    //画面拡大を1周間の気温まで
         //グラフ画面専用変数の初期化
         screen_transition = 0;
     }
@@ -104,44 +106,20 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
 
-    //グラフの左移動
-    public void leftMove(View v) {
-        if (screen_transition > 0) {
-            screen_transition -= 7;
-            lineChart.moveViewToX(screen_transition);
-        }
-    }
-
-    //グラフの右移動
-    public void rightMove(View v) {
-        if (screen_transition < 24) {
-            screen_transition += 7;
-            lineChart.moveViewToX(screen_transition);
-        }
-    }
-
-    public void moveMain(View v) {
-        Intent intent = new Intent(GraphActivity.this, MainActivity.class);
-        startActivity(intent);
-    }
-
     //グラフ全体の設定
     private void createLineChart() {
-        lineChart.setDescription("さいたま市　平均気温");     //グラフの説明
         lineChart.getAxisRight().setEnabled(false); //y軸の右ラベルの無効
         lineChart.setDrawGridBackground(true);  //グリッド線
         lineChart.setDoubleTapToZoomEnabled(false); //ダブルタップズームの無効化
         lineChart.getLegend().setEnabled(true); //判例有効化
-        lineChart.fitScreen();//拡大を初期化
         lineChart.setPinchZoom(true);
         lineChart.setBackgroundColor(2);
-
+        lineChart.setDescriptionTextSize(12);   //グラフの説明テキストサイズ
         lineChart.setScaleEnabled(true);
-        //:// TODO: 2016/08/19
-        //凡例の削除
-//        Legend legend = lineChart.getLegend();
-//        legend.setEnabled(false);
-
+        lineChart.fitScreen();  //画面の最大化
+        lineChart.setPinchZoom(false);  //x軸y軸方向のみ拡大有効化
+        lineChart.setScaleYEnabled(false);  //y軸方向の拡大無効化
+        lineChart.setGridBackgroundColor((int) 4169E1); //背景を青色にする
         //X軸周り
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setDrawLabels(true);  //ラベルの描画
@@ -181,23 +159,15 @@ public class GraphActivity extends AppCompatActivity {
         return lineData;
     }
 
-    //時刻グラフを作成
+    //時系列グラフを作成
     private LineData createLineChartDataTime() {
+        lineChart.setDescription("時系列気温");     //グラフの説明
         /*
         制限
         アプリ起動時に29日かつ、その月が31日までの時、
         「29,30,31,1,2」日のデータになるように
         ラベル、値をループさせる
          */
-
-//        ArrayList<String> xValues = new ArrayList<>();
-//        for (int i = 0; i < 8 - (owmDate / 3); i++) {
-//            xValues.add(owmDate + (i * 3) + "時");
-//        }
-//        for (int j = 0; j < (owmDate / 3) + 1; j++) {
-//            xValues.add((j * 3) + "時");
-//        }
-
         ArrayList<String> xValues = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
             xValues.add((i) + "時");
@@ -235,6 +205,7 @@ public class GraphActivity extends AppCompatActivity {
 
     //5日間グラフを作成
     private LineData createLineChartDataCurrent() {
+        lineChart.setDescription("日平均気温");     //グラフの説明
         /*
         制限
         アプリ起動時に29日かつ、その月が31日までの時、
@@ -252,7 +223,7 @@ public class GraphActivity extends AppCompatActivity {
             if (dayLimitLength == -2) {
                 day = -i + 1;
             }
-            xValues.add((i + day-1) + "日");
+            xValues.add((i + day - 1) + "日");
         }
         //OWMの1日目の気温の個数
         int lenght1 = (8 - (owmDate / 3) + 1);
@@ -269,14 +240,15 @@ public class GraphActivity extends AppCompatActivity {
         for (int i = 0; i < 24; i++) {
             averageTemp += rasTemps[i];
         }
-        graphValues.add(new Entry((averageTemp / 24), 0));
-        averageTemp=0;
+
+        graphValues.add(new Entry((getROUND_HALF_UP(averageTemp / 24)), 0));
+        averageTemp = 0;
         //1日目
         for (int i = 0; i < lenght1; i++) {
             averageTemp += every3Times[flag];
             flag++;
         }
-        graphValues.add(new Entry((averageTemp / lenght1), 1));
+        graphValues.add(new Entry((getROUND_HALF_UP(averageTemp / lenght1)), 1));
         averageTemp = 0;
         //2,3,4日目
         for (int i = 0; i < 3; i++) {
@@ -284,7 +256,7 @@ public class GraphActivity extends AppCompatActivity {
                 averageTemp += every3Times[flag];
                 flag++;
             }
-            graphValues.add(new Entry(averageTemp / 8, i + 2));
+            graphValues.add(new Entry(getROUND_HALF_UP(averageTemp / 8), i + 2));
             averageTemp = 0;
         }
         averageTemp = 0;
@@ -292,12 +264,19 @@ public class GraphActivity extends AppCompatActivity {
         for (int i = 0; i < every3Times.length - flag; i++) {
             averageTemp += every3Times[flag];
         }
-        float aaa=averageTemp / (every3Times.length - flag);
-        graphValues.add(new Entry(aaa, 5));
+        graphValues.add(new Entry(getROUND_HALF_UP(averageTemp / (every3Times.length - flag)), 5));
 
 
         LineData lineData = setChartA(graphValues, xValues);
         return lineData;
+    }
+
+    //小数点第二位を四捨五入
+    public float getROUND_HALF_UP(float total) {
+        BigDecimal bd = new BigDecimal(total);
+        bd = bd.setScale(1, BigDecimal.ROUND_HALF_UP);
+        float averageTemp = (bd.floatValue());
+        return averageTemp;
     }
 
     //ゲッター
