@@ -253,14 +253,15 @@ public class GraphActivity extends AppCompatActivity {
         for (int i = 0; i < 24; i++) {
             averageTemp += rasTemps[i];
         }
-        graphValues.add(new Entry((averageTemp / 24), 0));
+
+        graphValues.add(new Entry((getROUND_HALF_UP(averageTemp / 24)), 0));
         averageTemp=0;
         //1日目
         for (int i = 0; i < lenght1; i++) {
             averageTemp += every3Times[flag];
             flag++;
         }
-        graphValues.add(new Entry((averageTemp / lenght1), 1));
+        graphValues.add(new Entry((getROUND_HALF_UP(averageTemp / lenght1)), 1));
         averageTemp = 0;
         //2,3,4日目
         for (int i = 0; i < 3; i++) {
@@ -268,7 +269,7 @@ public class GraphActivity extends AppCompatActivity {
                 averageTemp += every3Times[flag];
                 flag++;
             }
-            graphValues.add(new Entry(averageTemp / 8, i + 2));
+            graphValues.add(new Entry(getROUND_HALF_UP(averageTemp / 8), i + 2));
             averageTemp = 0;
         }
         averageTemp = 0;
@@ -276,12 +277,18 @@ public class GraphActivity extends AppCompatActivity {
         for (int i = 0; i < every3Times.length - flag; i++) {
             averageTemp += every3Times[flag];
         }
-        float aaa=averageTemp / (every3Times.length - flag);
-        graphValues.add(new Entry(aaa, 5));
+        graphValues.add(new Entry(getROUND_HALF_UP(averageTemp / (every3Times.length - flag)), 5));
 
 
         LineData lineData = setChartA(graphValues, xValues);
         return lineData;
+    }
+    //小数点第二位を四捨五入
+    public  float getROUND_HALF_UP(float total){
+        BigDecimal bd = new BigDecimal(total);
+        bd = bd.setScale(1, BigDecimal.ROUND_HALF_UP);
+        float averageTemp = (bd.floatValue());
+        return averageTemp;
     }
 
     //ゲッター
