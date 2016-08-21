@@ -27,6 +27,7 @@ public class GraphActivity extends AppCompatActivity {
     float every3Times[];
     int owmDate;
     float rasTemps[] = new float[24];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +38,7 @@ public class GraphActivity extends AppCompatActivity {
         owmDate = oIntent.getIntExtra("owmDate", 0);
         String[] jsarray = oIntent.getStringArrayExtra("jsarray");
         String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
-        owmCnt=oIntent.getIntExtra("count",0);
+        owmCnt = oIntent.getIntExtra("count", 0);
         every3Times = new float[owmCnt];
         //Raspberry Pi
         for (int i = 0; i < 24; i++) {
@@ -75,10 +76,9 @@ public class GraphActivity extends AppCompatActivity {
         createLineChart();
         //グラフの生成
         lineChart.setData(createLineChartDataTime());
-        lineChart.setGridBackgroundColor((int) 4169E1);
-
+        //拡大設定
+        lineChart.setVisibleXRangeMaximum(10F);
         setEnabledGraphButton(1);
-        lineChart.setVisibleXRangeMaximum(80F);    //画面拡大を1周間の気温まで
         //グラフ画面専用変数の初期化
         screen_transition = 0;
     }
@@ -112,13 +112,14 @@ public class GraphActivity extends AppCompatActivity {
         lineChart.setDrawGridBackground(true);  //グリッド線
         lineChart.setDoubleTapToZoomEnabled(false); //ダブルタップズームの無効化
         lineChart.getLegend().setEnabled(true); //判例有効化
-        lineChart.fitScreen();//拡大を初期化
         lineChart.setPinchZoom(true);
         lineChart.setBackgroundColor(2);
         lineChart.setDescriptionTextSize(12);   //グラフの説明テキストサイズ
-
         lineChart.setScaleEnabled(true);
-
+        lineChart.fitScreen();  //画面の最大化
+        lineChart.setPinchZoom(false);  //x軸y軸方向のみ拡大有効化
+        lineChart.setScaleYEnabled(false);  //y軸方向の拡大無効化
+        lineChart.setGridBackgroundColor((int) 4169E1); //背景を青色にする
         //X軸周り
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setDrawLabels(true);  //ラベルの描画
@@ -222,7 +223,7 @@ public class GraphActivity extends AppCompatActivity {
             if (dayLimitLength == -2) {
                 day = -i + 1;
             }
-            xValues.add((i + day-1) + "日");
+            xValues.add((i + day - 1) + "日");
         }
         //OWMの1日目の気温の個数
         int lenght1 = (8 - (owmDate / 3) + 1);
@@ -241,7 +242,7 @@ public class GraphActivity extends AppCompatActivity {
         }
 
         graphValues.add(new Entry((getROUND_HALF_UP(averageTemp / 24)), 0));
-        averageTemp=0;
+        averageTemp = 0;
         //1日目
         for (int i = 0; i < lenght1; i++) {
             averageTemp += every3Times[flag];
@@ -269,8 +270,9 @@ public class GraphActivity extends AppCompatActivity {
         LineData lineData = setChartA(graphValues, xValues);
         return lineData;
     }
+
     //小数点第二位を四捨五入
-    public  float getROUND_HALF_UP(float total){
+    public float getROUND_HALF_UP(float total) {
         BigDecimal bd = new BigDecimal(total);
         bd = bd.setScale(1, BigDecimal.ROUND_HALF_UP);
         float averageTemp = (bd.floatValue());
