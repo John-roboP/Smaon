@@ -193,7 +193,7 @@ public class SettingActivity extends AppCompatActivity {
 
     public void OKbutton(View v){   //決定ボタン
 
-        //TODO　ここにedittextからURLを取得する文を追加する。そしてSharedpreで保存。
+        //　ここにedittextからURLを取得する文を追加する。そしてSharedpreで保存。
 
         Sharepre Sharepre = new Sharepre(this.getApplicationContext());     // インスタンス化
 

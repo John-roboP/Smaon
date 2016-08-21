@@ -29,7 +29,7 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
     private  String  str = "aaa";   //取得時間
     public String str2 = "bbb"; //現在の気温
     String[] Ytime;
-    JSONObject[] Yobject;//宣言
+    JSONObject[] Yobject;   //宣言
     private String Ynum="0";
     private String Yjson;
     int Level = 0;
@@ -117,14 +117,13 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
 
                 JSONObject object = jsonArray.getJSONObject(0); //一番初めのデータを参照,0はdate,1はセルシウス
                 JSONObject obj1 = jsonArray.getJSONObject(1);
-                //   String str = (String) object.get("name");
+
                 str = object.getString("date");   //strにdate or celsius を代入
                 str2 = obj1.getString("celsius");
 
                 Log.d("JSONObject", str);
 
-                //   str1 = str2;
-                //String date = jsonObject.getString("name");
+
                 Log.d("JSONObject", "JSONObject");
 
             } catch (JSONException e) {
@@ -152,15 +151,22 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
         int minute = calendar.get(Calendar.MINUTE);      //分を取得
         nowtemp    = Double.parseDouble(str2);   //現在の温度をint型に変換
 
-        if(minute>=40){ //40より大きかったら次の1時間を比較
+        if(hour==23){
+            estimatemp=99.9;    //error温度を送信
+        }
+        else if(hour==22){   //ない配列にアクセスしないようにしている
+            yestertempM = Integer.parseInt(Ytime[hour-1]);    //-1
+            yestertempN = Integer.parseInt(Ytime[hour]);    //今の温度をStringからint型に変換
+            yestertempP = Integer.parseInt(Ytime[hour + 1]);
+        }
+        else if(minute>=40 || hour == 0 ){ //40より大きかったら次の1時間を比較
             yestertempM = Integer.parseInt(Ytime[hour]);
             yestertempN = Integer.parseInt(Ytime[hour+1]);    //今の温度をStringからint型に変換
             yestertempP = Integer.parseInt(Ytime[hour+2]);
 
 
         }else {
-
-            yestertempM = Integer.parseInt(Ytime[hour - 1]);
+            yestertempM = Integer.parseInt(Ytime[hour-1]);    //-1
             yestertempN = Integer.parseInt(Ytime[hour]);    //今の温度をStringからint型に変換
             yestertempP = Integer.parseInt(Ytime[hour + 1]);
         }
@@ -177,10 +183,10 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
             estimatemp =yestertempP/yestertempN * nowtemp;
         }else if(yestertempN-yestertempM>0 && yestertempP-yestertempN>0){
                 //第3パターン
-            estimatemp=yestertempN+(nowtemp*1000-yestertempN)/1000;
+            estimatemp=(yestertempN+(nowtemp*1000-yestertempN)) / 1000;
         }else if(yestertempM-yestertempN>0 && yestertempP-yestertempN>0){
                 //第7パターン
-            estimatemp=yestertempN+(nowtemp*1000-yestertempN)/1000;
+            estimatemp=(yestertempN+(nowtemp*1000-yestertempN)) / 1000;
         }else  if(yestertempM-yestertempN>0 && yestertempP-yestertempN>0){
             //第9パターン
             estimatemp =yestertempP/yestertempN * nowtemp;
@@ -196,7 +202,8 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
 
 
         Intent sIntent = new Intent();      //インテント生成
-        sIntent.putExtra("estima",estimatemp);  //1時間後の予測温度を送っている
+
+        sIntent.putExtra("estima", estimatemp);  //1時間後の予測温度を送っている
         sIntent.putExtra("jsarray",Ytime);
         sIntent.putExtra("date", str);       //日付を送っている
         sIntent.putExtra("temper", str2);        //温度データを送っている
