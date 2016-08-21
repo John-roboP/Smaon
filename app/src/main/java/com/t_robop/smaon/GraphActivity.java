@@ -23,10 +23,10 @@ import java.util.Date;
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
     int screen_transition;
-    float every3Times[] = new float[36];
+    int owmCnt;
+    float every3Times[];
     int owmDate;
     float rasTemps[] = new float[24];
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,30 +35,32 @@ public class GraphActivity extends AppCompatActivity {
         //画面遷移時のintent
         Intent oIntent = getIntent();
         owmDate = oIntent.getIntExtra("owmDate", 0);
-        String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
         String[] jsarray = oIntent.getStringArrayExtra("jsarray");
+        String[] owmTemp = oIntent.getStringArrayExtra("owmOndo");
+        owmCnt=oIntent.getIntExtra("count",0);
+        every3Times = new float[owmCnt];
         //Raspberry Pi
         for (int i = 0; i < 24; i++) {
             rasTemps[i] = (Float.parseFloat(jsarray[i])) / 1000F;
             //Raspberry Piの温度の小数点第2位を四捨五入
-            BigDecimal bd[] = new BigDecimal[40];
-            BigDecimal bd1[] = new BigDecimal[40];
+            BigDecimal bd[] = new BigDecimal[24];
+            BigDecimal bd1[] = new BigDecimal[24];
             bd[i] = new BigDecimal(rasTemps[i]);
             bd1[i] = bd[i].setScale(1, BigDecimal.ROUND_HALF_UP);
             rasTemps[i] = (bd1[i].floatValue());
         }
 
         //OWMの温度をセルシウス温度にする
-        for (int i = 0; i < 35; i++) {
+        for (int i = 0; i < owmCnt; i++) {
             every3Times[i] = Float.parseFloat(owmTemp[i]);
             if (every3Times[i] > 0.0) {
                 every3Times[i] -= 273.15;
             }
         }
         //OWMの温度の小数点第2位を四捨五入
-        for (int i = 0; i < 35; i++) {
-            BigDecimal bd[] = new BigDecimal[40];
-            BigDecimal bd1[] = new BigDecimal[40];
+        for (int i = 0; i < owmCnt; i++) {
+            BigDecimal bd[] = new BigDecimal[owmCnt];
+            BigDecimal bd1[] = new BigDecimal[owmCnt];
             bd[i] = new BigDecimal(every3Times[i]);
             bd1[i] = bd[i].setScale(1, BigDecimal.ROUND_HALF_UP);
             every3Times[i] = (bd1[i].floatValue());
@@ -120,11 +122,6 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
 
-    public void moveMain(View v) {
-        Intent intent = new Intent(GraphActivity.this, MainActivity.class);
-        startActivity(intent);
-    }
-
     //グラフ全体の設定
     private void createLineChart() {
         lineChart.setDescription("さいたま市　平均気温");     //グラフの説明
@@ -137,10 +134,6 @@ public class GraphActivity extends AppCompatActivity {
         lineChart.setBackgroundColor(2);
 
         lineChart.setScaleEnabled(true);
-        //:// TODO: 2016/08/19
-        //凡例の削除
-//        Legend legend = lineChart.getLegend();
-//        legend.setEnabled(false);
 
         //X軸周り
         XAxis xAxis = lineChart.getXAxis();
@@ -189,15 +182,6 @@ public class GraphActivity extends AppCompatActivity {
         「29,30,31,1,2」日のデータになるように
         ラベル、値をループさせる
          */
-
-//        ArrayList<String> xValues = new ArrayList<>();
-//        for (int i = 0; i < 8 - (owmDate / 3); i++) {
-//            xValues.add(owmDate + (i * 3) + "時");
-//        }
-//        for (int j = 0; j < (owmDate / 3) + 1; j++) {
-//            xValues.add((j * 3) + "時");
-//        }
-
         ArrayList<String> xValues = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
             xValues.add((i) + "時");
