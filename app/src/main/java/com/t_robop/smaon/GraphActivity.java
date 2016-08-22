@@ -1,6 +1,8 @@
 package com.t_robop.smaon;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +24,6 @@ import java.util.Date;
 
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
-    int screen_transition;
     int owmCnt;
     float every3Times[];
     int owmDate;
@@ -79,8 +80,6 @@ public class GraphActivity extends AppCompatActivity {
         //拡大設定
         lineChart.setVisibleXRangeMaximum(10F);
         setEnabledGraphButton(1);
-        //グラフ画面専用変数の初期化
-        screen_transition = 0;
     }
 
     //5日分グラフのボタン
@@ -126,6 +125,7 @@ public class GraphActivity extends AppCompatActivity {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  //ラベルの位置
         xAxis.setDrawGridLines(true);   //グリッド線
         xAxis.setSpaceBetweenLabels(0);
+        xAxis.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));
 
         //Y軸周り
         YAxis yAxis = lineChart.getAxisLeft();
@@ -133,6 +133,7 @@ public class GraphActivity extends AppCompatActivity {
         yAxis.setStartAtZero(false);
         yAxis.setDrawGridLines(true);
         yAxis.setEnabled(true);
+        yAxis.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));
 
         YAxis rightAxis = lineChart.getAxisRight();
         rightAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
@@ -150,11 +151,16 @@ public class GraphActivity extends AppCompatActivity {
     //ラベルの設定
     public LineData setChartA(ArrayList graphValues, ArrayList xValues) {
         ArrayList<LineDataSet> LineDataSets = new ArrayList<>();
+        //グループ名
         LineDataSet graphValuesDataSet = new LineDataSet(graphValues, "平均気温");  //グラフ全体のラベル
-        graphValuesDataSet.setColor(ColorTemplate.COLORFUL_COLORS[3]);  //グラフの色
+        //値のパラメーター
+        graphValuesDataSet.setColor(ColorTemplate.LIBERTY_COLORS[1]);  //グラフの色
         graphValuesDataSet.setValueTextSize(12);    //テキストサイズ
-        LineDataSets.add(graphValuesDataSet);   //グラフをセット
+        graphValuesDataSet.setValueTextColor(Color.WHITE);
+        graphValuesDataSet.setValueTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));    //フォントを変更
+        graphValuesDataSet.setCircleSize(4);
 
+        LineDataSets.add(graphValuesDataSet);   //グラフをセット
         LineData lineData = new LineData(xValues, LineDataSets); //グラフを返す
         return lineData;
     }
@@ -187,8 +193,11 @@ public class GraphActivity extends AppCompatActivity {
             owmValues.add(new Entry(every3Times[i], 24 + owmDate + (i * 3)));
         }
         LineDataSet owmDataSet = new LineDataSet(owmValues, "予想気温");  //データのセット
-        owmDataSet.setColor(ColorTemplate.COLORFUL_COLORS[2]);  //色の設定
+        owmDataSet.setColor(ColorTemplate.JOYFUL_COLORS[2]);  //色の設定
+        owmDataSet.setCircleSize(4);
         owmDataSet.setValueTextSize(12);
+        owmDataSet.setValueTextColor(Color.WHITE);
+        owmDataSet.setValueTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));    //フォントを変更
         LineDataSets.add(owmDataSet);   //OWMグラフのセット
         //Raspberry Pi
         ArrayList<Entry> rasValues = new ArrayList<>();
@@ -196,9 +205,12 @@ public class GraphActivity extends AppCompatActivity {
             rasValues.add(new Entry(rasTemps[i], i));
         }
         LineDataSet rasDataSet = new LineDataSet(rasValues, "ラズパイ");  //データのセット
-        rasDataSet.setColor(ColorTemplate.COLORFUL_COLORS[3]);  //色の設定
+        rasDataSet.setColor(ColorTemplate.LIBERTY_COLORS[0]);  //色の設定
+        rasDataSet.setCircleSize(4);
         rasDataSet.setValueTextSize(12);
-        LineDataSets.add(rasDataSet);   //OWMグラフのセット
+        rasDataSet.setValueTextColor(Color.WHITE);
+        rasDataSet.setValueTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));    //フォントを変更
+        LineDataSets.add(rasDataSet);   //Raspberry Piグラフのセット
         LineData lineData = setChart(xValues, LineDataSets);
         return lineData;
     }
