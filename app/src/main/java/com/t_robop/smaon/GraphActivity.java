@@ -90,6 +90,7 @@ public class GraphActivity extends AppCompatActivity {
         setEnabledGraphButton(2);
     }
 
+    //ボタンの有効化
     public void setEnabledGraphButton(int num) {
         Button button_current = (Button) findViewById(R.id.current);
         Button button_date = (Button) findViewById(R.id.time);
@@ -142,39 +143,18 @@ public class GraphActivity extends AppCompatActivity {
         lineChart.invalidate();
     }
 
-    //ラベルの設定
-    public LineData setChart(ArrayList xValues, ArrayList LineDataSets) {
-        LineData lineData = new LineData(xValues, LineDataSets); //グラフを返す
-        return lineData;
+    //値の統合設定
+    public LineDataSet synthesisPrefer(LineDataSet dataSet){
+        dataSet.setValueTextSize(12);   //テキストサイズ
+        dataSet.setValueTextColor(Color.WHITE); //色
+        dataSet.setValueTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));    //フォント
+        dataSet.setCircleSize(4);   //点のサイズ
+        return dataSet;
     }
 
-    //ラベルの設定
-    public LineData setChartA(ArrayList graphValues, ArrayList xValues) {
-        ArrayList<LineDataSet> LineDataSets = new ArrayList<>();
-        //グループ名
-        LineDataSet graphValuesDataSet = new LineDataSet(graphValues, "平均気温");  //グラフ全体のラベル
-        //値のパラメーター
-        graphValuesDataSet.setColor(ColorTemplate.LIBERTY_COLORS[1]);  //グラフの色
-        graphValuesDataSet.setValueTextSize(12);    //テキストサイズ
-        graphValuesDataSet.setValueTextColor(Color.WHITE);
-        graphValuesDataSet.setValueTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));    //フォントを変更
-        graphValuesDataSet.setCircleSize(4);
-
-        LineDataSets.add(graphValuesDataSet);   //グラフをセット
-        LineData lineData = new LineData(xValues, LineDataSets); //グラフを返す
-        return lineData;
-    }
-
-    //時系列グラフを作成
+    //時系列グラフの作成
     private LineData createLineChartDataTime() {
         lineChart.setDescription("時系列気温");     //グラフの説明
-        /*
-        制限
-        アプリ起動時に29日かつ、その月が31日までの時、
-        「29,30,31,1,2」日のデータになるように
-        ラベル、値をループさせる
-         */
-
         ArrayList<String> xValues = new ArrayList<>();
         for (int i=0;i<2;i++) {
             for (int j = 0; j < 24; j++) {
@@ -201,30 +181,33 @@ public class GraphActivity extends AppCompatActivity {
         for (int i = 0; i < 9; i++) {
             owmValues.add(new Entry(every3Times[i], 24 + owmDate + (i * 3)));
         }
+        //個別設定
         LineDataSet owmDataSet = new LineDataSet(owmValues, "予想気温");  //データのセット
         owmDataSet.setColor(ColorTemplate.JOYFUL_COLORS[2]);  //色の設定
-        owmDataSet.setCircleSize(4);
-        owmDataSet.setValueTextSize(12);
-        owmDataSet.setValueTextColor(Color.WHITE);
-        owmDataSet.setValueTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));    //フォントを変更
-        LineDataSets.add(owmDataSet);   //OWMグラフのセット
+        //全体設定
+        synthesisPrefer(owmDataSet);
+        //  OWMグラフのセット
+        LineDataSets.add(owmDataSet);
+
         //Raspberry Pi
         ArrayList<Entry> rasValues = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
             rasValues.add(new Entry(rasTemps[i], i));
         }
+        //個別設定
         LineDataSet rasDataSet = new LineDataSet(rasValues, "ラズパイ");  //データのセット
         rasDataSet.setColor(ColorTemplate.LIBERTY_COLORS[0]);  //色の設定
-        rasDataSet.setCircleSize(4);
-        rasDataSet.setValueTextSize(12);
-        rasDataSet.setValueTextColor(Color.WHITE);
-        rasDataSet.setValueTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));    //フォントを変更
-        LineDataSets.add(rasDataSet);   //Raspberry Piグラフのセット
-        LineData lineData = setChart(xValues, LineDataSets);
+        //総合設定
+        synthesisPrefer(rasDataSet);
+        //Raspberry Piグラフのセット
+        LineDataSets.add(rasDataSet);
+
+        //グラフのセット
+        LineData lineData = new LineData(xValues, LineDataSets);
         return lineData;
     }
 
-    //5日間グラフを作成
+    //日平均グラフの作成
     private LineData createLineChartDataCurrent() {
         lineChart.setDescription("日平均気温");     //グラフの説明
         /*
@@ -287,11 +270,18 @@ public class GraphActivity extends AppCompatActivity {
         }
         graphValues.add(new Entry(getROUND_HALF_UP(averageTemp / (every3Times.length - flag)), 5));
 
+        //個別設定
+        LineDataSet daysDataSet = new LineDataSet(graphValues, "平均気温");  //グラフ全体のラベル
+        daysDataSet.setColor(ColorTemplate.LIBERTY_COLORS[1]);  //グラフの色
+        //総合設定
+        synthesisPrefer(daysDataSet);
 
-        LineData lineData = setChartA(graphValues, xValues);
+        //グラフのセット
+        LineData lineData = new LineData(xValues, daysDataSet);
         return lineData;
     }
 
+    //ゲッター
     //小数点第二位を四捨五入
     public float getROUND_HALF_UP(float total) {
         BigDecimal bd = new BigDecimal(total);
@@ -300,7 +290,6 @@ public class GraphActivity extends AppCompatActivity {
         return averageTemp;
     }
 
-    //ゲッター
     //月末を取得
     static public int getLastDay(Date now) {
         Calendar c = Calendar.getInstance();
