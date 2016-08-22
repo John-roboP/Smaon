@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
                         else if(Txt2 <= 30 && Txt2 > 27){
                             txt5.append("エアコンの温度を26～27℃にすれば快適に過ごせるでしょう。\n");
                         }
-                        else if(Txt2 < 26){
+                        else if(Txt2 < 27){
                             txt5.append("冷たいものを摂るなどして、エアコンはつけずに涼しく過ごしましょう。\n");
                         }
                     }
@@ -318,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
                             txt5.append("気温が高めなので、厚着をしてエアコンはつけないようにしましょう。\n");
                         }
                     }
+                    txt5.append("エアコンを使用する際は節電を心掛けて使いましょう。\n");
 
                     if(Math.abs(nexOndo-Txt) > 5){
                         txt5.append("気温が急に変化するので、体温管理をしっかりしましょう。\n");
