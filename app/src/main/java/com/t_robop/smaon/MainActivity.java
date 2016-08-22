@@ -153,13 +153,12 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
 
-                    int cnt=0;                                                          //更新する際の判定用
-
                     //現在の日付を取得
                     Date nDate = new Date();
                     SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                     int now = Integer.parseInt((sdf1.format(nDate)).substring(11,13));  //時間を抽出(NOW)
                     int day = Integer.parseInt((sdf1.format(nDate)).substring(8,10));   //日にちを抽出(NOW)
+                    int mon = Integer.parseInt((sdf1.format(nDate)).substring(5,7));   //月を抽出(NOW)
 
                     try{
                         JSONArray eventArray = result.getJSONArray("list");             //配列データを取得
@@ -261,6 +260,9 @@ public class MainActivity extends AppCompatActivity {
                         if(Txt2-Txt > 5){
                             txt5.append("水分補給をこまめに行いましょう。\n");
                         }
+                        if(Txt2 >= 30 && (mon > 6 && mon < 10)){
+                            txt5.append("エアコンの温度を25℃にすれば快適に過ごせるでしょう\n");
+                        }
                     }
                     else if(Txt2 < Txt){            //オープン>ラズパイ
                         txt5.setText("現在予想より温度が低くなっております。\n");
@@ -315,6 +317,12 @@ public class MainActivity extends AppCompatActivity {
         private void showLoadError() {
             Toast toast = Toast.makeText(getActivity(), "データを取得できませんでした。", Toast.LENGTH_SHORT);
             toast.show();
+        }
+
+        @Override
+        public void onResume(){
+            super.onResume();
+            sum=0;
         }
     }
 
