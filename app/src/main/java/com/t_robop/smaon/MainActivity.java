@@ -11,8 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -111,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
 
         //ラズパイのデータ取得
         Intent intent = getIntent();
-        Str = intent.getStringExtra("date");
-        Str2 = intent.getStringExtra("temper");
-        nexOndo = intent.getDoubleExtra("estima", 0.0);
-        yesOndo = intent.getStringArrayExtra("jsarray");
+        Str = intent.getStringExtra("date");                                                    //現在時刻
+        Str2 = intent.getStringExtra("temper");                                                 //現在時刻の温度
+        nexOndo = intent.getDoubleExtra("estima", 0.0);                                         //1h後の予想温度
+        yesOndo = intent.getStringArrayExtra("jsarray");                                        //昨日の同時刻の温度
 
 
         SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);        //openweathermapのデータ取得
@@ -179,7 +177,11 @@ public class MainActivity extends AppCompatActivity {
                                 gTime = Intime;
                             }
                             if(i==now){
-                                txt9.setText("昨日の同時刻\n"+yesOndo[i]);                //昨日の同時刻の温度を出力
+                                StringBuilder sb = new StringBuilder();
+                                sb.append("昨日の同時刻\n"+yesOndo[i]);
+                                sb.insert(9,".");
+                                String Tem = sb.toString();
+                                txt9.setText(Tem);                //昨日の同時刻の温度を出力
                             }
                             if((Math.abs(now - Intime)) <= 3 && (day == intDay)){
                                 nTime = sdf1.format(nDate);
