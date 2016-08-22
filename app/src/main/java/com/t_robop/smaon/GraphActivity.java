@@ -24,7 +24,6 @@ import java.util.Date;
 
 public class GraphActivity extends AppCompatActivity {
     LineChart lineChart;
-    int screen_transition;
     int owmCnt;
     float every3Times[];
     int owmDate;
@@ -81,8 +80,6 @@ public class GraphActivity extends AppCompatActivity {
         //拡大設定
         lineChart.setVisibleXRangeMaximum(10F);
         setEnabledGraphButton(1);
-        //グラフ画面専用変数の初期化
-        screen_transition = 0;
     }
 
     //5日分グラフのボタン
