@@ -227,13 +227,13 @@ public class MainActivity extends AppCompatActivity {
                             img.setImageResource(R.drawable.hare);
                             txt5.append("洗濯物を干すのに良い天気です。\n");
                             if(Txt2 > 30){
-                                txt5.append("日差しも強く、熱中症になる恐れがあります。\n");
+                                txt5.append("日差しも強く、熱中症になる恐れがあります。運動する際は特に気を付けましょう。\n");
                             }
                             if(Txt2 < 20){
                                 txt5.append("ポカポカして暖かい一日になるでしょう。\n");
                             }
                             if(humid >= 80){
-                                txt5.append("湿度も高く蒸し暑い日になります。\n");
+                                txt5.append("また、湿度も高く蒸し暑い日になります。\n");
                             }
                         }
                         else if(tenki.equals("Clear") && (Intime >=18 || Intime <= 3)){
