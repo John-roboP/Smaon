@@ -174,15 +174,24 @@ public class GraphActivity extends AppCompatActivity {
         「29,30,31,1,2」日のデータになるように
         ラベル、値をループさせる
          */
+
         ArrayList<String> xValues = new ArrayList<>();
-        for (int i = 0; i < 24; i++) {
-            xValues.add((i) + "時");
+        for (int i=0;i<2;i++) {
+            for (int j = 0; j < 24; j++) {
+                if(j==0){
+                xValues.add(getDay(new Date())-1+i+"日");
+                }else {
+                    xValues.add(j + "時");
+                }
+            }
         }
-        for (int i = 0; i < 24; i++) {
-            xValues.add((i) + "時");
-        }
-        for (int j = 0; j < owmDate + 3; j++) {
-            xValues.add(j + "時");
+
+        for (int i = 0; i < owmDate + 3; i++) {
+            if (i==0) {
+                xValues.add(getDay(new Date())+1+"日");
+            } else {
+                xValues.add(i + "時");
+            }
         }
 
         ArrayList<LineDataSet> LineDataSets = new ArrayList<>();
