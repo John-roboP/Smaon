@@ -112,7 +112,7 @@ public class GraphActivity extends AppCompatActivity {
         lineChart.setDrawGridBackground(true);  //グリッド線
         lineChart.setDoubleTapToZoomEnabled(false); //ダブルタップズームの無効化
         lineChart.getLegend().setEnabled(true); //判例有効化
-        lineChart.setPinchZoom(true);
+        lineChart.setPinchZoom(false);
         lineChart.setBackgroundColor(2);
         lineChart.setDescriptionTextSize(12);   //グラフの説明テキストサイズ
         lineChart.setScaleEnabled(true);
