@@ -137,7 +137,7 @@
                 android:textSize="20sp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:background="@drawable/waku1"
-                android:text="昨日の同時刻"
+                android:text=""
                 android:id="@+id/textView8"
                 android:layout_weight="0.31" />
 
