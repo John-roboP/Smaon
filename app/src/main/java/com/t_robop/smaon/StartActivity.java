@@ -200,13 +200,13 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
             yestertempND=yestertempN;
             yestertempPD=yestertempP;
             estimatempY = (yestertempPD/yestertempND*nowtemp) *1.05;
-            estimatemp=Math.round(estimatempY);
+            estimatemp=Math.round(estimatempY);//四捨五入
         }else if(yestertempN-yestertempP>0){
             //第6パターン
             yestertempND=yestertempN;
             yestertempPD=yestertempP;
             estimatempY =(yestertempPD/yestertempND*nowtemp) *0.95 ;
-            estimatemp=Math.round(estimatempY);
+            estimatemp=Math.round(estimatempY); //四捨五入
 
         }
 
