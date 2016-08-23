@@ -85,6 +85,7 @@ public class GraphActivity extends AppCompatActivity {
     //5日分グラフのボタン
     public void setLineChartDataCurrent(View v) {
         createLineChart();
+        lineChart.fitScreen();  //画面の最大化
         //グラフの生成
         lineChart.setData(createLineChartDataCurrent());
         setEnabledGraphButton(2);
@@ -112,11 +113,9 @@ public class GraphActivity extends AppCompatActivity {
         lineChart.setDrawGridBackground(true);  //グリッド線
         lineChart.setDoubleTapToZoomEnabled(false); //ダブルタップズームの無効化
         lineChart.getLegend().setEnabled(true); //判例有効化
-        lineChart.setPinchZoom(false);
         lineChart.setBackgroundColor(2);
         lineChart.setDescriptionTextSize(12);   //グラフの説明テキストサイズ
         lineChart.setScaleEnabled(true);
-        lineChart.fitScreen();  //画面の最大化
         lineChart.setPinchZoom(false);  //x軸y軸方向のみ拡大有効化
         lineChart.setScaleYEnabled(false);  //y軸方向の拡大無効化
         lineChart.setGridBackgroundColor((int) 4169E1); //背景を青色にする
@@ -156,7 +155,7 @@ public class GraphActivity extends AppCompatActivity {
     private LineData createLineChartDataTime() {
         lineChart.setDescription("時系列気温");     //グラフの説明
         ArrayList<String> xValues = new ArrayList<>();
-        for (int i=0;i<2;i++) {
+        for (int i=0;i<4;i++) {
             for (int j = 0; j < 24; j++) {
                 if(j==0){
                 xValues.add(getDay(new Date())-1+i+"日");
@@ -168,7 +167,7 @@ public class GraphActivity extends AppCompatActivity {
 
         for (int i = 0; i < owmDate + 3; i++) {
             if (i==0) {
-                xValues.add(getDay(new Date())+1+"日");
+                xValues.add(getDay(new Date())+3+"日");
             } else {
                 xValues.add(i + "時");
             }
@@ -178,9 +177,15 @@ public class GraphActivity extends AppCompatActivity {
         //値のセット
         //OWM
         ArrayList<Entry> owmValues = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 27; i++) {
             owmValues.add(new Entry(every3Times[i], 24 + owmDate + (i * 3)));
+            if(i==27){
+                for (int j=0;j<owmCnt-i;j++){
+                    owmValues.add(new Entry(every3Times[i+j], 24 + owmDate + (i * 3)));
+                }
+            }
         }
+
         //個別設定
         LineDataSet owmDataSet = new LineDataSet(owmValues, "予想気温");  //データのセット
         owmDataSet.setColor(ColorTemplate.JOYFUL_COLORS[2]);  //色の設定
