@@ -227,13 +227,13 @@ public class MainActivity extends AppCompatActivity {
                             img.setImageResource(R.drawable.hare);
                             txt5.append("洗濯物を干すのに良い天気です。\n");
                             if(Txt2 > 30){
-                                txt5.append("日差しも強く、熱中症になる恐れがあります。\n");
+                                txt5.append("日差しも強く、熱中症になる恐れがあります。運動する際は特に気を付けましょう。\n");
                             }
                             if(Txt2 < 20){
                                 txt5.append("ポカポカして暖かい一日になるでしょう。\n");
                             }
                             if(humid >= 80){
-                                txt5.append("湿度も高く蒸し暑い日になります。\n");
+                                txt5.append("また、湿度も高く蒸し暑い日になります。\n");
                             }
                         }
                         else if(tenki.equals("Clear") && (Intime >=18 || Intime <= 3)){
@@ -260,9 +260,6 @@ public class MainActivity extends AppCompatActivity {
                         if(Txt2-Txt > 5){
                             txt5.append("水分補給をこまめに行いましょう。\n");
                         }
-                        if(Txt2 >= 30 && (mon > 6 && mon < 10)){
-                            txt5.append("エアコンの温度を25℃にすれば快適に過ごせるでしょう\n");
-                        }
                     }
                     else if(Txt2 < Txt){            //オープン>ラズパイ
                         txt5.setText("現在予想より温度が低くなっております。\n");
@@ -277,7 +274,12 @@ public class MainActivity extends AppCompatActivity {
                         if(tenki.equals("Clear") && (Intime >=6 && Intime <= 15)){
                             txt7.setText("晴れ");
                             img.setImageResource(R.drawable.hare);
-                            txt5.append("しかし日が照っているので、暖かくなるでしょう。\n");
+                            if(Txt2 < 26){
+                                txt5.append("しかし日が照っているので、暖かくなるでしょう。\n");
+                            }
+                            if(Txt2 >= 26){
+                                txt5.append("しかし日が照っており暑くなります。場合によっては熱中症になる恐れがあります。\n");
+                            }
                         }
                         else if(tenki.equals("Clear") && (Intime >=18 || Intime <= 3)){
                             txt7.setText("晴れ");
@@ -293,6 +295,30 @@ public class MainActivity extends AppCompatActivity {
                             txt5.append("上着を羽織って暖かくするようにしましょう。\n");
                         }
                     }
+
+                    if(mon > 6 && mon < 10){
+                        if(Txt > 30){
+                            txt5.append("とても暑いです。ですのでエアコンの温度を25℃にすれば快適に過ごせるでしょう。\n");
+                        }
+                        else if(Txt2 <= 30 && Txt2 > 27){
+                            txt5.append("エアコンの温度を26～27℃にすれば快適に過ごせるでしょう。\n");
+                        }
+                        else if(Txt2 < 27){
+                            txt5.append("冷たいものを摂るなどして、エアコンはつけずに涼しく過ごしましょう。\n");
+                        }
+                    }
+                    else if(mon > 10 || mon < 3){
+                        if(Txt < 15 ){
+                            txt5.append("とても寒いのでエアコンの暖房を21℃にすると快適です。\n");
+                        }
+                        else if(Txt2 >= 15 && Txt2 < 18){
+                            txt5.append("エアコンの温度を20℃にすれば快適に過ごせるでしょう。\n");
+                        }
+                        else if(Txt2 > 18){
+                            txt5.append("気温が高めなので、厚着をしてエアコンはつけないようにしましょう。\n");
+                        }
+                    }
+                    txt5.append("エアコンを使用する際は節電を心掛けて使いましょう。\n");
 
                     if(Math.abs(nexOndo-Txt) > 5){
                         txt5.append("気温が急に変化するので、体温管理をしっかりしましょう。\n");
