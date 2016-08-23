@@ -189,6 +189,7 @@ public class GraphActivity extends AppCompatActivity {
         //個別設定
         LineDataSet owmDataSet = new LineDataSet(owmValues, "予想気温");  //データのセット
         owmDataSet.setColor(ColorTemplate.JOYFUL_COLORS[2]);  //色の設定
+        owmDataSet.setCircleColor(ColorTemplate.JOYFUL_COLORS[2]);
         //全体設定
         synthesisPrefer(owmDataSet);
         //  OWMグラフのセット
