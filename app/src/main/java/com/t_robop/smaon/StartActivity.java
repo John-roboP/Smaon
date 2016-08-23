@@ -35,9 +35,14 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
     int Level = 0;
     int penint = 0;
     double estimatemp; //予則温度
+    double estimatempY;
+    int estimatempI;
+    double yestertempPD;
+    double yestertempND;
     int yestertempP;//+1時間
     int yestertempM; //−1時間
     int yestertempN; //今の時間
+    int yesterR;
     private double nowtemp;    //リアルタイム温度
     int zP;//引き算後
     int zPa;//絶対値
@@ -192,10 +197,17 @@ public class StartActivity extends Activity implements LoaderManager.LoaderCallb
             estimatemp =yestertempP/yestertempN * nowtemp;
         }else if(yestertempP-yestertempN>0){
             //第4パターン
-            estimatemp = yestertempP/yestertempN*nowtemp*1.05;
+            yestertempND=yestertempN;
+            yestertempPD=yestertempP;
+            estimatempY = (yestertempPD/yestertempND*nowtemp) *1.05;
+            estimatemp=Math.round(estimatempY);
         }else if(yestertempN-yestertempP>0){
             //第6パターン
-            estimatemp = yestertempP/yestertempN*nowtemp*0.95;
+            yestertempND=yestertempN;
+            yestertempPD=yestertempP;
+            estimatempY =(yestertempPD/yestertempND*nowtemp) *0.95 ;
+            estimatemp=Math.round(estimatempY);
+
         }
 
 
