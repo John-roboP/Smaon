@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -177,8 +178,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             if(i==now){
                                 StringBuilder sb = new StringBuilder();
-                                sb.append("昨日の同時刻\n"+yesOndo[i]);
-                                sb.insert(9,".");
+                                sb.append("昨日の同時刻\n"+ getROUND_HALF_UP(Float.parseFloat(yesOndo[i])/1000));
                                 String Tem = sb.toString();
                                 txt9.setText(Tem);                //昨日の同時刻の温度を出力
                             }
@@ -359,6 +359,14 @@ public class MainActivity extends AppCompatActivity {
             }
         return true;
     }
+    //小数点第二位を四捨五入
+    static float getROUND_HALF_UP(float value) {
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(1, BigDecimal.ROUND_HALF_UP);
+        float averageTemp = (bd.floatValue());
+        return averageTemp;
+    }
+
 
 }
 
